@@ -35,7 +35,7 @@ ISOTROPIC
 $RADAR
 Radar3               ! Name of radar
 Earth                ! Platform name of radar
-MONO                 ! Waveform
+MONO
 5000                 ! (ns)  zero to zero Pulse width
 RECT                 ! Rectangular envelope
 CONSTANT             ! Constant PRI
@@ -65,8 +65,10 @@ Radar3               ! Name of radar
 1.72599475E-06       ! (mV) Least Significant Bit value
 BINARY               ! Save file format
 RAW                  ! Processing
-sim1.bin             ! File Name of output file
+exam1.bin             ! File Name of output file
                      ! Size : 201 (Azimuth) x 33 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 

@@ -68,5 +68,7 @@ RAW                  ! Processing
 sim1.bin             ! File Name of output file
                      ! Size : 201 (Azimuth) x 33 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 

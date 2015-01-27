@@ -1,0 +1,165 @@
+! Radar Simulator SARSIM II (version WIN32-301097a)
+! (C)1997 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  EARTH
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+
+$TARGET EARTH  ! Platform
+1000, 1000, 816  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+$RADAR
+RADAR2               ! Name of radar
+EARTH                ! Platform name of radar
+MONO
+5000                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+400                  ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+1                    ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+30                   ! (deg) Elevation beam width
+1                    ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+ROTATING             ! Rotating antenna
+30                   ! (deg) Beam-direction - Elevation
+24                   ! (deg/s) Rotation rate
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+RADAR2               ! Name of radar
+1600                 ! (m) Slant range start
+2500                 ! (m) Slant range end
+1.44657              ! (s) Azimuth range start
+2.30595              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0006               ! (GHz) Sample frequency
+6.28586614E-07       ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+Sim3a.asc            ! File Name of output file
+                     ! Size : 344 (Azimuth) x 4 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+
+$SIMULATION
+RADAR2               ! Name of radar
+1600                 ! (m) Slant range start
+2500                 ! (m) Slant range end
+1.44657              ! (s) Azimuth range start
+2.30595              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0008               ! (GHz) Sample frequency
+6.47444543E-07       ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+sim3b.bin            ! File Name of output file
+                     ! Size : 344 (Azimuth) x 5 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+
+$SIMULATION
+RADAR2               ! Name of radar
+0                    ! (m) Slant range start
+2500                 ! (m) Slant range end
+0.0206612            ! (s) Azimuth range start
+3.01653              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0002               ! (GHz) Sample frequency
+6.2858704E-07        ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+Sim3c.asc           ! File Name of output file
+                     ! Size : 1198 (Azimuth) x 3 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+$SIMULATION
+RADAR2               ! Name of radar
+0                    ! (m) Slant range start
+2500                 ! (m) Slant range end
+0.0206612            ! (s) Azimuth range start
+3.01653              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0004               ! (GHz) Sample frequency
+60.2858704           ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+Sim3d.asc           ! File Name of output file
+                     ! Size : 1198 (Azimuth) x 7 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+
+$SIMULATION
+RADAR2               ! Name of radar
+0                    ! (m) Slant range start
+2500                 ! (m) Slant range end
+0.0206612            ! (s) Azimuth range start
+3.01653              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0004               ! (GHz) Sample frequency
+6.02858704E-07       ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+Sim3e.asc           ! File Name of output file
+                     ! Size : 1198 (Azimuth) x 7 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+
+$SIMULATION
+RADAR2               ! Name of radar
+0                    ! (m) Slant range start
+2500                 ! (m) Slant range end
+0.0206612            ! (s) Azimuth range start
+3.01653              ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.0004               ! (GHz) Sample frequency
+6.2858704E-07        ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+Sim3f.asc           ! File Name of output file
+                     ! Size : 1198 (Azimuth) x 7 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+

@@ -105,3 +105,20 @@ RECT                 ! Rectangular MF window
 NO_STC               ! no STC
 
 
+$SIMULATION
+Radar1               ! Name of radar
+10010                ! (m) Slant range start
+10510                ! (m) Slant range end
+-0.5                 ! (s) Azimuth range start
+1.499                ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.15                 ! (GHz) Sample frequency
+1.68257E-07          ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+System_Setup.ASC             ! File Name of output file
+                     ! Size : 600 (Azimuth) x 250 (Slant Range)
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+

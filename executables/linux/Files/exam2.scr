@@ -103,8 +103,8 @@ Radar1               ! Name of radar
 2.43350484E-11       ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 MATCHED_FILTER       ! Processing
-sim1.asc             ! File Name of output file
+exam2.asc             ! File Name of output file
                      ! Size : 19 (Azimuth) x 146 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
-
-
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width

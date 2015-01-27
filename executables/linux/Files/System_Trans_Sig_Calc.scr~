@@ -1,0 +1,120 @@
+! Radar Simulator SARSIM II (version WIN32-300106)
+! (C)1997,1998 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+$PLATFORM  Platform1
+TRAJECTORY
+LINEAR               ! Interpolation method for Position X (m) vs Time (s)
+LINEAR               ! Interpolation method for Position Y (m) vs Time (s)
+LINEAR               ! Interpolation method for Position Z (m) vs Time (s)
+INLINE
+2                    ! Number of samples for Position X (m) vs Time (s)
+0, -150  
+10, 150
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0, 0
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0, 0
+NOT_ALIGNED
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+
+$TARGET Earth  ! Platform
+0, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+10, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+$RADAR
+Radar1               ! Name of radar
+Platform1            ! Platform name of radar
+CHIRP
+0.1                  ! (GHz) Chirp bandwidth
+20000                ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+10000                ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+2.4                  ! (GHz)  Center frequency
+0.01                 ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+32                   ! (deg) Elevation beam width
+8.8                  ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+0                    ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+Radar1               ! Name of radar
+10010                ! (m) Slant range start
+10510                ! (m) Slant range end
+-0.5                 ! (s) Azimuth range start
+1.499                ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.15                 ! (GHz) Sample frequency
+1.68257E-07          ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+SIMstsc.ASC             ! File Name of output file
+                     ! Size : 600 (Azimuth) x 250 (Slant Range)
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -67,9 +67,11 @@ RADAR2               ! Name of radar
 6.28586614E-07       ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\Sim1a.asc ! File Name of output file
+exam3a.asc            ! File Name of output file
                      ! Size : 344 (Azimuth) x 4 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 
 $SIMULATION
@@ -83,9 +85,11 @@ RADAR2               ! Name of radar
 6.47444543E-07       ! (mV) Least Significant Bit value
 BINARY               ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\sim1a.bin ! File Name of output file
+exam3b.bin            ! File Name of output file
                      ! Size : 344 (Azimuth) x 5 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 
 $SIMULATION
@@ -99,10 +103,11 @@ RADAR2               ! Name of radar
 6.2858704E-07        ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\Sim100.asc ! File Name of output file
+exam3c.asc           ! File Name of output file
                      ! Size : 1198 (Azimuth) x 3 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
-
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 $SIMULATION
 RADAR2               ! Name of radar
@@ -115,9 +120,11 @@ RADAR2               ! Name of radar
 60.2858704           ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\Sim100.asc ! File Name of output file
+exam3d.asc           ! File Name of output file
                      ! Size : 1198 (Azimuth) x 7 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 
 $SIMULATION
@@ -131,9 +138,11 @@ RADAR2               ! Name of radar
 6.02858704E-07       ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\Sim100.asc ! File Name of output file
+exam3e.asc           ! File Name of output file
                      ! Size : 1198 (Azimuth) x 7 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 
 $SIMULATION
@@ -147,8 +156,10 @@ RADAR2               ! Name of radar
 6.2858704E-07        ! (mV) Least Significant Bit value
 ASCII                ! Save file format
 RAW                  ! Processing
-H:\helvin\RADAR\Sim100.asc ! File Name of output file
+exam3f.asc           ! File Name of output file
                      ! Size : 1198 (Azimuth) x 7 (Slant Range) points
 BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width
 
 
