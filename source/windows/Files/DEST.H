@@ -1,0 +1,17 @@
+// expiry date
+#define Expire_YEAR 2098
+#define Expire_MONTH 12
+#define Expire_DAY 1
+
+// version number
+// #define version "WIN32-280698a\0"
+
+// RTL - new version; corrected returned power value
+#define version "WIN32-280698b\0"
+
+// destination (operating system)
+#define COMPILE_FOR_WINDOWS32  // we want to compile it for windows
+                               // comment this line if to compile for unix
+
+// if surfaces are NOT used (or compiled for linux) comment next line
+// #define WITH_SURFACE_ALGORITHM

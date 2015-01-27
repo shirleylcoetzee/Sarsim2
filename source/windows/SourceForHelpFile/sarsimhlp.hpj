@@ -1,0 +1,9 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+LCID=0x1c09 0x0 0x0 ; English (South Africa)
+REPORT=Yes
+HLP=sarsimhlp.hlp
+
+[FILES]
+sarsim2hlprtf.rtf

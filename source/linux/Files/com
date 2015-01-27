@@ -1,0 +1,24 @@
+gcc -c engine.cpp -O2 -Wall
+gcc -c general.cpp -O2 -Wall
+gcc -c linkedlist.cpp -O2 -Wall
+gcc -c parser.cpp -O2 -Wall
+gcc -c loadsavedata.cpp -O2 -Wall
+
+make -k
+
+rm *.o
+rm core
+rm *.bak
+rm *.~h
+rm *.~cp
+rm *.txt
+rm *.cc~
+
+cp sarsim2 ..
+cd ..
+chmod 750 sarsim2
+cd src
+
+chmod 720 *
+
+

@@ -1,0 +1,88 @@
+//---------------------------------------------------------------------------
+#include <vcl\vcl.h>
+#pragma hdrstop
+
+#include "SaveProgress.h"
+#include "waitforthread.h"
+#include "SaveSimData.h"
+#include "math.h"
+extern bool UserAbort;
+extern int CalcProgress;
+//---------------------------------------------------------------------------
+#pragma resource "*.dfm"
+TSaveProgressForm *SaveProgressForm;
+//---------------------------------------------------------------------------
+__fastcall TSaveProgressForm::TSaveProgressForm(TComponent* Owner)
+	: TForm(Owner)
+{
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveProgressForm::ThreadDone(TObject * )
+{
+  Timer1->Enabled = FALSE;
+  // thread finished...
+  if (UserAbort)
+    Application->MessageBox("File was not saved completely !", "Aborted", MB_OK);
+  else
+    {
+      double MaxPossibleMag, Percentage, BestLSB, SatPer, ZeroPer;
+      char s[500];
+      // calculate maximium possible magnitude without clipping
+      if (SaveSimForm->CurrentSim.A2Dbits == 1)
+        MaxPossibleMag = SaveSimForm->CurrentSim.LSBvalue;
+      else
+        MaxPossibleMag = SaveSimForm->CurrentSim.LSBvalue*
+          (pow(2,(SaveSimForm->CurrentSim.A2Dbits-1))-1);
+      SatPer = (ClickCancelThread->ClippedSamples / (0.01+ClickCancelThread->TotalSampleNo))*100;
+      ZeroPer = (ClickCancelThread->ZeroSamples / (0.01+ClickCancelThread->TotalSampleNo))*100;
+      if (MaxPossibleMag != 0)
+        Percentage = (ClickCancelThread->MaxMagnitude / MaxPossibleMag)*100.0;
+      else
+        Percentage = 0;
+      sprintf(s,"For the saved file the maximum amplitude was : %-.8G mV\n"
+      "=> %-3.6G %% of the dynamic range has been used\n"
+      "=> %-3.6G %% of samples were saturated\n"
+      "=> %-3.6G %% of samples were zero\n",
+      ClickCancelThread->MaxMagnitude*KILO,Percentage,SatPer,ZeroPer);
+      if (Percentage > 100.0)
+        {
+          char s2[500];
+          // calculate best LSB value
+          if (SaveSimForm->CurrentSim.A2Dbits == 1)
+            BestLSB = ClickCancelThread->MaxMagnitude/2;
+          else
+            BestLSB = ClickCancelThread->MaxMagnitude/(pow(2,(SaveSimForm->CurrentSim.A2Dbits-1))-1);
+          sprintf(s2,"\n\nWARNING : saturation occured !\nThe optimal value for "
+          "the LSB value is : %-.8G mV.", BestLSB*KILO);
+          strcat(s,s2);
+        }
+// comment out for no confirmation
+      Application->MessageBox(s,"File successfully saved.", MB_OK);
+    }
+  Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveProgressForm::BAbortClick(TObject *Sender)
+{
+  // cancel button pushed
+  UserAbort = TRUE;
+  ClickCancelThread->Terminate();
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveProgressForm::FormShow(TObject *Sender)
+{
+   ProgressBar1->Position = 0;
+   // setup thread
+   UserAbort = FALSE;
+   ClickCancelThread = new TWaitThread();
+   ClickCancelThread->OnTerminate = ThreadDone;
+   ClickCancelThread->FreeOnTerminate = TRUE;
+   Timer1->Enabled = TRUE;
+   ClickCancelThread->Resume();
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveProgressForm::Timer1Timer(TObject *Sender)
+{
+  ClickCancelThread->UpdateProgress();
+}
+//---------------------------------------------------------------------------
