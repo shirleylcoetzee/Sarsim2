@@ -125,6 +125,9 @@ void __fastcall TSaveSimForm::FormShow(TObject *Sender)
       RGType->ItemIndex = 2;
     }
 
+  EOverSample->Text = FloatToStr(CurrentSim.OverSampleFactor);
+  EPWidth->Text = FloatToStr(CurrentSim.PWidth);
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TSaveSimForm::BSelectFileClick(TObject *Sender)
@@ -481,5 +484,48 @@ void __fastcall TSaveSimForm::RGLSBvalueClick(TObject *Sender)
 void __fastcall TSaveSimForm::BitBtn2Click(TObject *Sender)
 {
   Application->HelpJump("savedat");
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveSimForm::EOverSampleExit(TObject *Sender)
+{
+  // busy updating -> quit that
+//  if (Busy) StopThread();
+  char s[80];
+  double t;
+  t = atof(EOverSample->Text.c_str());
+  if (t<1 || t>100)
+    t=1;
+  CurrentSim.OverSampleFactor = t;
+  sprintf(s,FORMAT_6, CurrentSim.OverSampleFactor);
+  EOverSample->Text = s;
+//  UpdateGraphBitmap(FALSE);
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveSimForm::EOverSampleKeyPress(TObject *Sender, char &Key)
+{
+  if (Key == (unsigned char)ENTER_KEY)
+    EOverSampleExit(Sender);
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveSimForm::EPWidthExit(TObject *Sender)
+{
+  // busy updating -> quit that
+ // if (Busy) StopThread();
+  char s[80];
+  double t;
+  t = atof(EPWidth->Text.c_str());
+  if (t<1 || t>100)
+    t=1;
+  CurrentSim.PWidth = t;
+  sprintf(s,FORMAT_6, CurrentSim.PWidth);
+  EPWidth->Text = s;
+//  UpdateGraphBitmap(FALSE);
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TSaveSimForm::EPWidthKeyPress(TObject *Sender, char &Key)
+{
+  if (Key == (unsigned char)ENTER_KEY)
+     EPWidthExit(Sender);
 }
 //---------------------------------------------------------------------------

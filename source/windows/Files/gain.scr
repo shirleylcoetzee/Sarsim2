@@ -1,0 +1,58 @@
+! Radar Simulator SARSIM II (version WIN32-280698a)
+! (C)1997,1998 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$SURFACE 
+Earth  ! Platform
+1000, 10, 0  ! Point 1 X,Y,Z (m)
+1000, -10, 0  ! Point 2 X,Y,Z (m)
+1000, 0, 10  ! Point 3 X,Y,Z (m)
+
+
+
+$RADAR
+Radar1               ! Name of radar
+Earth                ! Platform name of radar
+MONO
+5000                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+1000                 ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+1                    ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+10                   ! (deg) Elevation beam width
+10                   ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+ROTATING             ! Rotating antenna
+0                    ! (deg) Beam-direction - Elevation
+10                   ! (deg/s) Rotation rate
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+

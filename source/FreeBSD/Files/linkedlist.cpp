@@ -105,7 +105,7 @@ void FreeSurfaceList(struct SSurface **FirstSurface)
 //-------------------------------------------------------------------------//
 // Function PointToSurface                                                  //
 //                                                                         //
-// This function returns a pointer to the nth Surface.                      //
+// This function returns a pointer to the nth (1.st = 1 NOT 0) Surface.                      //
 //-------------------------------------------------------------------------//
 struct SSurface *PointToSurface(struct SSurface *first, long n)
 {

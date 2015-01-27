@@ -7,7 +7,7 @@
   #include "main.h"
 #endif
 
-#include "engine.h"
+#include "emerg.h"
 #include "objectstructdef.h"
 #include <math.h>
 #include <stdio.h>
@@ -1170,7 +1170,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                   double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
             long SurfaceNo, double *Template, double OverSampleFactor,
             long Pow2SamplePoints, long UsedSamples, struct SSurface *FirstSurface,
-            long ZeroedSamples,double **RadarDir)
+            long ZeroedSamples)
 {
   long i, TNo;
   double RootOfNoisePower,Amp;
@@ -1201,22 +1201,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
   double NormVecUnit[3];
   double NormVecRCS[3];
   double Angle,tem;
-  double AntennaDirAzi, AntennaDirElev, TRayAzi, TRayElev, OffsetAzi, OffsetElev;
-  double AntennaGain;
-
-
 
   // compute return gain factor independent of time
-//  GainFactor = ((LIGHT_SPEED/r->StartFreq)*sqrt(r->PowerOutput)) /
-//         ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
-
-
-  // Edited by RTL on 21/03/2004
-  // see also line 1446
-  GainFactor = sqrt(r->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
-
-
-
+  GainFactor = ((LIGHT_SPEED/r->StartFreq)*sqrt(r->PowerOutput)) /
+         ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
   // samples which are set to 0 and do not to be added
 //  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
@@ -1317,20 +1305,23 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 
       for (CPT=0;CPT<TotalPTs;CPT++)
         {
-          if (((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 0)) ||
-             ((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 2)))
-            AntennaGain = 1;
-          else
-            {
-          AntennaDirAzi=RadarDir[PNo][0];
-          AntennaDirElev=RadarDir[PNo][1];
-          TRayAzi = AziAngle(CoordPT[CPT]);
-          TRayElev = ElevAngle(CoordPT[CPT]);
+/*
+// begin insert
+  double AntennaDirAzi, AntennaDirElev, TRayAzi, TRayElev;
+  double OffsetAzi, OffsetElev;
+  double AntennaGain;
+          double AntennaGainT;
+          double AntennaGainR;
+
+          // find the direction into which r is pointing relative to
+          // the r platform
+          FindAntennaDir(r, PulseSendTime[PNo], PlatformPos[rPFNo][PNo],
+              PlatformRot[rPFNo][PNo],&AntennaDirAzi,&AntennaDirElev);
+          TRayAzi = AziAngle(TargetPosRelativeTor);
+          TRayElev = ElevAngle(TargetPosRelativeTor);
           OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
           OffsetElev = fabs(AntennaDirElev - TRayElev);
 
-          AntennaGain = FindAntennaGainRT(OffsetAzi, OffsetElev, r);
-/*
           AntennaGainT = 1;
           AntennaGainR = 1;
 
@@ -1381,10 +1372,11 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
             }
 
           AntennaGain = sqrt(AntennaGainR * AntennaGainT);
-  */
 
-          }
+//         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
 
+// end insert
+*/
 
           CrossP(NormVecUnit, CoordPT[CPT], NormVecRCS);
           tem = DotProduct(NormVecUnit, CoordPT[CPT], 3);
@@ -1437,19 +1429,9 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
             double(0.5)*r->PulseWidth - PulseCenter) - SlantStartTime)
             /SecPerSample - double(UsedSamples)*double(0.5));
 
-
-
-//          Amp = (GainFactor * AntennaGain *
-//              TwoOverLight * TwoOverLight *
-//              sqrt(RCS)) / (SurfRangeDelay[CPT] * SurfRangeDelay[CPT]);
-
-// Edited by RTL, 21/03/2004
-          Amp = (GainFactor * (LIGHT_SPEED/PulseFreq[PNo]) * AntennaGain *
+          Amp = (GainFactor * // AntennaGain *
               TwoOverLight * TwoOverLight *
               sqrt(RCS)) / (SurfRangeDelay[CPT] * SurfRangeDelay[CPT]);
-
-
-
     //      for (CSample=0;CSample<UsedSamples;CSample++)
           for (CSample=ZeroedSamples;CSample<UsedSamples-ZeroedSamples;CSample++)   //
             {
@@ -1483,67 +1465,6 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
     }
   *MaxMagOfPulse = sqrt(*MaxMagOfPulse);
 }
-//-------------------------------------------------------------------------//
-double FindAntennaGainRT(double OffsetAzi, double OffsetElev,
-  struct SRadar *r)
-{
-  double  AntennaGainT,AntennaGainR;
-  if (OffsetAzi >= 2*PI) OffsetAzi -= 2*PI;
-  if (OffsetAzi < -2*PI) OffsetAzi += 2*PI;
-  if (OffsetElev >= 2*PI) OffsetElev -= 2*PI;
-  if (OffsetElev < -2*PI) OffsetElev += 2*PI;
-
-  if (((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 0)) ||
-       ((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 2)))
-      return 1;
-
-  AntennaGainT = 1;
-  AntennaGainR = 1;
-
-  if (r->AntennaGainTypeT == 0)
-    AntennaGainT = 1;
-  else  if (r->AntennaGainTypeT == 1)
-    {
-        AntennaGainT = SinAntennaGain(OffsetAzi,r->AziBeamWidthT)*
-                            SinAntennaGain(OffsetElev,r->ElevBeamWidthT);
-    }
-  else   if (r->AntennaGainTypeT == 2)
-    {
-              AntennaGainT = dBToFac(Interpolate((r->AntennaTDef).NoP[0],
-                                (r->AntennaTDef).XAxis[0].DataArray,
-                                (r->AntennaTDef).YAxis[0].DataArray,
-                                (r->AntennaTDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaTDef).IntMethod[0]))*
-                             dBToFac(Interpolate((r->AntennaTDef).NoP[1],
-                                (r->AntennaTDef).XAxis[1].DataArray,
-                                (r->AntennaTDef).YAxis[1].DataArray,
-                                (r->AntennaTDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaTDef).IntMethod[1]));
-
-    }
-  if (r->AntennaGainTypeR == 0)
-     AntennaGainR = 1;
-  else   if (r->AntennaGainTypeR == 1)
-    {
-       AntennaGainR = SinAntennaGain(OffsetAzi,r->AziBeamWidthR)*
-                      SinAntennaGain(OffsetElev,r->ElevBeamWidthR);
-    }
-  else   if (r->AntennaGainTypeR == 2)
-    {
-       AntennaGainR = AntennaGainT;
-    }
-  else   if (r->AntennaGainTypeR == 3)
-    {
-              AntennaGainR = dBToFac(Interpolate((r->AntennaRDef).NoP[0],
-                                (r->AntennaRDef).XAxis[0].DataArray,
-                                (r->AntennaRDef).YAxis[0].DataArray,
-                                (r->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaRDef).IntMethod[0]))*
-                             dBToFac(Interpolate((r->AntennaRDef).NoP[1],
-                                (r->AntennaRDef).XAxis[1].DataArray,
-                                (r->AntennaRDef).YAxis[1].DataArray,
-                                (r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
-    }
-
-   return sqrt(AntennaGainR * AntennaGainT);
- }
 //-------------------------------------------------------------------------//
 void ConvertSurfaceToPTs(int UseWhatArray, struct SSurface *s, long SNo,
   long *PTsUsed, long LimitPTs, double Density,
@@ -1699,7 +1620,7 @@ void ConvertSurfaceToPTs(int UseWhatArray, struct SSurface *s, long SNo,
 void CalcGeometry(double **RangeDelay,double **ReturnAmp,double **TargetRadialVel,
 struct SRadar *Radar,double *PulseSendTime, long PulseNo, struct STarget *FirstTarget,
 struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
-double **RadarDir, long FirstPulse)
+double **RadarDir)
 {
   long PNo, TNo, SNo,PFNo,        // loop variables
        PlatformNo, TargetNo, SurfaceNo;  // total number of platforms and targets
@@ -1768,17 +1689,9 @@ double **RadarDir, long FirstPulse)
   // find radar platform
   FindPlatform(Radar->PlatformName, &RadarPF, &RadarPFNo, FirstPlatform);
 
-
-
   // compute return gain factor independent of time
-//  GainFactor = ((LIGHT_SPEED/Radar->StartFreq)*sqrt(Radar->PowerOutput)) /
-//         ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
-
-  // Edited by RTL on 21/03/2004
-  // see also line 2015
-  GainFactor = sqrt(Radar->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
-
-
+  GainFactor = ((LIGHT_SPEED/Radar->StartFreq)*sqrt(Radar->PowerOutput)) /
+         ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
 
 // start surface
   // IMPORTANT - also change ShowSurfaces function in main.cpp if
@@ -2001,35 +1914,14 @@ double **RadarDir, long FirstPulse)
          {
            if (Radar->ApplyAGC)
              {
-
-
-
-//               if (Radar->AGCType == 0)
-//                     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//               else
-// /*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//             }
-//           else
-//                 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
-//                                  (TargetDist * TargetDist);
-
-// Edited by RTL on 21/03/2004
                if (Radar->AGCType == 0)
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS));
+                     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
                else
-/*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                        AntennaGain * sqrt(RCS));
+/*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
              }
            else
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
-
-
-
-
-
-
+                 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
+                                  (TargetDist * TargetDist);
          }
           else
             ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
@@ -2213,9 +2105,9 @@ double FindNyquistRate(struct SRadar *r)
 }
 
 //-------------------------------------------------------------------------//
-// CalcArray2                                  //
+// r                                  //
 //-------------------------------------------------------------------------//
-void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
+void r(struct SRadar *r, struct SSimulation *CurrentSim,
     double **Data, long PulseNo, long DataXSize, double *PulseFreq,
     double **RangeDelay,  double **TargetRadialVel, double **ReturnAmp,
     double *MaxMagnitude, struct STarget *FirstTarget,
@@ -2568,7 +2460,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
                 RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
                 PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP,SurfaceNo,
                  Template, CurrentSim->OverSampleFactor, Pow2SamplePoints,
-                 UsedSamples, FirstSurface,ZeroedSamples,RadarDir);
+                 UsedSamples, FirstSurface,ZeroedSamples);
 
           if (MaxMagOfPulse > *MaxMagnitude)
             *MaxMagnitude = MaxMagOfPulse;
@@ -2628,7 +2520,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
                   RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
                 PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP, SurfaceNo,
                  Template, CurrentSim->OverSampleFactor, Pow2SamplePoints,
-                 UsedSamples, FirstSurface, ZeroedSamples,RadarDir);
+                 UsedSamples, FirstSurface, ZeroedSamples);
           // convert pulse to frequency domain
           CFFT(OnePulse-1,SamplePoints,1);
           // multiply matched filter with return pulse = time convolution
@@ -2741,6 +2633,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   SurfP = DMatrix3(0,SurfaceNo-1,0,PulsesPerSession-1,0,8);
   PulseSendTime = DVector(0,PulsesPerSession-1);
   Data = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
+  RadarDir = DMatrix(0,PulseNo-1,0,1);
 
   // now write the pulses in session for memory reasons (e.g. 0-99,100-199 etc.)
   SavePulseEnd = -1;
@@ -2781,11 +2674,10 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
                            CRadar);
           }
 
-      RadarDir = DMatrix(0,PulseNo-1,0,1);
       // calculate range-delay, return amp etc. for each pulse
       CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar, PulseSendTime,
                   PulseNo, FP->FirstTarget, FP->FirstPlatform,
-                  FP->FirstSurface, SurfP, RadarDir, FirstPulse+SavePulseStart);
+                  FP->FirstSurface, SurfP, RadarDir);
 
       // we do the full number of PTs now (surfaces) - let's indicate that
       // see surfaces for more info
@@ -2793,7 +2685,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
       GlobalUnderSampleSurf = 0;
 
       // Calculate Data array of size (PulseNo x SamplePoints)
-      CalcArray2(CRadar, ThisSim, Data, PulseNo, SamplePoints, PulseFreq,
+      r(CRadar, ThisSim, Data, PulseNo, SamplePoints, PulseFreq,
                  RangeDelay, TargetRadialVel, ReturnAmp, &MaxMagnitudeTemp,
                  FP->FirstTarget, FP->FirstPlatform,
                  FP->FirstSurface, SurfP, RadarDir);
@@ -3070,7 +2962,7 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
          // calculate range-delay, return amp etc. for each pulse
          CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar,
              SinglePulseSendTime, 1, FP->FirstTarget,
-             FP->FirstPlatform, FP->FirstSurface, SurfP, RadarDir, FirstPulse);
+             FP->FirstPlatform, FP->FirstSurface, SurfP,RadarDir);
       Free_DMatrix(RadarDir,0,0);
 
          for (TNo=0;TNo<TargetNo;TNo++)       // for each point target do

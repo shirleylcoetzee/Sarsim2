@@ -2,12 +2,11 @@
 #define Expire_YEAR 2098
 #define Expire_MONTH 12
 #define Expire_DAY 1
-
 // version number
-// #define version "WIN32-280698a\0"
+// #define version "WIN32-231098a\0"
 
-// RTL - new version; corrected returned power value
-#define version "WIN32-280698b\0"
+// RTL - new version; corrected power return
+#define version "WIN32-231098b\0"
 
 // destination (operating system)
 #define COMPILE_FOR_WINDOWS32  // we want to compile it for windows

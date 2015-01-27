@@ -97,6 +97,7 @@ __published:	// IDE-managed Components
   TLabel *Label5;
   TMenuItem *Contents1;
   TMemo *Memo1;
+	TMenuItem *LCoord;
 	void __fastcall FormDestroy(TObject *Sender);
    	void __fastcall NewTargetClick(TObject *Sender);
 	void __fastcall NewPlatformClick(TObject *Sender);
@@ -157,6 +158,9 @@ __published:	// IDE-managed Components
   void __fastcall BAniClick(TObject *Sender);
   void __fastcall BStopClick(TObject *Sender);
   void __fastcall Contents1Click(TObject *Sender);
+	
+	void __fastcall LCoordClick(TObject *Sender);
+	
 private:	// User declarations
         // array of pointers to simulation graph forms
         TSimulationForm **SimuGraphs;
@@ -172,6 +176,7 @@ private:	// User declarations
         void CalcCoordSystemOffset();
         void CalcNewSTimeArray();
         void DrawCoordSystem();
+        void DrawLittleCoordSystem();
         void DrawTargets();
         void DrawSurfaces();
         void DrawRadars();
@@ -190,6 +195,7 @@ private:	// User declarations
         double STime;
 	    // Visual guidelines ...
 	    bool ShowCoordSystemAxes;
+	    bool ShowLittleCoordSystemAxes;
 	    // bool ShowGridLines;
 	    bool ShowElevationLines;
       // Painted or wireframe surfaces

@@ -49,26 +49,26 @@ WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 		Application->Title = "Radar Simulator";
 		Application->HelpFile = "SARSIMHLP.HLP";
      Application->CreateForm(__classid(TMainForm), &MainForm);
-     Application->CreateForm(__classid(TLogoForm), &LogoForm);
-     Application->CreateForm(__classid(TTargetF), &TargetF);
-     Application->CreateForm(__classid(TGraphForm1), &GraphForm1);
-     Application->CreateForm(__classid(TSimulationForm), &SimulationForm);
-     Application->CreateForm(__classid(TPlatformF), &PlatformF);
-     Application->CreateForm(__classid(TRadarF), &RadarF);
-     Application->CreateForm(__classid(TFocusForm), &FocusForm);
-     Application->CreateForm(__classid(TSaveSimForm), &SaveSimForm);
-     Application->CreateForm(__classid(TSaveProgressForm), &SaveProgressForm);
-     Application->CreateForm(__classid(TPreviousSimForm), &PreviousSimForm);
-     Application->CreateForm(__classid(TAboutForm), &AboutForm);
-     Application->CreateForm(__classid(TShowScriptForm), &ShowScriptForm);
-     Application->CreateForm(__classid(TMainViewForm), &MainViewForm);
-     Application->CreateForm(__classid(TFormLoadSimFile), &FormLoadSimFile);
-     Application->CreateForm(__classid(TLoadPalForm), &LoadPalForm);
-     Application->CreateForm(__classid(TSurfaceF), &SurfaceF);
-     Application->CreateForm(__classid(TImportForm), &ImportForm);
-     Application->CreateForm(__classid(TGeoForm), &GeoForm);
-     Application->CreateForm(__classid(TGeoOptForm), &GeoOptForm);
-     Application->Run();
+		Application->CreateForm(__classid(TLogoForm), &LogoForm);
+		Application->CreateForm(__classid(TTargetF), &TargetF);
+		Application->CreateForm(__classid(TGraphForm1), &GraphForm1);
+		Application->CreateForm(__classid(TSimulationForm), &SimulationForm);
+		Application->CreateForm(__classid(TPlatformF), &PlatformF);
+		Application->CreateForm(__classid(TRadarF), &RadarF);
+		Application->CreateForm(__classid(TFocusForm), &FocusForm);
+		Application->CreateForm(__classid(TSaveSimForm), &SaveSimForm);
+		Application->CreateForm(__classid(TSaveProgressForm), &SaveProgressForm);
+		Application->CreateForm(__classid(TPreviousSimForm), &PreviousSimForm);
+		Application->CreateForm(__classid(TAboutForm), &AboutForm);
+		Application->CreateForm(__classid(TShowScriptForm), &ShowScriptForm);
+		Application->CreateForm(__classid(TMainViewForm), &MainViewForm);
+		Application->CreateForm(__classid(TFormLoadSimFile), &FormLoadSimFile);
+		Application->CreateForm(__classid(TLoadPalForm), &LoadPalForm);
+		Application->CreateForm(__classid(TSurfaceF), &SurfaceF);
+		Application->CreateForm(__classid(TImportForm), &ImportForm);
+		Application->CreateForm(__classid(TGeoForm), &GeoForm);
+		Application->CreateForm(__classid(TGeoOptForm), &GeoOptForm);
+		Application->Run();
 	}
 	catch (Exception &exception)
 	{

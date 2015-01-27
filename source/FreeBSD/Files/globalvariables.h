@@ -15,8 +15,8 @@ bool UserAbort;     // TRUE if user wants to abort
 int CalcProgress;   // show progress (0-100%)
 int CalcProgress2;   // Percentage Blocks written ....
 
-// current version number
-//char version[30];
+// for surfaces
+double GlobalUnderSampleSurf = 6;
 
 // barker codes
 int BarkerCode[7][13] = {{1,-1,0,0,0,0,0,0,0,0,0,0,0},
@@ -44,17 +44,28 @@ STarget  DefaultTargetValues =
 	 	   {"",1,NONE,-1,NULL,0,0,0,0}
 	    }
 	  },NULL,NULL};
-    
+
 // setup default values for a point Surface
 SSurface  DefaultSurfaceValues =
-//    { "Earth",{{10000,-3000,0},{10000,3000,0},{12000,0,2000}},   // Pos
-//    { "Earth",{{1,2,0},{3,4,0},{-1,-2,0}},   // Pos
-//    { "Earth",{{-20,30,0},{0,-30,0},{20,30,0}},   // Pos
-//    { "Earth",{{0,-30,0},{-20,30,0},{20,30,0}},   // Pos
-    { "Earth",{{0,-30,0},{-40,30,0},{40,30,0}},   // Pos
-//    { "Earth",{{-50,90,0},{0,-90,0},{50,90,0}},   // Pos
-//    { "Earth",{{-400,800,500},{400,600,700},{500,1000,200}},   // Pos
-	    NULL,NULL};
+    { "Earth",{{1000,10,0},{1000,-10,0},{1000,0,10}},   // Pos
+//    { "Earth",{{1000,10,20},{1000,40,0},{1000,-40,-20}},   // Pos
+  //  { "Earth",{{1000,0,20},{1000,40,0},{1000,-40,-20}},   // Pos
+    //{ "Earth",{{1000,0,10},{1000,10,0},{1000,-10,0}},   // Pos
+      1,1000,0,0,1,1,0,
+      { ID_INLINE,{LINEAR,LINEAR,LINEAR},"",1,
+	    {0,0,0},{0,0,0},{0,0,0},{NULL,NULL,NULL},
+	    { {"Offset Angle (°)",1,DEGREES,-1,NULL,0,180,0,180},
+	      {"",1,NONE,-1,NULL,0,0,0,0},
+	      {"",1,NONE,-1,NULL,0,0,0,0}
+	    },
+	    {  {"Reflectivity (dB)",1,DB,-1,NULL,-30,0,-100,0},
+	       {"",1,NONE,-1,NULL,0,0,0,0},
+	 	   {"",1,NONE,-1,NULL,0,0,0,0}
+	    }
+      },0,1,
+      0,1,1,1,
+	  NULL,NULL
+    };
 
 // setup default values for a platform
 SPlatform DefaultPlatformValues =
@@ -217,7 +228,7 @@ SRadar    DefaultRadarValues = {"Earth","Radar1",0,
 										}, NULL,NULL
 								  };
 struct SSimulation DefaultSimulationValues = {"","sim1.bin",0,0,0,0.01,REAL,8,0,0,BINARY,
-											RAW_RETURN,0,NULL,NULL};
+											RAW_RETURN,0,5,2,NULL,NULL};
 
 struct SGeometry DefaultGeometryValues = {"","geo1.txt",0,100000,0,0.1,0,227,NULL,NULL};
 

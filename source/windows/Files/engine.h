@@ -39,7 +39,9 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 						double **RangeDelay, double **TargetRadialVel,
 						double **ReturnAmp,long PNo, SRadar *r, double PulseCenter,
 						double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
-            long SurfaceNo);
+            long SurfaceNo, double *Template, double OverSampleFactor,
+            long Pow2SamplePoints, long UsedSamples, struct SSurface *FirstSurface,
+            long ZeroedSamples,double **RadarDir);
 void WriteData(FILE *OutFilep, struct SDataDefinition *DataDef);
 //bool LoadDataFile(HWND hwnd, char FileName[],struct SDataDefinition *DataDef);
 Complex MatchFilter(double time, struct SRadar *r);
@@ -55,16 +57,20 @@ bool LoadDataFile(char FileName[],SDataDefinition *DataDef);
 Complex MatchFilter(double time, struct SRadar *r, double BandWidth);
 double SinAntennaGain(double Offset, double BeamWidth);
 double Pulse(struct SRadar *r, double t);
-void CalcGeometry(double **RangeDelay,double **ReturnAmp,double **TargetRadialVel,
-  struct SRadar *Radar,double *PulseSendTime, long PulseNo, struct STarget *FirstTarget,
-  struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP, long FirstPulse);
 double FindNyquistRate(struct SRadar *r);
 long FindPulseForTime(double Time, struct SRadar *R);
 void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
     double **Data, long PulseNo, long DataXSize, double *PulseFreq,
     double **RangeDelay,  double **TargetRadialVel, double **ReturnAmp,
     double *MaxMagnitude, struct STarget *FirstTarget,
-    struct SPlatform *FirstPlatform,struct SSurface *FirstSurface, double ***SurfP);
+    struct SPlatform *FirstPlatform,struct SSurface *FirstSurface, double ***SurfP
+    ,double **RadarDir);
+void CalcGeometry(double **RangeDelay,double **ReturnAmp,double **TargetRadialVel,
+struct SRadar *Radar,double *PulseSendTime, long PulseNo, struct STarget *FirstTarget,
+struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
+double **RadarDir, long FirstPulse);
+
+
 void FindSurfaceNormal(SSurface *s, double *AziAng, double *EleAng);
 bool SendPulse(double time, double PulseWidth, double DelaySlope, double *Phase);
 //int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
@@ -79,9 +85,11 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
 //  struct SRadar *FirstRadar);
 double FindBandwidth(struct SRadar *r);
 void EditDataDef(struct SDataDefinition *DataDef);
-
-
-
+void ConvertSurfaceToPTs(int UseWhatArray,  struct SSurface *s, long SNo, long *PTsUsed,
+  long LimitPTs, double Density, double **CoordPT, long PNo, double ***SurfP,double *NormVecUnit
+  );
+double FindAntennaGainRT(double OffsetAzi, double OffsetElev,
+  struct SRadar *r);
 
 
 #endif

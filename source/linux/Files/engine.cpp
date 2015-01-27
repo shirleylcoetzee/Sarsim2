@@ -25,6 +25,9 @@ extern int CalcProgress;
 extern int BarkerCode[7][13];
 extern int BarkerCodeLength[7];
 
+extern double r_seed;
+
+extern double GlobalUnderSampleSurf;
 //extern char version[30];
 
 /* for autorotation
@@ -79,490 +82,494 @@ void FillMemo(TMemo *ThisMemo)
   ThisMemo->Lines->Add("");
   ThisMemo->Lines->Add("");
 
-		p=MainForm->FirstPlatform;
-		while (p != NULL)
-		  {
-			 sprintf(str,"$PLATFORM  %s", p->Name);
+      p=MainForm->FirstPlatform;
+      while (p != NULL)
+        {
+          sprintf(str,"$PLATFORM  %s", p->Name);
              ThisMemo->Lines->Add(str);
 
-			 if (p->Stat_Traj == 0)
-				{
-				  // stationary target
-				  sprintf(str,"STATIONARY");
+          if (p->Stat_Traj == 0)
+            {
+              // stationary target
+              sprintf(str,"STATIONARY");
           ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) X-Position",p->SPos[0]);
+              sprintf(str,"%-20.6G ! (m) X-Position",p->SPos[0]);
           ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Y-Position",p->SPos[1]);
+              sprintf(str,"%-20.6G ! (m) Y-Position",p->SPos[1]);
           ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Z-Position",p->SPos[2]);
+              sprintf(str,"%-20.6G ! (m) Z-Position",p->SPos[2]);
           ThisMemo->Lines->Add(str);
-				}
-			 else
-				{
-				  // trajectory
-				  sprintf(str,"TRAJECTORY");
+            }
+          else
+            {
+              // trajectory
+              sprintf(str,"TRAJECTORY");
                   ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(p->TrajDef),ThisMemo);
-				  if (p->Align == 1)
-					 sprintf(str,"ALIGNED");
-				  else
-					 sprintf(str,"NOT_ALIGNED");
+              WriteDataDefMemo(&(p->TrajDef),ThisMemo);
+              if (p->Align == 1)
+                sprintf(str,"ALIGNED");
+              else
+                sprintf(str,"NOT_ALIGNED");
                   ThisMemo->Lines->Add(str);
 
-				}
-			 if (p->RotType == 0)
-				{
-				  // fixed rotation angles
-				  sprintf(str,"CONST");
+            }
+          if (p->RotType == 0)
+            {
+              // fixed rotation angles
+              sprintf(str,"CONST");
           ThisMemo->Lines->Add(str);
-			    sprintf(str,"%-20.6G ! (deg) X-axis Rotation (deg)",p->Rot[0]*RadToDeg);
+             sprintf(str,"%-20.6G ! (deg) X-axis Rotation (deg)",p->Rot[0]*RadToDeg);
              ThisMemo->Lines->Add(str);
-			    sprintf(str,"%-20.6G ! (deg) Y-axis Rotation (deg)",p->Rot[1]*RadToDeg);
+             sprintf(str,"%-20.6G ! (deg) Y-axis Rotation (deg)",p->Rot[1]*RadToDeg);
              ThisMemo->Lines->Add(str);
-			    sprintf(str,"%-20.6G ! (deg) Z-axis Rotation (deg)",p->Rot[2]*RadToDeg);
+             sprintf(str,"%-20.6G ! (deg) Z-axis Rotation (deg)",p->Rot[2]*RadToDeg);
              ThisMemo->Lines->Add(str);
-				}
-			 else
-				{
-				  // user-defined rotation angles
-				  sprintf(str,"OTHER");
+            }
+          else
+            {
+              // user-defined rotation angles
+              sprintf(str,"OTHER");
           ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(p->RotDef),ThisMemo);
-				}
+              WriteDataDefMemo(&(p->RotDef),ThisMemo);
+            }
 
-			 sprintf(str,"%-20.6G ! (deg) X-axis Rotation rate (deg/s)",p->RotRate[0]*RadToDeg);
+          sprintf(str,"%-20.6G ! (deg) X-axis Rotation rate (deg/s)",p->RotRate[0]*RadToDeg);
              ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20.6G ! (deg) Y-axis Rotation rate (deg/s)",p->RotRate[1]*RadToDeg);
+          sprintf(str,"%-20.6G ! (deg) Y-axis Rotation rate (deg/s)",p->RotRate[1]*RadToDeg);
              ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20.6G ! (deg) Z-axis Rotation rate (deg/s)",p->RotRate[2]*RadToDeg);
+          sprintf(str,"%-20.6G ! (deg) Z-axis Rotation rate (deg/s)",p->RotRate[2]*RadToDeg);
              ThisMemo->Lines->Add(str);
-			 if (p->MotionErrorPos == 0)
-				{
-				  // use only std dev
-				  sprintf(str,"STDDEV");
-	              ThisMemo->Lines->Add(str);
-   			      sprintf(str,"%-20.6G ! (m) X-Position standard deviation",p->PosDev[0]);
-				  ThisMemo->Lines->Add(str);
-   			      sprintf(str,"%-20.6G ! (m) Y-Position standard deviation",p->PosDev[1]);
-				  ThisMemo->Lines->Add(str);
-   			      sprintf(str,"%-20.6G ! (m) Z-Position standard deviation",p->PosDev[2]);
-				  ThisMemo->Lines->Add(str);
-   			    }
-			 else
-				{
-				  // user defined
-				  sprintf(str,"OTHER                       ! User defined position motion errors");
-		          ThisMemo->Lines->Add(str);
-   			      WriteDataDefMemo(&(p->PosDevDef),ThisMemo);
-				}
-			 if (p->MotionErrorRot == 0)
-				{
-				  // use only std dev
-				  sprintf(str,"STDDEV");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) X-axis Rotation standard deviation",p->RotDev[0]*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Y-axis Rotation standard deviation",p->RotDev[1]*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Z-axis Rotation standard deviation",p->RotDev[2]*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else
-				{
-				  // user defined
-				  sprintf(str,"OTHER                       ! User defined rotation motion errors");
-		          ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(p->RotDevDef),ThisMemo);
-				}
+          if (p->MotionErrorPos == 0)
+            {
+              // use only std dev
+              sprintf(str,"STDDEV");
+                 ThisMemo->Lines->Add(str);
+                  sprintf(str,"%-20.6G ! (m) X-Position standard deviation",p->PosDev[0]);
+              ThisMemo->Lines->Add(str);
+                  sprintf(str,"%-20.6G ! (m) Y-Position standard deviation",p->PosDev[1]);
+              ThisMemo->Lines->Add(str);
+                  sprintf(str,"%-20.6G ! (m) Z-Position standard deviation",p->PosDev[2]);
+              ThisMemo->Lines->Add(str);
+                }
+          else
+            {
+              // user defined
+              sprintf(str,"OTHER                       ! User defined position motion errors");
+                ThisMemo->Lines->Add(str);
+                  WriteDataDefMemo(&(p->PosDevDef),ThisMemo);
+            }
+          if (p->MotionErrorRot == 0)
+            {
+              // use only std dev
+              sprintf(str,"STDDEV");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) X-axis Rotation standard deviation",p->RotDev[0]*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Y-axis Rotation standard deviation",p->RotDev[1]*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Z-axis Rotation standard deviation",p->RotDev[2]*RadToDeg);
+                ThisMemo->Lines->Add(str);
+            }
+          else
+            {
+              // user defined
+              sprintf(str,"OTHER                       ! User defined rotation motion errors");
+                ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(p->RotDevDef),ThisMemo);
+            }
 
                  ThisMemo->Lines->Add("");
-  			 p = p->next;                     // goto next platform
-		  }
+            p = p->next;                     // goto next platform
+        }
 
 
     ThisMemo->Lines->Add("");
-		sur=MainForm->FirstSurface;
-		while (sur != NULL)
-		  {
-			 sprintf(str,"$SURFACE ");
+      sur=MainForm->FirstSurface;
+      while (sur != NULL)
+        {
+          sprintf(str,"$SURFACE ");
        ThisMemo->Lines->Add(str);
-			 sprintf(str,"%s  ! Platform",sur->Name);
+          sprintf(str,"%s  ! Platform",sur->Name);
        ThisMemo->Lines->Add(str);
        for (i=0;i<3;i++)
          {
-			     sprintf(str,"%-.16G, %-.16G, %-.16G  ! Point %d X,Y,Z (m)",
+              sprintf(str,"%-.16G, %-.16G, %-.16G  ! Point %d X,Y,Z (m)",
             sur->Tri[i][0],sur->Tri[i][1],sur->Tri[i][2],i+1);
            ThisMemo->Lines->Add(str);
          }
        ThisMemo->Lines->Add("");
-			 sur = sur->next;
-		  } // end while
+          sur = sur->next;
+        } // end while
 
 
     ThisMemo->Lines->Add("");
- 		t=MainForm->FirstTarget;
-		while (t != NULL)
-		  {
-			 sprintf(str,"$TARGET %s  ! Platform",t->Name);
-	         ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-.16G, %-.16G, %-.16G  ! Position X,Y,Z (m)",
+       t=MainForm->FirstTarget;
+      while (t != NULL)
+        {
+          sprintf(str,"$TARGET %s  ! Platform",t->Name);
+            ThisMemo->Lines->Add(str);
+          sprintf(str,"%-.16G, %-.16G, %-.16G  ! Position X,Y,Z (m)",
                t->Pos[0], t->Pos[1], t->Pos[2]);
-	         ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-.16G, %-.16G, %-.16G  ! Position standard deviation X,Y,Z (m)",
+            ThisMemo->Lines->Add(str);
+          sprintf(str,"%-.16G, %-.16G, %-.16G  ! Position standard deviation X,Y,Z (m)",
                t->PosDev[0], t->PosDev[1], t->PosDev[2]);
-	         ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-.16G, %-.16G  ! Radar cross section (m*m), RCS std. dev. (m*m)", t->RCS, t->RCSdev);
-	         ThisMemo->Lines->Add(str);
-			 if (t->ReflecType == ISOTROPIC)
-				{
-				  // Isotropic point target
-				  sprintf(str,"ISOTROPIC");
-	              ThisMemo->Lines->Add(str);
-				}
-			 else
-				{
-				  // trajectory
-				  sprintf(str,"DIRECTIONAL");
-		          ThisMemo->Lines->Add(str);
-         		  sprintf(str,"%-.16G, %-.16G, %-.16G, %-.16G  ! Azi, Ele, std. dev. of Azi, std. dev. of Ele (deg.)",
+            ThisMemo->Lines->Add(str);
+          sprintf(str,"%-.16G, %-.16G  ! Radar cross section (m*m), RCS std. dev. (m*m)", t->RCS, t->RCSdev);
+            ThisMemo->Lines->Add(str);
+          if (t->ReflecType == ISOTROPIC)
+            {
+              // Isotropic point target
+              sprintf(str,"ISOTROPIC");
+                 ThisMemo->Lines->Add(str);
+            }
+          else
+            {
+              // trajectory
+              sprintf(str,"DIRECTIONAL");
+                ThisMemo->Lines->Add(str);
+                 sprintf(str,"%-.16G, %-.16G, %-.16G, %-.16G  ! Azi, Ele, std. dev. of Azi, std. dev. of Ele (deg.)",
                   t->DirAzi*RadToDeg, t->DirEle*RadToDeg, t->DirAziDev*RadToDeg, t->DirEleDev*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  if (t->GainType == 0) // cos
+                ThisMemo->Lines->Add(str);
+              if (t->GainType == 0) // cos
                     {
-					  sprintf(str,"COS_GAIN");
-       		          ThisMemo->Lines->Add(str);
+                 sprintf(str,"COS_GAIN");
+                       ThisMemo->Lines->Add(str);
                     }
-				  else
-					 {
-						sprintf(str,"OTHER_GAIN");
-					 	ThisMemo->Lines->Add(str);
-	                    WriteDataDefMemo(&(t->DataDef),ThisMemo);
-					 }
-				}
+              else
+                {
+                  sprintf(str,"OTHER_GAIN");
+                   ThisMemo->Lines->Add(str);
+                       WriteDataDefMemo(&(t->DataDef),ThisMemo);
+                }
+            }
 
              ThisMemo->Lines->Add("");
-			 t = t->next;
-		  } // end while
+          t = t->next;
+        } // end while
 
     ThisMemo->Lines->Add("");
-		r=MainForm->FirstRadar;
-		while (r != NULL)
-		  {
-			 sprintf(str,"$RADAR");
+      r=MainForm->FirstRadar;
+      while (r != NULL)
+        {
+          sprintf(str,"$RADAR");
              ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20s ! Name of radar", r->RadarName);
-			 ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20s ! Platform name of radar", r->PlatformName);
-			 ThisMemo->Lines->Add(str);
-			 if (r->PulseType == MONO)
+          sprintf(str,"%-20s ! Name of radar", r->RadarName);
+          ThisMemo->Lines->Add(str);
+          sprintf(str,"%-20s ! Platform name of radar", r->PlatformName);
+          ThisMemo->Lines->Add(str);
+          if (r->PulseType == MONO)
                {
-				 sprintf(str,"MONO");
+             sprintf(str,"MONO");
                  ThisMemo->Lines->Add(str);
                }
-			 else if (r->PulseType == CHIRP)
-				{
-				  sprintf(str,"CHIRP");
-				  ThisMemo->Lines->Add(str);
-			      sprintf(str,"%-20.6G ! (GHz) Chirp bandwidth", r->ChirpBW*1E-9);
-				  ThisMemo->Lines->Add(str);
-				}
-			 else if (r->PulseType == BARKER)
-				{
-				  sprintf(str,"BARKER");
-				  ThisMemo->Lines->Add(str);
-			      sprintf(str,"%-20d ! Barker Code", r->BarkerCode);
-				  ThisMemo->Lines->Add(str);
-				}
-			 else // user defined pulse
-				{
-				  sprintf(str,"%-20s ! User defined pulse","OTHER_PULSE");
-			  	  ThisMemo->Lines->Add(str);
-              	  WriteDataDefMemo(&(r->PulseDef),ThisMemo);
-				}
-			 sprintf(str,"%-20.6G ! (ns)  zero to zero Pulse width", r->PulseWidth*1E9);
-   	  	     ThisMemo->Lines->Add(str);
-			 if (r->Envelope == 0)
+          else if (r->PulseType == CHIRP)
+            {
+              sprintf(str,"CHIRP");
+              ThisMemo->Lines->Add(str);
+               sprintf(str,"%-20.6G ! (GHz) Chirp bandwidth", r->ChirpBW*1E-9);
+              ThisMemo->Lines->Add(str);
+            }
+          else if (r->PulseType == BARKER)
+            {
+              sprintf(str,"BARKER");
+              ThisMemo->Lines->Add(str);
+               sprintf(str,"%-20d ! Barker Code", r->BarkerCode);
+              ThisMemo->Lines->Add(str);
+            }
+          else // user defined pulse
+            {
+              sprintf(str,"%-20s ! User defined pulse","OTHER_PULSE");
+                ThisMemo->Lines->Add(str);
+                   WriteDataDefMemo(&(r->PulseDef),ThisMemo);
+            }
+          sprintf(str,"%-20.6G ! (ns)  zero to zero Pulse width", r->PulseWidth*1E9);
+                ThisMemo->Lines->Add(str);
+          if (r->Envelope == 0)
                {
-			   	  sprintf(str,"%-20s ! Rectangular envelope","RECT");
+                 sprintf(str,"%-20s ! Rectangular envelope","RECT");
                   ThisMemo->Lines->Add(str);
                }
-			 else if (r->Envelope == 1)
-				{
-				  sprintf(str,"%-20s ! Linear ramp envelope","LINEAR");
+          else if (r->Envelope == 1)
+            {
+              sprintf(str,"%-20s ! Linear ramp envelope","LINEAR");
                   ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (ns)  Pulse rise time", r->RiseTime*1E9);
+              sprintf(str,"%-20.6G ! (ns)  Pulse rise time", r->RiseTime*1E9);
                   ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (ns)  Pulse fall time", r->FallTime*1E9);
+              sprintf(str,"%-20.6G ! (ns)  Pulse fall time", r->FallTime*1E9);
                   ThisMemo->Lines->Add(str);
-				}
-			 else // user defined envelope
-				{
-				  sprintf(str,"%-20s ! User defined envelope","OTHER");
-	              ThisMemo->Lines->Add(str);
-   			      WriteDataDefMemo(&(r->EnvelopeDef),ThisMemo);
-				}
-			 if (r->PRFType == 0)  // constant PRI
-				{
-				  sprintf(str,"%-20s ! Constant PRI","CONSTANT");
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (Hz)  Pulse repetition frequency", r->PRF);
-	              ThisMemo->Lines->Add(str);
-				}
-			 else // user defined PRI
-				{
-				  sprintf(str,"%-20s ! User defined PRIs","OTHER");
-	              ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->PRFDef),ThisMemo);
-				}
-			 if (r->FreqType == 0) // single frequency
-				{
-				  sprintf(str,"%-20s ! Constant frequency","SINGLE");
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (GHz)  Center frequency", r->SingleFreq*1E-9);
-	              ThisMemo->Lines->Add(str);
-				}
-			 else if (r->FreqType == 1)   // stepped frequency
-				{
-				  sprintf(str,"%-20s ! Stepped frequency","STEPPED");
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (GHz) Start frequency", r->StartFreq*1E-9);
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (GHz) Frequency step size", r->StepSize*1E-9);
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.0d ! Number of frequency steps", r->FreqSteps);
-	              ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.0d ! Pulses per frequency", r->PulsesPerFreq);
-	              ThisMemo->Lines->Add(str);
-				}
-			 else // user defined frequencies
-				{
-				  sprintf(str,"%-20s ! User defined frequencies","OTHER");
-	              ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->FreqDef),ThisMemo);
-				}
-			 sprintf(str,"%-20.6G ! (kW)  Power output" , r->PowerOutput*1E-3);
+            }
+          else // user defined envelope
+            {
+              sprintf(str,"%-20s ! User defined envelope","OTHER");
+                 ThisMemo->Lines->Add(str);
+                  WriteDataDefMemo(&(r->EnvelopeDef),ThisMemo);
+            }
+          if (r->PRFType == 0)  // constant PRI
+            {
+              sprintf(str,"%-20s ! Constant PRI","CONSTANT");
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (Hz)  Pulse repetition frequency", r->PRF);
+                 ThisMemo->Lines->Add(str);
+            }
+          else // user defined PRI
+            {
+              sprintf(str,"%-20s ! User defined PRIs","OTHER");
+                 ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->PRFDef),ThisMemo);
+            }
+          if (r->FreqType == 0) // single frequency
+            {
+              sprintf(str,"%-20s ! Constant frequency","SINGLE");
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (GHz)  Center frequency", r->SingleFreq*1E-9);
+                 ThisMemo->Lines->Add(str);
+            }
+          else if (r->FreqType == 1)   // stepped frequency
+            {
+              sprintf(str,"%-20s ! Stepped frequency","STEPPED");
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (GHz) Start frequency", r->StartFreq*1E-9);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (GHz) Frequency step size", r->StepSize*1E-9);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.0d ! Number of frequency steps", r->FreqSteps);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.0d ! Pulses per frequency", r->PulsesPerFreq);
+                 ThisMemo->Lines->Add(str);
+            }
+          else // user defined frequencies
+            {
+              sprintf(str,"%-20s ! User defined frequencies","OTHER");
+                 ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->FreqDef),ThisMemo);
+            }
+          sprintf(str,"%-20.6G ! (kW)  Power output" , r->PowerOutput*1E-3);
              ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20.6G ! (dB)  Total system losses", FacTodB(r->Losses));
+          sprintf(str,"%-20.6G ! (dB)  Total system losses", FacTodB(r->Losses));
              ThisMemo->Lines->Add(str);
-			 sprintf(str,"%-20.6G ! (K)   Noise temperature", r->NoiseTemp);
+          sprintf(str,"%-20.6G ! (K)   Noise temperature", r->NoiseTemp);
              ThisMemo->Lines->Add(str);
-			 if (r->AntennaGainTypeT == 0) // Isotropic
-				{
-				  sprintf(str,"%-20s ! Isotropic transmitter antenna","ISOTROPIC");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->AntennaGainTypeT == 1)   // simple (sinx/x)
-				{
-				  sprintf(str,"%-20s ! Simple sin(x)/x transmitter antenna","SINX");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Elevation beam width", r->ElevBeamWidthT*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Azimuth beam width", r->AziBeamWidthT*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else // user defined antenna gain
-				{
-				  sprintf(str,"%-20s ! User defined transmitter antenna","OTHER");
-		          ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->AntennaTDef),ThisMemo);
-				}
-			 if (r->AntennaGainTypeR == 0) // Isotropic
-				{
-				  sprintf(str,"%-20s ! Isotropic receiver antenna","ISOTROPIC");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->AntennaGainTypeR == 1)   // simple (sinx/x)
-				{
-				  sprintf(str,"%-20s ! Simple sin(x)/x receiver antenna","SIN");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Elevation beam width", r->ElevBeamWidthR*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Azimuth beam width", r->AziBeamWidthR*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->AntennaGainTypeR == 2)   // same as transmitter
-				{
-				  sprintf(str,"%-20s ! Same as transmitter antenna","SAME");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else // user defined antenna gain
-				{
-				  sprintf(str,"%-20s ! User defined receiver antenna","OTHER");
-		          ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->AntennaRDef),ThisMemo);
-				}
-			 if (r->BeamDirection == 0) // fixed
-				{
-				  sprintf(str,"%-20s ! Fixed antenna direction","FIXED");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Beam-direction - Elevation", r->ElevationAngleF*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Beam-direction - Azimuth", r->AzimuthAngleF*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->BeamDirection == 1)   // rotating antenna
-				{
-				  sprintf(str,"%-20s ! Rotating antenna","ROTATING");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg) Beam-direction - Elevation", r->ElevationAngleR*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (deg/s) Rotation rate", r->RotationRate*RadToDeg);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->BeamDirection == 2)   // spot mode
-				{
-				  sprintf(str,"%-20s ! Spot mode antenna","SPOT");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Spot X-Position",r->Spot[0]);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Spot Y-Position",r->Spot[1]);
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Spot Z-Position",r->Spot[2]);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else // other direction
-				{
-				  sprintf(str,"%-20s ! User defined direction","OTHER");
-		          ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->DirectionTDef),ThisMemo);
-				}
-			 if (r->MatchedFilterW == 0) // rect
-				{
-				  sprintf(str,"%-20s ! Rectangular MF window","RECT");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->MatchedFilterW == 1)   // hanning
-				{
-				  sprintf(str,"%-20s ! Hanning MF window","HANNING");
-		          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! Hanning constant", r->HanningC);
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->MatchedFilterW == 2)   // bartlett
-				{
-				  sprintf(str,"%-20s ! Bartlett MF window","BARTLETT");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else if (r->MatchedFilterW == 3)   // hamming
-				{
-				  sprintf(str,"%-20s ! Hamming MF window","HAMMING");
-		          ThisMemo->Lines->Add(str);
-				}
-			 else // other
-				{
-				  sprintf(str,"%-20s ! User defined MF window","OTHER");
-		          ThisMemo->Lines->Add(str);
-				  WriteDataDefMemo(&(r->MFDef),ThisMemo);
-				}
+          if (r->AntennaGainTypeT == 0) // Isotropic
+            {
+              sprintf(str,"%-20s ! Isotropic transmitter antenna","ISOTROPIC");
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->AntennaGainTypeT == 1)   // simple (sinx/x)
+            {
+              sprintf(str,"%-20s ! Simple sin(x)/x transmitter antenna","SINX");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Elevation beam width", r->ElevBeamWidthT*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Azimuth beam width", r->AziBeamWidthT*RadToDeg);
+                ThisMemo->Lines->Add(str);
+            }
+          else // user defined antenna gain
+            {
+              sprintf(str,"%-20s ! User defined transmitter antenna","OTHER");
+                ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->AntennaTDef),ThisMemo);
+            }
+          if (r->AntennaGainTypeR == 0) // Isotropic
+            {
+              sprintf(str,"%-20s ! Isotropic receiver antenna","ISOTROPIC");
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->AntennaGainTypeR == 1)   // simple (sinx/x)
+            {
+              sprintf(str,"%-20s ! Simple sin(x)/x receiver antenna","SIN");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Elevation beam width", r->ElevBeamWidthR*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Azimuth beam width", r->AziBeamWidthR*RadToDeg);
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->AntennaGainTypeR == 2)   // same as transmitter
+            {
+              sprintf(str,"%-20s ! Same as transmitter antenna","SAME");
+                ThisMemo->Lines->Add(str);
+            }
+          else // user defined antenna gain
+            {
+              sprintf(str,"%-20s ! User defined receiver antenna","OTHER");
+                ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->AntennaRDef),ThisMemo);
+            }
+          if (r->BeamDirection == 0) // fixed
+            {
+              sprintf(str,"%-20s ! Fixed antenna direction","FIXED");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Beam-direction - Elevation", r->ElevationAngleF*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Beam-direction - Azimuth", r->AzimuthAngleF*RadToDeg);
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->BeamDirection == 1)   // rotating antenna
+            {
+              sprintf(str,"%-20s ! Rotating antenna","ROTATING");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg) Beam-direction - Elevation", r->ElevationAngleR*RadToDeg);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (deg/s) Rotation rate", r->RotationRate*RadToDeg);
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->BeamDirection == 2)   // spot mode
+            {
+              sprintf(str,"%-20s ! Spot mode antenna","SPOT");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Spot X-Position",r->Spot[0]);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Spot Y-Position",r->Spot[1]);
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Spot Z-Position",r->Spot[2]);
+                ThisMemo->Lines->Add(str);
+            }
+          else // other direction
+            {
+              sprintf(str,"%-20s ! User defined direction","OTHER");
+                ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->DirectionTDef),ThisMemo);
+            }
+          if (r->MatchedFilterW == 0) // rect
+            {
+              sprintf(str,"%-20s ! Rectangular MF window","RECT");
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->MatchedFilterW == 1)   // hanning
+            {
+              sprintf(str,"%-20s ! Hanning MF window","HANNING");
+                ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! Hanning constant", r->HanningC);
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->MatchedFilterW == 2)   // bartlett
+            {
+              sprintf(str,"%-20s ! Bartlett MF window","BARTLETT");
+                ThisMemo->Lines->Add(str);
+            }
+          else if (r->MatchedFilterW == 3)   // hamming
+            {
+              sprintf(str,"%-20s ! Hamming MF window","HAMMING");
+                ThisMemo->Lines->Add(str);
+            }
+          else // other
+            {
+              sprintf(str,"%-20s ! User defined MF window","OTHER");
+                ThisMemo->Lines->Add(str);
+              WriteDataDefMemo(&(r->MFDef),ThisMemo);
+            }
 
-			 if (r->ApplyAGC) // sensitivity time control
-				{
-				  sprintf(str,"%-20s ! apply sensitivity time control","APPLY_STC");
-		          ThisMemo->Lines->Add(str);
-				  if (r->AGCType == 0)
+          if (r->ApplyAGC) // sensitivity time control
+            {
+              sprintf(str,"%-20s ! apply sensitivity time control","APPLY_STC");
+                ThisMemo->Lines->Add(str);
+              if (r->AGCType == 0)
                     {
-					   sprintf(str,"%-20s ! multiply by R^4","1OVERR4");
-	     	           ThisMemo->Lines->Add(str);
+                  sprintf(str,"%-20s ! multiply by R^4","1OVERR4");
+                      ThisMemo->Lines->Add(str);
                     }
-				  else
-					{
-					  sprintf(str,"%-20s ! User define STC function","OTHER");
- 	     	          ThisMemo->Lines->Add(str);
-					  WriteDataDefMemo(&(r->AGCDef),ThisMemo);
-					}
-				}
-			 else // no STC
-				{
-				  sprintf(str,"%-20s ! no STC","NO_STC");
-    	          ThisMemo->Lines->Add(str);
-				}
-			     ThisMemo->Lines->Add("");
-			     ThisMemo->Lines->Add("");
+              else
+               {
+                 sprintf(str,"%-20s ! User define STC function","OTHER");
+                      ThisMemo->Lines->Add(str);
+                 WriteDataDefMemo(&(r->AGCDef),ThisMemo);
+               }
+            }
+          else // no STC
+            {
+              sprintf(str,"%-20s ! no STC","NO_STC");
+                 ThisMemo->Lines->Add(str);
+            }
+              ThisMemo->Lines->Add("");
+              ThisMemo->Lines->Add("");
 
-				  r = r->next;
-				} // end while
-			 sim=MainForm->FirstSimulation;
-			 while (sim != NULL)
-				{
-				  sprintf(str,"$SIMULATION");
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20s ! Name of radar", sim->RadarName);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Slant range start", sim->SlantStart);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Slant range end", sim->SlantEnd);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (s) Azimuth range start", sim->AzimuthStart);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (s) Azimuth range end", sim->AzimuthEnd);
-    	          ThisMemo->Lines->Add(str);
+              r = r->next;
+            } // end while
+          sim=MainForm->FirstSimulation;
+          while (sim != NULL)
+            {
+              sprintf(str,"$SIMULATION");
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20s ! Name of radar", sim->RadarName);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Slant range start", sim->SlantStart);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Slant range end", sim->SlantEnd);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (s) Azimuth range start", sim->AzimuthStart);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (s) Azimuth range end", sim->AzimuthEnd);
+                 ThisMemo->Lines->Add(str);
 
-				  sprintf(str,"%-20d ! A/D bit accuracy", sim->A2Dbits);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (GHz) Sample frequency", sim->SampleFreq*1E-9);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.9G ! (mV) Least Significant Bit value", sim->LSBvalue*1E3);
-    	          ThisMemo->Lines->Add(str);
-				  if (sim->FileType == 0) sprintf(s,"ASCII");
-				  else if (sim->FileType == 1) sprintf(s,"BINARY");
-				  else if (sim->FileType == 2) sprintf(s,"BRACKET");
-				  sprintf(str,"%-20s ! Save file format", s);
-    	          ThisMemo->Lines->Add(str);
-				  if (sim->SimTYPE == 0) sprintf(s,"RAW");
-				  else if (sim->SimTYPE == 1) sprintf(s,"MATCHED_FILTER");
-				  else if (sim->SimTYPE == 2) sprintf(s,"SRP");
-				  sprintf(str,"%-20s ! Processing", s);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20s ! File Name of output file", sim->FileName);
-    	          ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20d ! A/D bit accuracy", sim->A2Dbits);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (GHz) Sample frequency", sim->SampleFreq*1E-9);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.9G ! (mV) Least Significant Bit value", sim->LSBvalue*1E3);
+                 ThisMemo->Lines->Add(str);
+              if (sim->FileType == 0) sprintf(s,"ASCII");
+              else if (sim->FileType == 1) sprintf(s,"BINARY");
+              else if (sim->FileType == 2) sprintf(s,"BRACKET");
+              sprintf(str,"%-20s ! Save file format", s);
+                 ThisMemo->Lines->Add(str);
+              if (sim->SimTYPE == 0) sprintf(s,"RAW");
+              else if (sim->SimTYPE == 1) sprintf(s,"MATCHED_FILTER");
+              else if (sim->SimTYPE == 2) sprintf(s,"SRP");
+              sprintf(str,"%-20s ! Processing", s);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20s ! File Name of output file", sim->FileName);
+                 ThisMemo->Lines->Add(str);
 
-				  long PointsAzi, PointsSlant;
-				  FindPixelAziSlant(MainForm->FirstRadar,&PointsAzi, &PointsSlant, sim);
-				  sprintf(str,"%-20s ! Size : %d (Azimuth) x %d (Slant Range) points",
-				  "",PointsAzi,PointsSlant);
-    	          ThisMemo->Lines->Add(str);
-				  if (sim->PTPos == TRUE) sprintf(s,"CENTRE");
-				  else sprintf(s,"BEGIN");
-				  sprintf(str,"%-20s ! Point Target position relative to pulse", s);
-    	          ThisMemo->Lines->Add(str);
-			      ThisMemo->Lines->Add("");
-			      ThisMemo->Lines->Add("");
+              long PointsAzi, PointsSlant;
+              FindPixelAziSlant(MainForm->FirstRadar,&PointsAzi, &PointsSlant, sim);
+              sprintf(str,"%-20s ! Size : %d (Azimuth) x %d (Slant Range) points",
+              "",PointsAzi,PointsSlant);
+                 ThisMemo->Lines->Add(str);
+              if (sim->PTPos == TRUE) sprintf(s,"CENTRE");
+              else sprintf(s,"BEGIN");
+              sprintf(str,"%-20s ! Point Target position relative to pulse", s);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (1-100) Oversampling of pulse (for bandwith limiting)", sim->OverSampleFactor);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (1-100) Pulse width used (1=nominal Pulsewidth)", sim->PWidth);
+                 ThisMemo->Lines->Add(str);
+               ThisMemo->Lines->Add("");
+               ThisMemo->Lines->Add("");
 
-				  sim = sim->next;
-				} // end while
+              sim = sim->next;
+            } // end while
 
-			 geo=MainForm->FirstGeometry;
-			 while (geo != NULL)
-				{
-				  sprintf(str,"$GEOMETRY");
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20s ! Name of radar", geo->RadarName);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Slant range start", geo->SlantStart);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (m) Slant range end", geo->SlantEnd);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (s) Azimuth range start", geo->AzimuthStart);
-    	          ThisMemo->Lines->Add(str);
-				  sprintf(str,"%-20.6G ! (s) Azimuth range end", geo->AzimuthEnd);
-    	          ThisMemo->Lines->Add(str);
+          geo=MainForm->FirstGeometry;
+          while (geo != NULL)
+            {
+              sprintf(str,"$GEOMETRY");
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20s ! Name of radar", geo->RadarName);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Slant range start", geo->SlantStart);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (m) Slant range end", geo->SlantEnd);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (s) Azimuth range start", geo->AzimuthStart);
+                 ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20.6G ! (s) Azimuth range end", geo->AzimuthEnd);
+                 ThisMemo->Lines->Add(str);
 
-				  if (geo->FileType == 0) sprintf(s,"SPACE");
-				  else sprintf(s,"COMMA");
-			//	  sprintf(str,"%-20s ! Separation character", s);
-    		  sprintf(str,"%-20s", s);
-    	          ThisMemo->Lines->Add(str);
+              if (geo->FileType == 0) sprintf(s,"SPACE");
+              else sprintf(s,"COMMA");
+         //     sprintf(str,"%-20s ! Separation character", s);
+            sprintf(str,"%-20s", s);
+                 ThisMemo->Lines->Add(str);
 
-				  sprintf(str,"%-20d ! Info included in file", geo->ShowVar);
-    	          ThisMemo->Lines->Add(str);
+              sprintf(str,"%-20d ! Info included in file", geo->ShowVar);
+                 ThisMemo->Lines->Add(str);
 
-				  sprintf(str,"%-20s ! File Name of output file", geo->FileName);
-    	          ThisMemo->Lines->Add(str);
-		      ThisMemo->Lines->Add("");
-		      ThisMemo->Lines->Add("");
+              sprintf(str,"%-20s ! File Name of output file", geo->FileName);
+                 ThisMemo->Lines->Add(str);
+            ThisMemo->Lines->Add("");
+            ThisMemo->Lines->Add("");
 
-				  geo = geo->next;
-				} // end while
+              geo = geo->next;
+            } // end while
 }
 //---------------------------------------------------------------------------
 void WriteDataDefMemo(struct SDataDefinition *DataDef,TMemo *ThisMemo)
@@ -584,29 +591,29 @@ void WriteDataDefMemo(struct SDataDefinition *DataDef,TMemo *ThisMemo)
       ThisMemo->Lines->Add(str);
     }
   if (DataDef->Source == ID_FILE)
-	 {
-		sprintf(str,"FILE  %s", DataDef->FileName);
+    {
+      sprintf(str,"FILE  %s", DataDef->FileName);
         ThisMemo->Lines->Add(str);
-	 }
+    }
   else if (DataDef->Source == ID_INLINE)
-	 {
-		sprintf(str,"INLINE");
+    {
+      sprintf(str,"INLINE");
         ThisMemo->Lines->Add(str);
-		for (i=0;i<DataDef->DataTypes;i++)
-		  {
-			 sprintf(str,"%d                    ! Number of samples for %s vs %s",
+      for (i=0;i<DataDef->DataTypes;i++)
+        {
+          sprintf(str,"%d                    ! Number of samples for %s vs %s",
                DataDef->NoP[i],DataDef->YAxis[i].Name, DataDef->XAxis[i].Name);
              ThisMemo->Lines->Add(str);
-			 for (j=0;j<DataDef->NoP[i];j++)
-				{
-				  sprintf(str,"%-.15G, %-.15G",DataDef->XAxis[i].DataArray[j],
-						DataDef->YAxis[i].DataArray[j]);
-				  if (j < (DataDef->NoP[i]-1))
-					 strcat(str,"  ");
-		          ThisMemo->Lines->Add(str);
-				}
-		  }
-	 }
+          for (j=0;j<DataDef->NoP[i];j++)
+            {
+              sprintf(str,"%-.15G, %-.15G",DataDef->XAxis[i].DataArray[j],
+                  DataDef->YAxis[i].DataArray[j]);
+              if (j < (DataDef->NoP[i]-1))
+                strcat(str,"  ");
+                ThisMemo->Lines->Add(str);
+            }
+        }
+    }
 }
 //-------------------------------------------------------------------------//
 // DrawAs     -  Draw Data as coloured pixels or lines
@@ -642,7 +649,7 @@ void DrawArray(int DrawAs, Graphics::TBitmap *LGraphBM, class TBitM *BM,
   for (PNo=0;PNo<PulseNo;PNo++)
     {
       for (Sample=0; Sample<SamplePoints; Sample++)
-		    {
+          {
           temp = GetValue(CurrentSim->Display,Data[PNo][2*Sample],Data[PNo][2*Sample+1]);
           if (temp > PMax) PMax = temp;
           if (temp < PMin) PMin = temp;
@@ -674,13 +681,13 @@ void DrawArray(int DrawAs, Graphics::TBitmap *LGraphBM, class TBitM *BM,
 
       for (PNo=0;PNo<PulseNo;PNo++)
         {
-		      // find equivalent screen pixel value in y direction for Time
-		      AziPix = (unsigned long) round( (PulseSendTime[PNo] - CurrentSim->AzimuthStart)*
+            // find equivalent screen pixel value in y direction for Time
+            AziPix = (unsigned long) round( (PulseSendTime[PNo] - CurrentSim->AzimuthStart)*
                           PixPerPulse );
           if ((AziPix >= 0) && (AziPix < (unsigned long)PixelY))
-  		    for (Sample=0; Sample<SamplePoints; Sample++)
-		        {
-  	 		      // Val = actual value at that instance
+            for (Sample=0; Sample<SamplePoints; Sample++)
+              {
+                  // Val = actual value at that instance
               if (!ShowdB) //normal scale
                 Val = (GetValue(CurrentSim->Display,Data[PNo][2*Sample],
                           Data[PNo][2*Sample+1])-PMin)*Scale;
@@ -694,8 +701,8 @@ void DrawArray(int DrawAs, Graphics::TBitmap *LGraphBM, class TBitM *BM,
               BM->pDIBBase[Offset] = ColPal[Val][RED];
               BM->pDIBBase[Offset+1] = ColPal[Val][GREEN];
               BM->pDIBBase[Offset+2] = ColPal[Val][BLUE];
-		        }  // end for sample
-	      }  // end for PNo
+              }  // end for sample
+         }  // end for PNo
     }
   else
     {
@@ -735,8 +742,8 @@ void DrawArray(int DrawAs, Graphics::TBitmap *LGraphBM, class TBitM *BM,
                   LGraphBM->Canvas->Pen->Color = clRed;
                   for (PNo=0;PNo<PulseNo;PNo++)
                     {
-	         	          // find equivalent screen pixel value in y direction for Time
-		                  AziPix = PixelY - 1 - (unsigned long) round( (PulseSendTime[PNo] -
+                         // find equivalent screen pixel value in y direction for Time
+                        AziPix = PixelY - 1 - (unsigned long) round( (PulseSendTime[PNo] -
                           CurrentSim->AzimuthStart)*PixPerPulse );
                       if (!ShowdB) //normal scale
                         D = GetValue(CurrentSim->Display, Data[PNo][CSlant*2],
@@ -776,33 +783,33 @@ void DrawArray(int DrawAs, Graphics::TBitmap *LGraphBM, class TBitM *BM,
              (DYNAMIC_RANGE);
 
           for (PNo=0;PNo<PulseNo;PNo+=PulseStep)
-	          {
-		          // find equivalent screen pixel value in y direction for Time
-		          AziPix = PixelY - 1 - (unsigned long) round( (PulseSendTime[PNo] -
+             {
+                // find equivalent screen pixel value in y direction for Time
+                AziPix = PixelY - 1 - (unsigned long) round( (PulseSendTime[PNo] -
                 CurrentSim->AzimuthStart)*PixPerPulse );
               LGraphBM->Canvas->Pen->Color = clGray;
               LGraphBM->Canvas->MoveTo(0,AziPix);
               LGraphBM->Canvas->LineTo(SamplePoints, AziPix);
               LGraphBM->Canvas->Pen->Color = clRed;
-  		        for (Sample=0; Sample<SamplePoints; Sample++)
-		            {
-  	 		          // D = actual value at that instance
+                for (Sample=0; Sample<SamplePoints; Sample++)
+                  {
+                      // D = actual value at that instance
                   if (!ShowdB) //normal scale
                      D = GetValue(CurrentSim->Display,Data[PNo][2*Sample],
                      Data[PNo][2*Sample+1])*ScaleGraph;
-	                else                // dB Scale
+                   else                // dB Scale
                     {
                       D = FindValuedB(GetValue(CurrentSim->Display,Data[PNo][2*Sample],
                      Data[PNo][2*Sample+1]), PMax)*ScaleGraph;
                     }
 
-			            // don't draw anything for the first time
-			            if (Sample == 0)
-	  		            LGraphBM->Canvas->MoveTo(Sample,AziPix - D);
-			            else
-			 	            LGraphBM->Canvas->LineTo(Sample,AziPix - D);
-		            }  // end for sample
-	          }  // end for PNo
+                     // don't draw anything for the first time
+                     if (Sample == 0)
+                       LGraphBM->Canvas->MoveTo(Sample,AziPix - D);
+                     else
+                         LGraphBM->Canvas->LineTo(Sample,AziPix - D);
+                  }  // end for sample
+             }  // end for PNo
         } // end else if ...
     }
 }
@@ -816,91 +823,91 @@ double FindPulseFreq(long PNo, struct SRadar *R)
 {
   // note that F(PNo=0) = StartF etc. i.e. PNo should start with 0
   if (R->FreqType == 0) // constant
-	 return R->SingleFreq;
+    return R->SingleFreq;
   else if (R->FreqType == 1) // stepped
-	 {
-		// sometimes rounding errors creep in e.g. 7.0000 is internally
-		// stored as 6.99999etc which 'floors' to 6 instead of the wanted 7
+    {
+      // sometimes rounding errors creep in e.g. 7.0000 is internally
+      // stored as 6.99999etc which 'floors' to 6 instead of the wanted 7
        if (PNo < 0)
          {
            // if PNo < 0 the pulse-frequency would decrease with increasing
            // PNo, therefore correct for that
            double temp = fmod((double(PNo)/double(R->FreqSteps*R->PulsesPerFreq)),1);
            if (temp < 0) temp += 1;
-		     return (( R->StartFreq +  floor( temp *
-					 (double)R->FreqSteps + ROUNDERROR ) * R->StepSize
-				  ));
+           return (( R->StartFreq +  floor( temp *
+                (double)R->FreqSteps + ROUNDERROR ) * R->StepSize
+              ));
          }
        else
-		   return (( R->StartFreq +
-			  floor( fmod((double(PNo)/double(R->FreqSteps*R->PulsesPerFreq)),1) *
-					 (double)R->FreqSteps + ROUNDERROR ) * R->StepSize
-				  ));
-	 }
+         return (( R->StartFreq +
+           floor( fmod((double(PNo)/double(R->FreqSteps*R->PulsesPerFreq)),1) *
+                (double)R->FreqSteps + ROUNDERROR ) * R->StepSize
+              ));
+    }
   else // other
-	 {
-		 // if PNo > NoP take the modulus
-		 long ModPNo = (long)fmod(double(PNo),double((R->FreqDef).NoP[0]));
-		 if (ModPNo < 0)
-			return ( (R->FreqDef).YAxis[0].DataArray[ModPNo+(R->FreqDef).NoP[0]]*1E9 );
-		 else
-			return ( (R->FreqDef).YAxis[0].DataArray[ModPNo]*1E9 );
+    {
+       // if PNo > NoP take the modulus
+       long ModPNo = (long)fmod(double(PNo),double((R->FreqDef).NoP[0]));
+       if (ModPNo < 0)
+         return ( (R->FreqDef).YAxis[0].DataArray[ModPNo+(R->FreqDef).NoP[0]]*1E9 );
+       else
+         return ( (R->FreqDef).YAxis[0].DataArray[ModPNo]*1E9 );
 
-	 }
+    }
 }
 //-------------------------------------------------------------------------//
 long FindPulseForTime(double Time, struct SRadar *R)
 {
   if (R->PRFType == 0)
-	 {
-		// constant PRF
-		return((long)ceil(Time * R->PRF));
-	 }
+    {
+      // constant PRF
+      return((long)ceil(Time * R->PRF));
+    }
   else
-	 {
-		long i,Pulse;
-		// user defined PRI
-		double SumPRI=0;  // sum of all defined PRI's
-		// find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
-		for (i=0;i<(R->PRFDef).NoP[0];i++)
-		  SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
-		// estimate what number the first pulse will have
-		Pulse = (long)((floor((Time / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
-		// and now find the exact one
-		while (FindPulseSendTime(Pulse,R) < Time)
-		  Pulse++;
-		return Pulse;
-	 }
+    {
+      long i,Pulse;
+      // user defined PRI
+      double SumPRI=0;  // sum of all defined PRI's
+      // find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
+      for (i=0;i<(R->PRFDef).NoP[0];i++)
+        SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
+      // estimate what number the first pulse will have
+      Pulse = (long)((floor((Time / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
+      // and now find the exact one
+      while (FindPulseSendTime(Pulse,R) < Time)
+        Pulse++;
+      return Pulse;
+    }
 }
 //-------------------------------------------------------------------------//
 void FindPulsesInRange(double TimeStart, double TimeEnd, struct SRadar *R,
-							  long *FirstPulse, long *LastPulse)
+                       long *FirstPulse, long *LastPulse)
 {
   if (R->PRFType == 0)
-	 {
-		// constant PRF
-		*FirstPulse = (long)ceil(TimeStart * R->PRF);
-		*LastPulse = (long)floor(TimeEnd * R->PRF);
-	 }
+    {
+      // constant PRF
+      *FirstPulse = (long)ceil(TimeStart * R->PRF);
+      *LastPulse = (long)floor(TimeEnd * R->PRF);
+    }
   else
-	 {
-		long i;
-		// user defined PRI
-		double SumPRI=0;  // sum of all defined PRI's
-		// find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
-		for (i=0;i<(R->PRFDef).NoP[0];i++)
-		  SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
-		// estimate what number the first pulse will have
-		*FirstPulse = (long)((floor((TimeStart / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
-		// and now find the exact one
-		while (FindPulseSendTime(*FirstPulse,R) < TimeStart)
-		  (*FirstPulse)++;
-		*LastPulse = (long)((floor((TimeEnd / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
-		while (FindPulseSendTime(*LastPulse,R) < TimeEnd)
-		  (*LastPulse)++;
-		// overshot by one, so subtract one again
-		if (*LastPulse > 0) (*LastPulse)--;
-	 }
+    {
+      long i;
+      // user defined PRI
+      double SumPRI=0;  // sum of all defined PRI's
+      // find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
+      for (i=0;i<(R->PRFDef).NoP[0];i++)
+        SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
+      // estimate what number the first pulse will have
+      *FirstPulse = (long)((floor((TimeStart / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
+      // and now find the exact one
+      while (FindPulseSendTime(*FirstPulse,R) < TimeStart)
+        (*FirstPulse)++;
+      *LastPulse = (long)((floor((TimeEnd / SumPRI)+ROUNDERROR)*(R->PRFDef).NoP[0])-1);
+      while (FindPulseSendTime(*LastPulse,R) < TimeEnd)
+        (*LastPulse)++;
+      // overshot by one, so subtract one again
+      if (*LastPulse > 0) (*LastPulse)--;
+    }
 }
 
 //-------------------------------------------------------------------------//
@@ -912,35 +919,35 @@ void FindPulsesInRange(double TimeStart, double TimeEnd, struct SRadar *R,
 double FindPulseSendTime(long PulseNo, struct SRadar *R)
 {
   if (R->PRFType == 0)
-	 {
-		// constant PRF
-		return (double(PulseNo)/R->PRF);
-	 }
+    {
+      // constant PRF
+      return (double(PulseNo)/R->PRF);
+    }
   else
-	 {
-		long i,FracPRINo;
-		double frac, ipart, FracPRI;
-		double SumPRI=0;  // sum of all defined PRI's
-		// find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
-		for (i=0;i<(R->PRFDef).NoP[0];i++)
-		  SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
-		// find out how many complete PRI cycles there are in the given
-		// PulseNo (1 cycle = sum of all defined PRI's)
-		frac = modf(double(PulseNo)/double((R->PRFDef).NoP[0]), &ipart);
-		// calculate the number of remaining PRI's
-		FracPRINo = long(round(frac * double((R->PRFDef).NoP[0])));
-		// if PulseNo <0 goto the next lower integral time (ipart -= 1)
-		// and add positive PRI's from there
-		if (FracPRINo < 0)
-		  {
-			 FracPRINo += (R->PRFDef).NoP[0];
-			 ipart -= 1;
-		  }
-		FracPRI = 0;
-		for (i=0;i<FracPRINo;i++)
-		  FracPRI += (R->PRFDef).YAxis[0].DataArray[i];
-		return (ipart * SumPRI + FracPRI);
-	 }
+    {
+      long i,FracPRINo;
+      double frac, ipart, FracPRI;
+      double SumPRI=0;  // sum of all defined PRI's
+      // find sum of all PRI's defined (i.e. PRI0+PRI1+PRI2 etc.)
+      for (i=0;i<(R->PRFDef).NoP[0];i++)
+        SumPRI += (R->PRFDef).YAxis[0].DataArray[i];
+      // find out how many complete PRI cycles there are in the given
+      // PulseNo (1 cycle = sum of all defined PRI's)
+      frac = modf(double(PulseNo)/double((R->PRFDef).NoP[0]), &ipart);
+      // calculate the number of remaining PRI's
+      FracPRINo = long(round(frac * double((R->PRFDef).NoP[0])));
+      // if PulseNo <0 goto the next lower integral time (ipart -= 1)
+      // and add positive PRI's from there
+      if (FracPRINo < 0)
+        {
+          FracPRINo += (R->PRFDef).NoP[0];
+          ipart -= 1;
+        }
+      FracPRI = 0;
+      for (i=0;i<FracPRINo;i++)
+        FracPRI += (R->PRFDef).YAxis[0].DataArray[i];
+      return (ipart * SumPRI + FracPRI);
+    }
 }
 
 
@@ -956,28 +963,28 @@ void FindPlatformPosition(struct SPlatform *p, double time, double Pos[3])
   int i;
   // case stationary
   if (p->Stat_Traj == 0)
-	 {
-		for (i=0;i<3;i++)
-		  Pos[i] = p->SPos[i];
-	 }
+    {
+      for (i=0;i<3;i++)
+        Pos[i] = p->SPos[i];
+    }
   else
   // case of trajectory
-	 {
-		for (i=0;i<3;i++)
-		  Pos[i] = Interpolate((p->TrajDef).NoP[i], (p->TrajDef).XAxis[i].DataArray,
+    {
+      for (i=0;i<3;i++)
+        Pos[i] = Interpolate((p->TrajDef).NoP[i], (p->TrajDef).XAxis[i].DataArray,
                              (p->TrajDef).YAxis[i].DataArray,
-									  (p->TrajDef).Coeff[i], time,(p->TrajDef).IntMethod[i]);
-	 }
+                             (p->TrajDef).Coeff[i], time,(p->TrajDef).IntMethod[i]);
+    }
   // now add the motion errors
   if (p->MotionErrorPos == 0)
-	 {
-	 	for (i=0;i<3;i++)
-		  Pos[i] +=  Gaussian(0,p->PosDev[i], FALSE);
-	 }
+    {
+       for (i=0;i<3;i++)
+        Pos[i] +=  Gaussian(0,p->PosDev[i], FALSE);
+    }
   else
-	 {
-		//temp - ??
-	 }
+    {
+      //temp - ??
+    }
 }
 
 //-------------------------------------------------------------------------//
@@ -1063,82 +1070,82 @@ void FindPlatformRotation(struct SPlatform *p, double time, double Rot[3])
     {
       // copy rotation angles
       for (i=0;i<3;i++)
-	      Rot[i] = p->Rot[i] + p->RotRate[i]*time;
+         Rot[i] = p->Rot[i] + p->RotRate[i]*time;
     }
   else // user defined rotation angles
     {
       for (i=0;i<3;i++)
-	      Rot[i] = p->RotRate[i]*time + Interpolate((p->RotDef).NoP[i],
-										  (p->RotDef).XAxis[i].DataArray,
-										  (p->RotDef).YAxis[i].DataArray,
-										  (p->RotDef).Coeff[i], time,(p->RotDef).IntMethod[i])*DegToRad;
+         Rot[i] = p->RotRate[i]*time + Interpolate((p->RotDef).NoP[i],
+                                (p->RotDef).XAxis[i].DataArray,
+                                (p->RotDef).YAxis[i].DataArray,
+                                (p->RotDef).Coeff[i], time,(p->RotDef).IntMethod[i])*DegToRad;
     }
 
   // now add the motion errors
   for (i=0;i<3;i++)
     {
-		  Rot[i] +=  Gaussian(0,p->RotDev[i], FALSE);
+        Rot[i] +=  Gaussian(0,p->RotDev[i], FALSE);
     }
 
-//	 Rot[i] += p->RotDev[i] * GaussDist(&SEED);
+//    Rot[i] += p->RotDev[i] * GaussDist(&SEED);
   // should the platform be aligned to the path ?
   if (p->Align == 1)
-	 {
-		double PFVel[3];
-		FindPlatformVelocity(p, time, PFVel);
-		Rot[1] += ElevAngle(PFVel);
-		// subtract 90 deg. because azimuth is defined in respect
-		// to the y-axis
-		Rot[2] += (AziAngle(PFVel)-PIOver2);
-	 }
+    {
+      double PFVel[3];
+      FindPlatformVelocity(p, time, PFVel);
+      Rot[1] += ElevAngle(PFVel);
+      // subtract 90 deg. because azimuth is defined in respect
+      // to the y-axis
+      Rot[2] += (AziAngle(PFVel)-PIOver2);
+    }
 }
 //-------------------------------------------------------------------------//
 void FindAntennaDir(struct SRadar *Radar, double Time, double Pos[3], double Rot[3], double *ADirAzi,
-						  double *ADirEle)
+                    double *ADirEle)
 {
   // find direction into which antenna is pointing
   if (Radar->BeamDirection == DIR_FIX) //fixed
-	 {
-		*ADirAzi = Radar->AzimuthAngleF + Rot[2];// + PI*0.5;
-		*ADirEle = Radar->ElevationAngleF + Rot[1];
-		return;
-	 }
+    {
+      *ADirAzi = Radar->AzimuthAngleF + Rot[2];// + PI*0.5;
+      *ADirEle = Radar->ElevationAngleF + Rot[1];
+      return;
+    }
   else if (Radar->BeamDirection == DIR_CONSTROT) // constant rotation
-	 {
-		*ADirAzi = Radar->RotationRate * Time + Rot[2];
-		*ADirEle = Radar->ElevationAngleR + Rot[1];
-		return;
-	 }
+    {
+      *ADirAzi = Radar->RotationRate * Time + Rot[2];
+      *ADirEle = Radar->ElevationAngleR + Rot[1];
+      return;
+    }
   else if (Radar->BeamDirection == DIR_SPOT) // spot mode
-	 {
-		double RadarToSpotVec[3];
-		int i;
-		// find vector from radar to spot
-		for (i=0;i<3;i++)
-		  RadarToSpotVec[i] = Radar->Spot[i] - Pos[i];
-		*ADirAzi = AziAngle(RadarToSpotVec);
-		*ADirEle = ElevAngle(RadarToSpotVec);
-		return;
-	 }
+    {
+      double RadarToSpotVec[3];
+      int i;
+      // find vector from radar to spot
+      for (i=0;i<3;i++)
+        RadarToSpotVec[i] = Radar->Spot[i] - Pos[i];
+      *ADirAzi = AziAngle(RadarToSpotVec);
+      *ADirEle = ElevAngle(RadarToSpotVec);
+      return;
+    }
   else if (Radar->BeamDirection == DIR_OTHER) // other
-	 {
-		double RadarToSpotVec[3];
-		int i;
-		// find vector from radar to spot at given Time
-		for (i=0;i<3;i++)
-		  RadarToSpotVec[i] = ( Interpolate((Radar->DirectionTDef).NoP[i],
-										  (Radar->DirectionTDef).XAxis[i].DataArray,
-										  (Radar->DirectionTDef).YAxis[i].DataArray,
-										  (Radar->DirectionTDef).Coeff[i], Time,(Radar->DirectionTDef).IntMethod[i])
-									  ) - Pos[i];
-		*ADirAzi = AziAngle(RadarToSpotVec);
-		*ADirEle = ElevAngle(RadarToSpotVec);
-		return;
-	 }
+    {
+      double RadarToSpotVec[3];
+      int i;
+      // find vector from radar to spot at given Time
+      for (i=0;i<3;i++)
+        RadarToSpotVec[i] = ( Interpolate((Radar->DirectionTDef).NoP[i],
+                                (Radar->DirectionTDef).XAxis[i].DataArray,
+                                (Radar->DirectionTDef).YAxis[i].DataArray,
+                                (Radar->DirectionTDef).Coeff[i], Time,(Radar->DirectionTDef).IntMethod[i])
+                             ) - Pos[i];
+      *ADirAzi = AziAngle(RadarToSpotVec);
+      *ADirEle = ElevAngle(RadarToSpotVec);
+      return;
+    }
 }
 //-------------------------------------------------------------------------//
 void FindPixelAziSlant(struct SRadar *FirstRadar, long *PointsAzi, long *PointsSlant,
-							  struct SSimulation *sim)
+                       struct SSimulation *sim)
 {
   // FastTime(seconds) = slant range in time
   double FastTimeStart = sim->SlantStart / LIGHT_SPEED;
@@ -1151,24 +1158,22 @@ void FindPixelAziSlant(struct SRadar *FirstRadar, long *PointsAzi, long *PointsS
   if (!FindRadar(sim->RadarName, &R, &PFN, FirstRadar))
     { return; } //temp
   FindPulsesInRange(sim->AzimuthStart, sim->AzimuthEnd,R,
-	 &FirstPulse,&LastPulse);
+    &FirstPulse,&LastPulse);
   *PointsAzi = (LastPulse - FirstPulse) + 1;
   if (*PointsAzi <= 0) *PointsAzi = long(1);
 }
-//int kw=0;
 //-------------------------------------------------------------------------//
 void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
-						double SecPerSample,long TargetNo, double *PulseFreq,
-						double **RangeDelay, double **TargetRadialVel,
-						double **ReturnAmp,long PNo, SRadar *r, double PulseCenter,
-						double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
-            long SurfaceNo )
+                  double SecPerSample,long TargetNo, double *PulseFreq,
+                  double **RangeDelay, double **TargetRadialVel,
+                  double **ReturnAmp,long PNo, SRadar *r, double PulseCenter,
+                  double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
+            long SurfaceNo, double *Template, double OverSampleFactor,
+            long Pow2SamplePoints, long UsedSamples, struct SSurface *FirstSurface,
+            long ZeroedSamples,double **RadarDir)
 {
-  long CurrentSample,i, TNo;
-  double t, time,RangeInTime,temp0,temp3,phase;
+  long i, TNo;
   double RootOfNoisePower,Amp;
-  double Cycle;
-
 
   ***SurfP = ***SurfP;
   SurfaceNo = SurfaceNo; // avoid warnings
@@ -1179,20 +1184,45 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
   long SNo,j;
   double RangeTime, PulseTime;
   long PulseSample;
+  #endif
+
+  long PulseInsertStart,CSample,RealSample;
+  double AddPhase,SinCalc, CosCalc;
+  double *SurfRangeDelay;
+  long j;
+  long SNo, CPT, TotalPTs;
+  long PTsUsed, LimitPTs;
+  double Density, TriArea, **CoordPT;
+  double L10[3], L20[3], NormVec[3], temp[3][3],T;
+  struct SSurface *s;                 // general pointer to Surface
+  double RCS;
+ // double ZeroedSamples;
+  double GainFactor;
+  double NormVecUnit[3];
+  double NormVecRCS[3];
+  double Angle,tem;
+  double AntennaDirAzi, AntennaDirElev, TRayAzi, TRayElev, OffsetAzi, OffsetElev;
+  double AntennaGain;
+
+
+
   // compute return gain factor independent of time
-
-
-
-
 //  GainFactor = ((LIGHT_SPEED/r->StartFreq)*sqrt(r->PowerOutput)) /
-//			((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
+//         ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
-// Edited by RTL, 21/03/2004
-// See also line 1242
+
+  // Edited by RTL on 21/03/2004
+  // see also line 1446
   GainFactor = sqrt(r->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
 
-#endif
+
+
+  // samples which are set to 0 and do not to be added
+//  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
+ //      CurrentSim->PWidth))*double(0.5);
+  if (ZeroedSamples < 0) ZeroedSamples = 0;
+  if (ZeroedSamples >= UsedSamples) ZeroedSamples = UsedSamples;
 
 
   // calculate noise amplitude
@@ -1204,157 +1234,462 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
     RootOfNoisePower = 0;
   else  RootOfNoisePower = 0;
 
-      *MaxMagOfPulse = 0;
-		CurrentSample=0;
-		// set array to zero
-		for (i=0;i<SamplePoints*2;i++)
-		  OnePulse[i] = 0;
+  *MaxMagOfPulse = 0;
+      // set array to zero
+      for (i=0;i<SamplePoints*2;i++)
+        OnePulse[i] = 0;
 
-  // for every sampling instance t
-  // (note it is necessary to go back 1/2 a pulsewidth in time)
-		for (t=SlantStartTime;CurrentSample<SamplePoints;t+=SecPerSample)
-		  {
+  // for all targets
+  for (TNo=0;TNo<TargetNo;TNo++)
+    {
+      AddPhase = fmod(TwoPi * (   // phase shift due to range
+                             -(PulseFreq[PNo]*RangeDelay[TNo][PNo])  ),TwoPi);
+      SinCalc = sin(AddPhase);
+      CosCalc = cos(AddPhase);
 
-#ifdef WITH_SURFACE_ALGORITHM
-// added for surfaces -start
-       RangeInM = t*LIGHT_SPEED;
-       deltaRangeInM = SecPerSample*LIGHT_SPEED;
-			 // for all surfaces
-			 for (SNo=0;SNo<SurfaceNo;SNo++)
-				{
-          for (j=0;j<3;j++)  // for all 3 coords
-              CP[j] = 0;
-          for (i=0;i<3;i++)    // for all 3 points on the triangle
-            for (j=0;j<3;j++)  // for all 3 coords
-              {
-                Tri[i][j] = SurfP[SNo][PNo][i*3+j];
-                CP[j] += Tri[i][j]; // find center
-              }
-          DistToC = (FindMag(CP)/double(3)) / LIGHT_SPEED;
-          Area = IntersectRadius(RangeInM,deltaRangeInM,Tri);
-          if (RangeInM > 0)
+      PulseInsertStart = round((double(0.5)*(RangeDelay[TNo][PNo]+
+        double(0.5)*r->PulseWidth - PulseCenter) - SlantStartTime)
+        /SecPerSample - double(UsedSamples)*double(0.5))
+        ;
+
+      for (CSample=ZeroedSamples;CSample<UsedSamples-ZeroedSamples;CSample++)   //
+        {
+          RealSample = CSample + PulseInsertStart;
+          if ((RealSample >= 0) && (RealSample < SamplePoints))
+            {
+              Amp = ReturnAmp[TNo][PNo];
+              OnePulse[RealSample*2] += Amp*
+                ((Template[CSample*2]*CosCalc)-((Template[CSample*2+1]*SinCalc)));
+              OnePulse[RealSample*2+1] += Amp*
+                ((Template[CSample*2+1]*CosCalc)+((Template[CSample*2]*SinCalc)));
+            }
+
+        }
+    } // end for all targets
+
+  // for all surfaces
+  for (SNo=0;SNo<SurfaceNo;SNo++)
+    {
+      // find pointer to Surface and corresponding platform
+      s = PointToSurface(FirstSurface, SNo+1);
+
+      if (GlobalUnderSampleSurf == 0)  // this is only true if we write to disk
+      // sort of indicator - use all PTs
+        {
+          Density = s->PTDensity;
+        }
+      else
+        {
+          if (s->GlobalUnderSample == 1)
+            Density = s->PTDensity / GlobalUnderSampleSurf;
+          else
+            Density = s->PTDensity / s->USampleFactor;
+        }
+      for (CPT=0;CPT<3;CPT++) // for all 3 points on the triangle
+        for (j=0;j<3;j++)  // for all 3 coords
+          temp[CPT][j] = SurfP[SNo][PNo][CPT*3+j];   // temp[0-2] = actual triangle points
+      SubtractVec(temp[1], temp[0], L10);
+      SubtractVec(temp[2], temp[0], L20);
+      // calculate unnormalized normal vector (perp vec)
+      CrossP(L10, L20, NormVec);               // normal vector
+      TriArea = FindMag(NormVec)*0.5;
+      LimitPTs = ceil(TriArea*Density*1.1+100);
+      CoordPT = DMatrix(0,LimitPTs-1,0,2);
+
+      ConvertSurfaceToPTs(USE_SURFP_ARRAY,s,SNo, &PTsUsed, LimitPTs,
+        Density, CoordPT, PNo, SurfP,NormVecUnit);
+      TotalPTs = PTsUsed;
+
+      if (s->RCSSeed != 0)
+        {
+           r_seed = s->RCSSeed;
+           T = Gaussian(0,1, true);  //
+        }
+
+      RCS = s->RCSmult/(s->PTDensity*PTsUsed) + Gaussian(0,s->RCSdev*0.01, FALSE);
+      if (RCS < 0)  RCS=0;
+      SurfRangeDelay = DVector(0,PTsUsed-1);
+
+      for (CPT=0;CPT<TotalPTs;CPT++) // for all 3 points on the triangle
+        {
+          SurfRangeDelay[CPT] = FindMag(CoordPT[CPT]) * TwoOverLight;
+        }
+
+      for (CPT=0;CPT<TotalPTs;CPT++)
+        {
+          if (((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 0)) ||
+             ((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 2)))
+            AntennaGain = 1;
+          else
+            {
+          AntennaDirAzi=RadarDir[PNo][0];
+          AntennaDirElev=RadarDir[PNo][1];
+          TRayAzi = AziAngle(CoordPT[CPT]);
+          TRayElev = ElevAngle(CoordPT[CPT]);
+          OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
+          OffsetElev = fabs(AntennaDirElev - TRayElev);
+
+          AntennaGain = FindAntennaGainRT(OffsetAzi, OffsetElev, r);
+/*
+          AntennaGainT = 1;
+          AntennaGainR = 1;
+
+          if (r->AntennaGainTypeT == 0)
+            {
+              AntennaGainT = 1;
+            }
+          else   if (r->AntennaGainTypeT == 1)
+            {
+              AntennaGainT = SinAntennaGain(OffsetAzi,r->AziBeamWidthT)*
+                            SinAntennaGain(OffsetElev,r->ElevBeamWidthT);
+            }
+          else   if (r->AntennaGainTypeT == 2)
+            {
+              AntennaGainT = dBToFac(Interpolate((r->AntennaTDef).NoP[0],
+                                (r->AntennaTDef).XAxis[0].DataArray,
+                                (r->AntennaTDef).YAxis[0].DataArray,
+                                (r->AntennaTDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaTDef).IntMethod[0]))*
+                             dBToFac(Interpolate((r->AntennaTDef).NoP[1],
+                                (r->AntennaTDef).XAxis[1].DataArray,
+                                (r->AntennaTDef).YAxis[1].DataArray,
+                                (r->AntennaTDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaTDef).IntMethod[1]));
+
+            }
+          if (r->AntennaGainTypeR == 0)
+            {
+              AntennaGainR = 1;
+            }
+          else   if (r->AntennaGainTypeR == 1)
+            {
+              AntennaGainR = SinAntennaGain(OffsetAzi,r->AziBeamWidthR)*
+                            SinAntennaGain(OffsetElev,r->ElevBeamWidthR);
+            }
+          else   if (r->AntennaGainTypeR == 2)
+            {
+              AntennaGainR = AntennaGainT;
+            }
+          else   if (r->AntennaGainTypeR == 3)
+            {
+              AntennaGainR = dBToFac(Interpolate((r->AntennaRDef).NoP[0],
+                                (r->AntennaRDef).XAxis[0].DataArray,
+                                (r->AntennaRDef).YAxis[0].DataArray,
+                                (r->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaRDef).IntMethod[0]))*
+                             dBToFac(Interpolate((r->AntennaRDef).NoP[1],
+                                (r->AntennaRDef).XAxis[1].DataArray,
+                                (r->AntennaRDef).YAxis[1].DataArray,
+                                (r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
+            }
+
+          AntennaGain = sqrt(AntennaGainR * AntennaGainT);
+  */
+
+          }
+
+
+          CrossP(NormVecUnit, CoordPT[CPT], NormVecRCS);
+          tem = DotProduct(NormVecUnit, CoordPT[CPT], 3);
+          // calculate angle between normal vector and the vector
+          // from the radar to the target
+          // (cos a= b1*b2/(mag(b1)*mag(b2)))
+          // 0 = head an, PI/2 = sideways, PI = from behind
+          Angle = fabs(PI - acos(tem/(SurfRangeDelay[CPT]/TwoOverLight)));
+//          Angle *= RadToDeg;
+
+          if (s->Reflec == 0)
+            {
+              if (s->BothSidesReflect == 0)
+                {
+                  if (Angle > PI*0.5)
+                    RCS = 0;
+                }
+            }
+          else if (s->Reflec == 1) // directional, not isotrpic
+            {
+              if (s->Gain == 0)  // cos
+                {
+                   RCS = cos(Angle) * RCS;
+
+                   if (s->BothSidesReflect == 0)
+                     {
+                       // don't reflect on the backface
+                       if (RCS < 0) RCS = 0;
+                     }
+                   else
+                     RCS = fabs(RCS);
+                }
+              else if (s->Gain == 1)  // other
+                {
+                  RCS *= dBToFac(Interpolate((s->GainDataDef).NoP[0],
+                            (s->GainDataDef).XAxis[0].DataArray,
+                            (s->GainDataDef).YAxis[0].DataArray,
+                            (s->GainDataDef).Coeff[0], Angle*RadToDeg,
+                            (s->GainDataDef).IntMethod[0]));
+                }
+           }
+
+
+          AddPhase = fmod(TwoPi * (   // phase shift due to range
+                             -(PulseFreq[PNo]*SurfRangeDelay[CPT])  ),TwoPi);
+          SinCalc = sin(AddPhase);
+          CosCalc = cos(AddPhase);
+
+          PulseInsertStart = round((double(0.5)*(SurfRangeDelay[CPT]+
+            double(0.5)*r->PulseWidth - PulseCenter) - SlantStartTime)
+            /SecPerSample - double(UsedSamples)*double(0.5));
 
 
 
-
-//            RetAmp=(GainFactor*sqrt(Area))/(RangeInM*RangeInM);
+//          Amp = (GainFactor * AntennaGain *
+//              TwoOverLight * TwoOverLight *
+//              sqrt(RCS)) / (SurfRangeDelay[CPT] * SurfRangeDelay[CPT]);
 
 // Edited by RTL, 21/03/2004
-            RetAmp=(GainFactor * (LIGHT_SPEED/PulseFreq[PNo]) *
-                    sqrt(Area))/(RangeInM*RangeInM);
+          Amp = (GainFactor * (LIGHT_SPEED/PulseFreq[PNo]) * AntennaGain *
+              TwoOverLight * TwoOverLight *
+              sqrt(RCS)) / (SurfRangeDelay[CPT] * SurfRangeDelay[CPT]);
 
 
 
-          else
-            RetAmp = 0;
-
-          if ((RetAmp > 0))// && (kw==0))// && (PNo ==1))
+    //      for (CSample=0;CSample<UsedSamples;CSample++)
+          for (CSample=ZeroedSamples;CSample<UsedSamples-ZeroedSamples;CSample++)   //
             {
-  //            kw = 1;
-              for (RangeTime=t-double(0.5)*PulseCenter;
-                    (RangeTime<(t+r->PulseWidth*0.5-double(0.5)*PulseCenter));
-                    RangeTime+=SecPerSample)
+              RealSample = CSample + PulseInsertStart;
+              if ((RealSample >= 0) && (RealSample < SamplePoints))
                 {
-                  PulseTime = RangeTime-t+double(0.5)*PulseCenter;
-                  PulseSample = round((RangeTime-SlantStartTime)/SecPerSample);
-                  if ((PulseSample >= 0) && (PulseSample <SamplePoints))
-                  {
-                  if (SendPulse(PulseTime*2, r->PulseWidth, DelaySlope, &PPhase))
-                    {
-                      PPhase = TwoPi*(PPhase-PulseFreq[PNo]*2*(DistToC+(t-SlantStartTime)));
-					  OnePulse[PulseSample*2] += RetAmp*cos(fmod(PPhase,TwoPi));
-					  OnePulse[PulseSample*2+1] += RetAmp*sin(fmod(PPhase,TwoPi));
-                    }
-                  }
-                }
-           }  // end - if there is return
-
-        } // end for all surfaces do
-// added for surfaces - end
-#endif
-
-			 // for all targets
-			 for (TNo=0;TNo<TargetNo;TNo++)
-				{
-              // distance to target in time (not returndelay which would be twice that)
-				  RangeInTime = double(0.5)*RangeDelay[TNo][PNo]; // distance to target in time (s)
-			  	  temp0 = t-RangeInTime + double(0.5)*PulseCenter;
-				  if ((temp0 > 0) && (temp0 < r->PulseWidth*0.5))
-					 {
-						if ((r->PulseType == MONO) || (r->PulseType == BARKER)) //mono
-						  {
-							 time = 2*(t - RangeInTime) - (r->PulseWidth*0.5) + PulseCenter;
-							 phase = ( TwoPi* ( -(PulseFreq[PNo]*2*RangeInTime)-
-							  ( TwoOverLight*TargetRadialVel[TNo][PNo]*
-								  (PulseFreq[PNo]*time) ) ));
-
-               if (r->PulseType == BARKER)
-                 {
-                   Cycle = fmod(floor((temp0*2 / r->PulseWidth)*
-                     BarkerCodeLength[r->BarkerCode]),
-                     BarkerCodeLength[r->BarkerCode]);
-                   if (BarkerCode[r->BarkerCode][(int)Cycle] < 0)
-                     phase += PI;
+                  OnePulse[RealSample*2] += Amp*
+                    ((Template[CSample*2]*CosCalc)-((Template[CSample*2+1]*SinCalc)));
+                  OnePulse[RealSample*2+1] += Amp*
+                    ((Template[CSample*2+1]*CosCalc)+((Template[CSample*2]*SinCalc)));
                  }
-							 Amp = ReturnAmp[TNo][PNo]*Pulse(r,temp0*2);
- 							 OnePulse[CurrentSample*2] += Amp*cos(fmod(phase,TwoPi));
-							 OnePulse[CurrentSample*2+1] += Amp*sin(fmod(phase,TwoPi));
-						  }
-						else if (r->PulseType == CHIRP) // chirp
-						  {
-							 time = 2*(t - RangeInTime) - (r->PulseWidth*0.5) + PulseCenter;
-							 temp3 = DelaySlope*time*time*0.5;
 
-							 phase =  TwoPi* ( temp3-(PulseFreq[PNo]*2*RangeInTime)-
-							  ( TwoOverLight*TargetRadialVel[TNo][PNo]*
-								  (PulseFreq[PNo]*time+temp3) ) );
-                     // no doppler
-                     // phase = TwoPi* (temp3-PulseFreq[PNo]*2*RangeInTime);
-
-							 Amp = ReturnAmp[TNo][PNo]*Pulse(r,temp0*2);
-							 OnePulse[CurrentSample*2] += Amp*cos(fmod(phase,TwoPi));
-							 OnePulse[CurrentSample*2+1] += Amp*sin(fmod(phase,TwoPi));
-						  }
-						else if (r->PulseType == OTHER_PULSE) // user defined
-						  {
-							 OnePulse[CurrentSample*2] += Interpolate(  (r->PulseDef).NoP[0],
-											 (r->PulseDef).XAxis[0].DataArray,
-											 (r->PulseDef).YAxis[0].DataArray,
-											 (r->PulseDef).Coeff[0], temp0/r->PulseWidth,(r->PulseDef).IntMethod[0])*Pulse(r,temp0*2);
-							 OnePulse[CurrentSample*2+1] += Interpolate(  (r->PulseDef).NoP[1],
-											 (r->PulseDef).XAxis[1].DataArray,
-										 	 (r->PulseDef).YAxis[1].DataArray,
-											 (r->PulseDef).Coeff[1], temp0/r->PulseWidth,(r->PulseDef).IntMethod[1])*Pulse(r,temp0*2);
-						  }
-						else    // error
-						  {
-							 OnePulse[CurrentSample*2] = 0;
-							 OnePulse[CurrentSample*2+1] = 0;
-						  }
-					 }
-				} // end for all targets
-          // if the amplitude of this sample is bigger than the current
-          // maximum, replace the current maximum, note the SQRT will be
-          // done at the end
-
-          // add noise
-          if (RootOfNoisePower != 0)
-            {
-              OnePulse[CurrentSample*2] += Gaussian(0,RootOfNoisePower,false);
-              OnePulse[CurrentSample*2+1] += Gaussian(0,RootOfNoisePower,false);
             }
-          Amp = OnePulse[CurrentSample*2] * OnePulse[CurrentSample*2] +
-                OnePulse[CurrentSample*2+1] * OnePulse[CurrentSample*2+1];
-          if (Amp > *MaxMagOfPulse)
-            *MaxMagOfPulse = Amp;
+        } // end for all surface PTs
+      Free_DMatrix(CoordPT,0,0);
+      Free_DVector(SurfRangeDelay,0);
+  }  // end for all surf
 
-			 CurrentSample++;
-		  } // end for t= Slant
-      *MaxMagOfPulse = sqrt(*MaxMagOfPulse);
-    //  kw = 0;
-
+  for (CSample=0;CSample<SamplePoints;CSample++)
+    {
+      // add noise
+      if (RootOfNoisePower != 0)
+        {
+          OnePulse[CSample*2] += Gaussian(0,RootOfNoisePower,false);
+          OnePulse[CSample*2+1] += Gaussian(0,RootOfNoisePower,false);
+        }
+      Amp = OnePulse[CSample*2] * OnePulse[CSample*2] +
+            OnePulse[CSample*2+1] * OnePulse[CSample*2+1];
+      if (Amp > *MaxMagOfPulse)
+        *MaxMagOfPulse = Amp;
+    }
+  *MaxMagOfPulse = sqrt(*MaxMagOfPulse);
 }
+//-------------------------------------------------------------------------//
+double FindAntennaGainRT(double OffsetAzi, double OffsetElev,
+  struct SRadar *r)
+{
+  double  AntennaGainT,AntennaGainR;
+  if (OffsetAzi >= 2*PI) OffsetAzi -= 2*PI;
+  if (OffsetAzi < -2*PI) OffsetAzi += 2*PI;
+  if (OffsetElev >= 2*PI) OffsetElev -= 2*PI;
+  if (OffsetElev < -2*PI) OffsetElev += 2*PI;
 
+  if (((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 0)) ||
+       ((r->AntennaGainTypeT == 0) && (r->AntennaGainTypeR == 2)))
+      return 1;
+
+  AntennaGainT = 1;
+  AntennaGainR = 1;
+
+  if (r->AntennaGainTypeT == 0)
+    AntennaGainT = 1;
+  else  if (r->AntennaGainTypeT == 1)
+    {
+        AntennaGainT = SinAntennaGain(OffsetAzi,r->AziBeamWidthT)*
+                            SinAntennaGain(OffsetElev,r->ElevBeamWidthT);
+    }
+  else   if (r->AntennaGainTypeT == 2)
+    {
+              AntennaGainT = dBToFac(Interpolate((r->AntennaTDef).NoP[0],
+                                (r->AntennaTDef).XAxis[0].DataArray,
+                                (r->AntennaTDef).YAxis[0].DataArray,
+                                (r->AntennaTDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaTDef).IntMethod[0]))*
+                             dBToFac(Interpolate((r->AntennaTDef).NoP[1],
+                                (r->AntennaTDef).XAxis[1].DataArray,
+                                (r->AntennaTDef).YAxis[1].DataArray,
+                                (r->AntennaTDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaTDef).IntMethod[1]));
+
+    }
+  if (r->AntennaGainTypeR == 0)
+     AntennaGainR = 1;
+  else   if (r->AntennaGainTypeR == 1)
+    {
+       AntennaGainR = SinAntennaGain(OffsetAzi,r->AziBeamWidthR)*
+                      SinAntennaGain(OffsetElev,r->ElevBeamWidthR);
+    }
+  else   if (r->AntennaGainTypeR == 2)
+    {
+       AntennaGainR = AntennaGainT;
+    }
+  else   if (r->AntennaGainTypeR == 3)
+    {
+              AntennaGainR = dBToFac(Interpolate((r->AntennaRDef).NoP[0],
+                                (r->AntennaRDef).XAxis[0].DataArray,
+                                (r->AntennaRDef).YAxis[0].DataArray,
+                                (r->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaRDef).IntMethod[0]))*
+                             dBToFac(Interpolate((r->AntennaRDef).NoP[1],
+                                (r->AntennaRDef).XAxis[1].DataArray,
+                                (r->AntennaRDef).YAxis[1].DataArray,
+                                (r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
+    }
+
+   return sqrt(AntennaGainR * AntennaGainT);
+ }
+//-------------------------------------------------------------------------//
+void ConvertSurfaceToPTs(int UseWhatArray, struct SSurface *s, long SNo,
+  long *PTsUsed, long LimitPTs, double Density,
+  double **CoordPT, long PNo, double ***SurfP,double *NormVecUnit)
+{
+  // new
+  long row;
+  double Dist;
+  double L0, L1, L2, L10[3], L20[3], L21[3],temp[3][3];
+  double L10Unit[3],L20Unit[3],L21Unit[3];
+  double NormVec[3], TriHeight;
+  double PTemp[3],P0[3], PNext[3],PNext2[3],DeltaRow, Offset, Rows, Vs, RowLength;
+  double RowLengthUsed,PTemp1[3],PTemp2[3],PTemp3[3],PTemp4[3],PTemp5[3],PTemp6[3],PTemp7[3],Perp[3];
+  long TotalPTs, CPT;
+  double OffsetAdd,Angle;
+  long j;
+
+  if (s->PosSeed != 0)
+    {
+       r_seed = s->PosSeed;
+       Vs = Gaussian(0,1, true);  //
+    }
+
+  TotalPTs = 0;
+      Dist = 1/sqrt(Density * sin(60*PI/double(180)));  // distance between 2 PTs
+      DeltaRow = Dist * sin(60*PI/double(180)); // distance between 2 rows of PTs
+      Offset = 0;//.5 * DeltaRow; // Offset of first row of PTs from Tri edge
+      // calculate vector from each corner to any other corner
+      for (CPT=0;CPT<3;CPT++) // for all 3 points on the triangle
+        for (j=0;j<3;j++)  // for all 3 coords
+          {
+            if (UseWhatArray == USE_SURFP_ARRAY)
+               temp[CPT][j] = SurfP[SNo][PNo][CPT*3+j];   // temp[0-2] = actual triangle points
+            else if (UseWhatArray == USE_TRI_ARRAY)
+               temp[CPT][j] = s->Tri[CPT][j];    // temp[0-2] = actual triangle points
+          }
+      SubtractVec(temp[1], temp[0], L10);
+      SubtractVec(temp[2], temp[0], L20);
+      SubtractVec(temp[2], temp[1], L21);  //Lab[xyz] = vector from b to a
+      // calculate length of each side
+      L0 = FindMag(L10);          // La = length of side a
+      L1 = FindMag(L20);
+      L2 = FindMag(L21);
+      // calculate side - unit vector
+      DivVec(L10,L0,L10Unit);
+      DivVec(L20,L1,L20Unit);
+      DivVec(L21,L2,L21Unit);
+
+      // calculate unnormalized normal vector (perp vec)
+      CrossP(L10, L20, NormVec);               // normal vector
+      DivVec(NormVec, FindMag(NormVec),NormVecUnit);
+      //calculate a vector perp which is perpendicuar to NormVecUnit
+      // and  L20Unit for in-plane jitter
+      CrossP(L20Unit, NormVecUnit, Perp);
+
+      TriHeight = FindMag(NormVec)/FindMag(L20);   // height of triangle seen
+                       // from side L2
+      Rows = TriHeight / DeltaRow;    // number of rows of PTs
+      Vs = L0/Rows;                   // 'vector' along L0, covering DeltaRow distance
+   	  Copy3DPoint(P0,temp[0]);
+
+      // angle between L10unit and L20Unit
+      Angle = fabs(PI - acos(DotProduct(L10Unit, L20Unit, 3)));
+
+      for (row=0;Offset<TriHeight-0.5*DeltaRow;row++)
+        {
+//          OffsetAdd = fmod(row*(sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow))+0.5*Dist),Dist);
+          if(Angle < PI*0.5)
+            {
+              OffsetAdd = fmod( - double(row)*sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow)) + double(row)*0.5*Dist,Dist);
+              if (OffsetAdd < 0) OffsetAdd+=Dist;
+            }
+          else
+            {
+              OffsetAdd = fmod(  double(row)*(Dist-sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow)))
+               + double(row)*0.5*Dist,Dist);
+              if (OffsetAdd < 0) OffsetAdd+=Dist;
+            }
+
+          //          OffsetAdd = fmod(double(row)*sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow)) ,Dist);
+/*          if (fabs(double(row)*0.5 - floor(double(row)*0.5)) < 0.01)
+            OffsetAdd = fabs(fmod(sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow)),Dist));
+          else
+            OffsetAdd = fabs(fmod(sqrt(fabs(Vs*Vs-DeltaRow*DeltaRow)),Dist)+0.5*Dist);
+*/
+          RowLength = (double(1)-double(Offset/TriHeight))*L1;
+          // length of this current row of PTs
+          MultVec(L10Unit,Vs*row,PTemp);
+          AddVec(P0, PTemp, PNext);
+          // PNext = next PT to be set
+          MultVec(L20Unit,OffsetAdd,PTemp1);
+          AddVec( PTemp1, PNext,PTemp2);
+    	  Copy3DPoint(PNext,PTemp2);
+
+
+          if (OffsetAdd <= RowLength)
+            {
+
+          if ((s->OutPlaneStdDev == 0) && (s->InPlaneStdDev  == 0))
+        	Copy3DPoint(CoordPT[TotalPTs],PNext);
+          else
+                {
+                   MultVec(NormVecUnit,Gaussian(0,Dist*s->OutPlaneStdDev*0.01, FALSE),PTemp3);
+                   MultVec(L20Unit,Gaussian(0,Dist*s->InPlaneStdDev*0.01, FALSE),PTemp4);
+                   MultVec(Perp,Gaussian(0,Dist*s->InPlaneStdDev*0.01, FALSE),PTemp5);
+                   AddVec( PTemp3, PTemp4, PTemp6);
+                   AddVec( PTemp6, PTemp5, PTemp7);
+                   AddVec( PTemp7, PNext, PTemp3);
+        	       Copy3DPoint(CoordPT[TotalPTs],PTemp3);
+                 }
+          if (TotalPTs < LimitPTs-1)
+            TotalPTs++;
+          RowLengthUsed = OffsetAdd;
+
+          while (RowLengthUsed <= (RowLength-Dist))
+            {
+              MultVec(L20Unit,Dist,PTemp);
+              AddVec(PTemp, PNext, PNext2);
+              if ((s->OutPlaneStdDev == 0) && (s->InPlaneStdDev  == 0))
+          	      Copy3DPoint(CoordPT[TotalPTs],PNext2);
+              else
+                {
+                   MultVec(NormVecUnit,Gaussian(0,Dist*s->OutPlaneStdDev*0.01, FALSE),PTemp3);
+                   MultVec(L20Unit,Gaussian(0,Dist*s->InPlaneStdDev*0.01, FALSE),PTemp4);
+                   MultVec(Perp,Gaussian(0,Dist*s->InPlaneStdDev*0.01, FALSE),PTemp5);
+                   AddVec( PTemp3, PTemp4, PTemp6);
+                   AddVec( PTemp6, PTemp5, PTemp7);
+                   AddVec( PTemp7, PNext2, PTemp3);
+        	       Copy3DPoint(CoordPT[TotalPTs],PTemp3);
+                 }
+       	      Copy3DPoint(PNext,PNext2);
+              if (TotalPTs < LimitPTs-1)
+                TotalPTs++;
+              RowLengthUsed += Dist;
+            }
+          }
+          Offset += DeltaRow;
+
+
+
+        } // end for
+//  TotalPTs = 13;
+ *PTsUsed = TotalPTs;
+
+  // end new
+}
 
 //-------------------------------------------------------------------------//
 // Function CalcGeometry                                                  //
@@ -1363,23 +1698,24 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 //-------------------------------------------------------------------------//
 void CalcGeometry(double **RangeDelay,double **ReturnAmp,double **TargetRadialVel,
 struct SRadar *Radar,double *PulseSendTime, long PulseNo, struct STarget *FirstTarget,
-struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP, long FirstPulse)
+struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
+double **RadarDir, long FirstPulse)
 {
   long PNo, TNo, SNo,PFNo,        // loop variables
-		 PlatformNo, TargetNo, SurfaceNo;  // total number of platforms and targets
+       PlatformNo, TargetNo, SurfaceNo;  // total number of platforms and targets
                                   // and surfaces
   double ***PlatformPos;      // 3D array containing position of all platforms
-										// for each pulse ([platform][pulse][x|y|z])
+                              // for each pulse ([platform][pulse][x|y|z])
   double ***PlatformVel;      // 3D array containing velocity of all platforms
-										// for each pulse ([platform][pulse][x|y|z])
+                              // for each pulse ([platform][pulse][x|y|z])
   double ***PlatformRot;      // 3D array containing the rotation of all platforms
-										// for each pulse ([platform][pulse][x|y|z])
+                              // for each pulse ([platform][pulse][x|y|z])
   STarget *t;                 // general pointer to target
   SPlatform *p,               // general pointer to platform
-				*RadarPF;         // pointer to radar platform
+            *RadarPF;         // pointer to radar platform
   SSurface *s;
   long RadarPFNo,             // number of radar platform
-		 PFN;                   // general platform number
+       PFN;                   // general platform number
   double RotM[3][3];          // rotation coefficients
   long i,j;
   double GainFactor;
@@ -1394,6 +1730,8 @@ struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
   double AntennaDirAzi, AntennaDirElev, TRayAzi, TRayElev;
   double OffsetAzi, OffsetElev;
   double AntennaGain;
+          double AntennaGainT;
+          double AntennaGainR;
 //  double RelVel[3];
   // difference in time between 2 position calculations to estimate
   // velocity - must be less than the minimum PRI possible
@@ -1416,16 +1754,16 @@ struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
 
   // find platform position and velocities for all pulses
   for (PFNo = 0;PFNo<PlatformNo;PFNo++)      // for all platforms
-	 {
-		// find the platform
-		p = PointToPlatform(FirstPlatform, PFNo+1);
-		for (PNo = 0;PNo<PulseNo;PNo++)        // for all pulses
-		  {
-			 FindPlatformPosition(p,PulseSendTime[PNo],PlatformPos[PFNo][PNo]);
-			 FindPlatformVelocity(p,PulseSendTime[PNo],PlatformVel[PFNo][PNo]);
-			 FindPlatformRotation(p,PulseSendTime[PNo],PlatformRot[PFNo][PNo]);
-		  }
-	 }
+    {
+      // find the platform
+      p = PointToPlatform(FirstPlatform, PFNo+1);
+      for (PNo = 0;PNo<PulseNo;PNo++)        // for all pulses
+        {
+          FindPlatformPosition(p,PulseSendTime[PNo],PlatformPos[PFNo][PNo]);
+          FindPlatformVelocity(p,PulseSendTime[PNo],PlatformVel[PFNo][PNo]);
+          FindPlatformRotation(p,PulseSendTime[PNo],PlatformRot[PFNo][PNo]);
+        }
+    }
 
   // find radar platform
   FindPlatform(Radar->PlatformName, &RadarPF, &RadarPFNo, FirstPlatform);
@@ -1434,221 +1772,232 @@ struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
 
   // compute return gain factor independent of time
 //  GainFactor = ((LIGHT_SPEED/Radar->StartFreq)*sqrt(Radar->PowerOutput)) /
-//			((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
+//         ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
 
-  // Edited by RTL on 20/03/2004
-  // see also line 1667
+  // Edited by RTL on 21/03/2004
+  // see also line 2015
   GainFactor = sqrt(Radar->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
 
 
 
 // start surface
-
+  // IMPORTANT - also change ShowSurfaces function in main.cpp if
+  // changes are made here
   for (SNo=0;SNo<SurfaceNo;SNo++)       // for each Surface do
-	 {
-		// find pointer to Surface and corresponding platform
-		s = PointToSurface(FirstSurface, SNo+1);
-		FindPlatform(s->Name,&p,&PFN,FirstPlatform);
+    {
+      // find pointer to Surface and corresponding platform
+      s = PointToSurface(FirstSurface, SNo+1);
+      FindPlatform(s->Name,&p,&PFN,FirstPlatform);
 
-		for (PNo=0;PNo<PulseNo;PNo++)    // for each pulse do
-		  {
-			 // find rotation coeffs
-			 FindRotMatrix(PlatformRot[PFN][PNo],RotM);
+      for (PNo=0;PNo<PulseNo;PNo++)    // for each pulse do
+        {
+          // find rotation coeffs
+          FindRotMatrix(PlatformRot[PFN][PNo],RotM);
 
-			 // calculate rotated Position and add platform position offset
-			 // and subtract radar position resulting in a vector from radar
-			 // to Surface
+          // calculate rotated Position and add platform position offset
+          // and subtract radar position resulting in a vector from radar
+          // to Surface
        for (j=0;j<3;j++) // for all three triangle points do
-			   for (i=0;i<3;i++)  // for x y z do
-				   {
-    			   SurfP[SNo][PNo][j*3+i] = RotM[0][i] * s->Tri[j][0] +
-						   RotM[1][i] * s->Tri[j][1] +  RotM[2][i] * s->Tri[j][2] +
-						   PlatformPos[PFN][PNo][i] -
-						   PlatformPos[RadarPFNo][PNo][i];
+            for (i=0;i<3;i++)  // for x y z do
+               {
+                SurfP[SNo][PNo][j*3+i] = RotM[0][i] * s->Tri[j][0] +
+                     RotM[1][i] * s->Tri[j][1] +  RotM[2][i] * s->Tri[j][2] +
+                     PlatformPos[PFN][PNo][i] -
+                     PlatformPos[RadarPFNo][PNo][i];
            }
-		  } // for each pulse end
-	 }  // for each Surface end
+        } // for each pulse end
+    }  // for each Surface end
    // end surface
 
-
+//new
+  for (PNo=0;PNo<PulseNo;PNo++)    // for each pulse do
+    {
+          // find the direction into which radar is pointing relative to
+          // the radar platform
+          FindAntennaDir(Radar, PulseSendTime[PNo], PlatformPos[RadarPFNo][PNo],
+              PlatformRot[RadarPFNo][PNo],&AntennaDirAzi,&AntennaDirElev);
+          RadarDir[PNo][0] = AntennaDirAzi;
+          RadarDir[PNo][1] = AntennaDirElev;
+    }
+// end new
 
   for (TNo=0;TNo<TargetNo;TNo++)       // for each point target do
-	 {
-		// find pointer to target and corresponding platform
-		t = PointToTarget(FirstTarget, TNo+1);
-		FindPlatform(t->Name,&p,&PFN,FirstPlatform);
+    {
+      // find pointer to target and corresponding platform
+      t = PointToTarget(FirstTarget, TNo+1);
+      FindPlatform(t->Name,&p,&PFN,FirstPlatform);
 
-		for (PNo=0;PNo<PulseNo;PNo++)    // for each pulse do
-		  {
-			 // find rotation coeffs
-			 FindRotMatrix(PlatformRot[PFN][PNo],RotM);
+      for (PNo=0;PNo<PulseNo;PNo++)    // for each pulse do
+        {
+          // find rotation coeffs
+          FindRotMatrix(PlatformRot[PFN][PNo],RotM);
 
-			 // calculate rotated Position and add platform position offset
-			 // and subtract radar position resulting in a vector from radar
-			 // to target
-			 for (i=0;i<3;i++)
-				{
-				  FindTargetPosition(t, TPos);
-				  TargetPosRelativeToRadar[i] = RotM[0][i] * TPos[0] +
-						  RotM[1][i] * TPos[1] +  RotM[2][i] * TPos[2] +
-						  PlatformPos[PFN][PNo][i] -
-						  PlatformPos[RadarPFNo][PNo][i];
-				}
-			 // distance between target and radar
-			 TargetDist = sqrt( DotProduct(TargetPosRelativeToRadar,
-									 TargetPosRelativeToRadar, 3) );
+          // calculate rotated Position and add platform position offset
+          // and subtract radar position resulting in a vector from radar
+          // to target
+          for (i=0;i<3;i++)
+            {
+              FindTargetPosition(t, TPos);
+              TargetPosRelativeToRadar[i] = RotM[0][i] * TPos[0] +
+                    RotM[1][i] * TPos[1] +  RotM[2][i] * TPos[2] +
+                    PlatformPos[PFN][PNo][i] -
+                    PlatformPos[RadarPFNo][PNo][i];
+            }
+          // distance between target and radar
+          TargetDist = sqrt( DotProduct(TargetPosRelativeToRadar,
+                            TargetPosRelativeToRadar, 3) );
 
        // now find target position a little bit later to estimate radial
        // velocity
-			 FindPlatformPosition(p,PulseSendTime[PNo]+DELTA_TIME,PlatPosT);
-			 FindPlatformPosition(RadarPF,PulseSendTime[PNo]+DELTA_TIME,PlatPosR);
-			 FindPlatformRotation(p,PulseSendTime[PNo]+DELTA_TIME,PlatformRot2);
-			 // find rotation coeffs
-			 FindRotMatrix(PlatformRot2,RotM2);
-			 // calculate rotated Position and add platform position offset
-			 // and subtract radar position resulting in a vector from radar
-			 // to target
-			 for (i=0;i<3;i++)
-				{
-				  FindTargetPosition(t, TPos2);
-				  TargetPosRelativeToRadar2[i] = RotM2[0][i] * TPos2[0] +
-						  RotM2[1][i] * TPos2[1] +  RotM2[2][i] * TPos2[2] +
-						  PlatPosT[i] -
-						  PlatPosR[i];
-				}
-			 // distance between target and radar
-			 TargetDist2 = sqrt( DotProduct(TargetPosRelativeToRadar2,
-									 TargetPosRelativeToRadar2, 3) );
+          FindPlatformPosition(p,PulseSendTime[PNo]+DELTA_TIME,PlatPosT);
+          FindPlatformPosition(RadarPF,PulseSendTime[PNo]+DELTA_TIME,PlatPosR);
+          FindPlatformRotation(p,PulseSendTime[PNo]+DELTA_TIME,PlatformRot2);
+          // find rotation coeffs
+          FindRotMatrix(PlatformRot2,RotM2);
+          // calculate rotated Position and add platform position offset
+          // and subtract radar position resulting in a vector from radar
+          // to target
+          for (i=0;i<3;i++)
+            {
+              FindTargetPosition(t, TPos2);
+              TargetPosRelativeToRadar2[i] = RotM2[0][i] * TPos2[0] +
+                    RotM2[1][i] * TPos2[1] +  RotM2[2][i] * TPos2[2] +
+                    PlatPosT[i] -
+                    PlatPosR[i];
+            }
+          // distance between target and radar
+          TargetDist2 = sqrt( DotProduct(TargetPosRelativeToRadar2,
+                            TargetPosRelativeToRadar2, 3) );
 
        // now we've got our two range values (range from radar)
        // calculate the radial velocity from that
-			 TargetRadialVel[TNo][PNo] = (TargetDist2 - TargetDist)*ONE_OVER_DELTA_TIME;
+          TargetRadialVel[TNo][PNo] = (TargetDist2 - TargetDist)*ONE_OVER_DELTA_TIME;
        // never mid speeds slower than a um per second
        if (TargetRadialVel[TNo][PNo] < 1E-6)
          TargetRadialVel[TNo][PNo] = 0;
-			 // range delay in seconds
-			 RangeDelay[TNo][PNo] = 2*TargetDist/
-						(LIGHT_SPEED - TargetRadialVel[TNo][PNo]);
+          // range delay in seconds
+          RangeDelay[TNo][PNo] = 2*TargetDist/
+                  (LIGHT_SPEED - TargetRadialVel[TNo][PNo]);
+             // wrong - See Einstein, but has almost no effect
+          RCS = t->RCS + (t->RCSdev);// temp * GaussDist(&SEED));
+          if (RCS < 0) RCS = 0;
 
-			 RCS = t->RCS + (t->RCSdev);// temp * GaussDist(&SEED));
-			 if (RCS < 0) RCS = 0;
+          if (t->ReflecType == 0) // isotropic
+            {
+              //RCS_Average = t->RCS;
+            }
+          else  // directional
+            {
+              double TPos[3],PTSurfaceNormal[3];
+              double RayAngle;
+              double temp;
+              double AziAng, EleAng;
 
-			 if (t->ReflecType == 0) // isotropic
-				{
-				  //RCS_Average = t->RCS;
-				}
-			 else  // directional
-				{
-				  double TPos[3],PTSurfaceNormal[3];
-				  double RayAngle;
-				  double temp;
-				  double AziAng, EleAng;
+              // calculate direction with standard deviation
+              FindTargetDir(t, &AziAng, &EleAng);
+              ConvertAnglesToVec(TPos, 1, AziAng, EleAng);
 
-				  // calculate direction with standard deviation
-				  FindTargetDir(t, &AziAng, &EleAng);
-				  ConvertAnglesToVec(TPos, 1, AziAng, EleAng);
+              for (i=0;i<3;i++)
+                PTSurfaceNormal[i] = RotM[0][i] * TPos[0] + RotM[1][i] * TPos[1] +
+                                     RotM[2][i] * TPos[2];
 
-				  for (i=0;i<3;i++)
-					 PTSurfaceNormal[i] = RotM[0][i] * TPos[0] + RotM[1][i] * TPos[1] +
-												 RotM[2][i] * TPos[2];
+              temp = DotProduct(PTSurfaceNormal,
+                                TargetPosRelativeToRadar, 3);
 
-				  temp = DotProduct(PTSurfaceNormal,
-										  TargetPosRelativeToRadar, 3);
-
-				  if (TargetDist == 0)
-					 {
-						// point target too close
-						RayAngle = 0;
-					 }
-				  else
-					 {
-						// calculate angle between normal vector and the vector
-						// from the radar to the target
-						// (cos a= b1*b2/(mag(b1)*mag(b2)))
-						// 0 = head an, PI/2 = sideways, PI = from behind
-						RayAngle = fabs(PI - acos(temp/TargetDist));
-					 }
-				  if (t->GainType == 0)  // cos
-					 {
-						RCS = cos(RayAngle) * RCS;
-						// don't reflect on the backface
-						if (RCS < 0) RCS = 0;
-					 }
-				  else if (t->GainType == 1)  // other
-					 {
-						RCS *= dBToFac(Interpolate((t->DataDef).NoP[0],
-										  (t->DataDef).XAxis[0].DataArray,
+              if (TargetDist == 0)
+                {
+                  // point target too close
+                  RayAngle = 0;
+                }
+              else
+                {
+                  // calculate angle between normal vector and the vector
+                  // from the radar to the target
+                  // (cos a= b1*b2/(mag(b1)*mag(b2)))
+                  // 0 = head an, PI/2 = sideways, PI = from behind
+                  RayAngle = fabs(PI - acos(temp/TargetDist));
+                }
+              if (t->GainType == 0)  // cos
+                {
+                  RCS = cos(RayAngle) * RCS;
+                  // don't reflect on the backface
+                  if (RCS < 0) RCS = 0;
+                }
+              else if (t->GainType == 1)  // other
+                {
+                  RCS *= dBToFac(Interpolate((t->DataDef).NoP[0],
+                                (t->DataDef).XAxis[0].DataArray,
                                 (t->DataDef).YAxis[0].DataArray,
-										  (t->DataDef).Coeff[0], RayAngle*RadToDeg,(t->DataDef).IntMethod[0]));
-					 }
+                                (t->DataDef).Coeff[0], RayAngle*RadToDeg,(t->DataDef).IntMethod[0]));
+                }
 
-				} // end else dir
+            } // end else dir
 
-			 // find the direction into which radar is pointing relative to
-			 // the radar platform
-			 FindAntennaDir(Radar, PulseSendTime[PNo], PlatformPos[RadarPFNo][PNo],
-				  PlatformRot[RadarPFNo][PNo],&AntennaDirAzi,&AntennaDirElev);
+          // find the direction into which radar is pointing relative to
+          // the radar platform
+          AntennaDirAzi = RadarDir[PNo][0];
+          AntennaDirElev = RadarDir[PNo][1];
+//          FindAntennaDir(Radar, PulseSendTime[PNo], PlatformPos[RadarPFNo][PNo],
+//              PlatformRot[RadarPFNo][PNo],&AntennaDirAzi,&AntennaDirElev);
+          TRayAzi = AziAngle(TargetPosRelativeToRadar);
+          TRayElev = ElevAngle(TargetPosRelativeToRadar);
+          OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
+          OffsetElev = fabs(AntennaDirElev - TRayElev);
 
-			 TRayAzi = AziAngle(TargetPosRelativeToRadar);
-			 TRayElev = ElevAngle(TargetPosRelativeToRadar);
+          AntennaGainT = 1;
+          AntennaGainR = 1;
 
-			 OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
-			 OffsetElev = fabs(AntennaDirElev - TRayElev);
-
-			 double AntennaGainT = 1;
-			 double AntennaGainR = 1;
-
-			 if (Radar->AntennaGainTypeT == 0)
-				{
-				  AntennaGainT = 1;
-				}
-			 else	if (Radar->AntennaGainTypeT == 1)
-				{
-				  AntennaGainT = SinAntennaGain(OffsetAzi,Radar->AziBeamWidthT)*
-									 SinAntennaGain(OffsetElev,Radar->ElevBeamWidthT);
-				}
-			 else	if (Radar->AntennaGainTypeT == 2)
-				{
-				  AntennaGainT = dBToFac(Interpolate((Radar->AntennaTDef).NoP[0],
-										  (Radar->AntennaTDef).XAxis[0].DataArray,
+          if (Radar->AntennaGainTypeT == 0)
+            {
+              AntennaGainT = 1;
+            }
+          else   if (Radar->AntennaGainTypeT == 1)
+            {
+              AntennaGainT = SinAntennaGain(OffsetAzi,Radar->AziBeamWidthT)*
+                            SinAntennaGain(OffsetElev,Radar->ElevBeamWidthT);
+            }
+          else   if (Radar->AntennaGainTypeT == 2)
+            {
+              AntennaGainT = dBToFac(Interpolate((Radar->AntennaTDef).NoP[0],
+                                (Radar->AntennaTDef).XAxis[0].DataArray,
                                 (Radar->AntennaTDef).YAxis[0].DataArray,
-										  (Radar->AntennaTDef).Coeff[0], OffsetAzi*RadToDeg,(Radar->AntennaTDef).IntMethod[0]))*
-									  dBToFac(Interpolate((Radar->AntennaTDef).NoP[1],
-										  (Radar->AntennaTDef).XAxis[1].DataArray,
-										  (Radar->AntennaTDef).YAxis[1].DataArray,
-										  (Radar->AntennaTDef).Coeff[1], OffsetElev*RadToDeg,(Radar->AntennaTDef).IntMethod[1]));
+                                (Radar->AntennaTDef).Coeff[0], OffsetAzi*RadToDeg,(Radar->AntennaTDef).IntMethod[0]))*
+                             dBToFac(Interpolate((Radar->AntennaTDef).NoP[1],
+                                (Radar->AntennaTDef).XAxis[1].DataArray,
+                                (Radar->AntennaTDef).YAxis[1].DataArray,
+                                (Radar->AntennaTDef).Coeff[1], OffsetElev*RadToDeg,(Radar->AntennaTDef).IntMethod[1]));
 
-				}
-			 if (Radar->AntennaGainTypeR == 0)
-				{
-				  AntennaGainR = 1;
-				}
-			 else	if (Radar->AntennaGainTypeR == 1)
-				{
-				  AntennaGainR = SinAntennaGain(OffsetAzi,Radar->AziBeamWidthR)*
-									 SinAntennaGain(OffsetElev,Radar->ElevBeamWidthR);
-				}
-			 else	if (Radar->AntennaGainTypeR == 2)
-				{
-				  AntennaGainR = AntennaGainT;
-				}
-			 else	if (Radar->AntennaGainTypeR == 3)
-				{
-				  AntennaGainR = dBToFac(Interpolate((Radar->AntennaRDef).NoP[0],
-										  (Radar->AntennaRDef).XAxis[0].DataArray,
-										  (Radar->AntennaRDef).YAxis[0].DataArray,
-										  (Radar->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(Radar->AntennaRDef).IntMethod[0]))*
-									  dBToFac(Interpolate((Radar->AntennaRDef).NoP[1],
-										  (Radar->AntennaRDef).XAxis[1].DataArray,
-										  (Radar->AntennaRDef).YAxis[1].DataArray,
-										  (Radar->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(Radar->AntennaRDef).IntMethod[1]));
-				}
+            }
+          if (Radar->AntennaGainTypeR == 0)
+            {
+              AntennaGainR = 1;
+            }
+          else   if (Radar->AntennaGainTypeR == 1)
+            {
+              AntennaGainR = SinAntennaGain(OffsetAzi,Radar->AziBeamWidthR)*
+                            SinAntennaGain(OffsetElev,Radar->ElevBeamWidthR);
+            }
+          else   if (Radar->AntennaGainTypeR == 2)
+            {
+              AntennaGainR = AntennaGainT;
+            }
+          else   if (Radar->AntennaGainTypeR == 3)
+            {
+              AntennaGainR = dBToFac(Interpolate((Radar->AntennaRDef).NoP[0],
+                                (Radar->AntennaRDef).XAxis[0].DataArray,
+                                (Radar->AntennaRDef).YAxis[0].DataArray,
+                                (Radar->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(Radar->AntennaRDef).IntMethod[0]))*
+                             dBToFac(Interpolate((Radar->AntennaRDef).NoP[1],
+                                (Radar->AntennaRDef).XAxis[1].DataArray,
+                                (Radar->AntennaRDef).YAxis[1].DataArray,
+                                (Radar->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(Radar->AntennaRDef).IntMethod[1]));
+            }
 
-			 AntennaGain = sqrt(AntennaGainR * AntennaGainT);
+          AntennaGain = sqrt(AntennaGainR * AntennaGainT);
 
-			 // the radar equation : NOTE that ReturnAmp contains the amplitude
-			 // not the power (which would be the square of that)
-			 if (TargetDist > 0)
+          // the radar equation : NOTE that ReturnAmp contains the amplitude
+          // not the power (which would be the square of that)
+          if (TargetDist > 0)
          {
            if (Radar->ApplyAGC)
              {
@@ -1656,34 +2005,37 @@ struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
 
 
 //               if (Radar->AGCType == 0)
-//				         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+//                     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
 //               else
-///*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+// /*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
 //             }
 //           else
-//				     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
-//											 (TargetDist * TargetDist);
+//                 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
+//                                  (TargetDist * TargetDist);
 
-// Edited by RTL on 20/03/2004
+// Edited by RTL on 21/03/2004
                if (Radar->AGCType == 0)
-				         ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                            AntennaGain * sqrt(RCS));
+		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+                                    AntennaGain * sqrt(RCS));
                else
 /*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
                                         AntennaGain * sqrt(RCS));
              }
            else
-				     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                        AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
+		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+                                    AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
+
+
+
 
 
 
          }
-			 else
-				ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
+          else
+            ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
 
-		  } // for each pulse end
-	 }  // for each target end
+        } // for each pulse end
+    }  // for each target end
 
 
   // free memory allocated
@@ -1704,7 +2056,7 @@ bool SendPulse(double time, double PulseWidth, double DelaySlope, double *Phase)
   double temp;
 
   if ((time<0) || (time>PulseWidth))
-		return false;
+      return false;
   temp = time-0.5*PulseWidth;
   temp = 0.5*temp*temp*DelaySlope;
 
@@ -1726,18 +2078,18 @@ Complex MatchFilter(double time, struct SRadar *r)
 
   BW = FindBandwidth(r);
 /*  // find bandwidth
- 	if ((r->PulseType == MONO) || (r->PulseType == BARKER)) BW = 0;      // mono pulse
-	else if (r->PulseType == CHIRP) BW = r->ChirpBW;   // chirp pulse
+    if ((r->PulseType == MONO) || (r->PulseType == BARKER)) BW = 0;      // mono pulse
+   else if (r->PulseType == CHIRP) BW = r->ChirpBW;   // chirp pulse
   else BW = r->ChirpBW;
 */
   DelaySlope = BW/r->PulseWidth;
 
   if ((time<0) || (time>r->PulseWidth))
-	 {
-		MF.real = 0;
-		MF.imag = 0;
-		return MF;
-	 }
+    {
+      MF.real = 0;
+      MF.imag = 0;
+      return MF;
+    }
   temp = time-0.5*r->PulseWidth;
   temp = temp*temp*DelaySlope*PI;
 
@@ -1755,44 +2107,44 @@ Complex MatchFilter(double time, struct SRadar *r)
 
   // rect
   if (r->MatchedFilterW == 0)
-	 return MF;
+    return MF;
   // hanning
   else if (r->MatchedFilterW == 1)
-	 {
-		fac = 0.5*(1+r->HanningC -
-			cos(TwoPi*time/r->PulseWidth)*(1-r->HanningC));
-		MF.real *= fac;
-		MF.imag *= fac;
-		return MF;
-	 }
+    {
+      fac = 0.5*(1+r->HanningC -
+         cos(TwoPi*time/r->PulseWidth)*(1-r->HanningC));
+      MF.real *= fac;
+      MF.imag *= fac;
+      return MF;
+    }
   // bartlett
   else if (r->MatchedFilterW == 2)
-	 {
-		if (time <= (r->PulseWidth/2)) fac = 2*time/r->PulseWidth;
-		else fac = 2 - 2*time/r->PulseWidth;
-		MF.real *= fac;
-		MF.imag *= fac;
-		return MF;
-	 }
+    {
+      if (time <= (r->PulseWidth/2)) fac = 2*time/r->PulseWidth;
+      else fac = 2 - 2*time/r->PulseWidth;
+      MF.real *= fac;
+      MF.imag *= fac;
+      return MF;
+    }
   // hamming
   else if (r->MatchedFilterW == 3)
-	 {
-		fac = 0.54 - 0.46*cos(TwoPi*time/r->PulseWidth);
-		MF.real *= fac;
-		MF.imag *= fac;
-		return MF;
-	 }
+    {
+      fac = 0.54 - 0.46*cos(TwoPi*time/r->PulseWidth);
+      MF.real *= fac;
+      MF.imag *= fac;
+      return MF;
+    }
   // user defined
   else if (r->MatchedFilterW == 4)
-	 {
-		 fac = Interpolate(  (r->MFDef).NoP[0],
-									(r->MFDef).XAxis[0].DataArray,
-									(r->MFDef).YAxis[0].DataArray,
-									(r->MFDef).Coeff[0], time/r->PulseWidth,(r->MFDef).IntMethod[0]);
-		MF.real *= fac;
-		MF.imag *= fac;
-		return MF;
-	 }
+    {
+       fac = Interpolate(  (r->MFDef).NoP[0],
+                           (r->MFDef).XAxis[0].DataArray,
+                           (r->MFDef).YAxis[0].DataArray,
+                           (r->MFDef).Coeff[0], time/r->PulseWidth,(r->MFDef).IntMethod[0]);
+      MF.real *= fac;
+      MF.imag *= fac;
+      return MF;
+    }
   else return MF;
 }
 
@@ -1809,7 +2161,7 @@ double SinAntennaGain(double Offset, double BeamWidth)
   Offset = fmod(fabs(Offset), 2*PI);
   if (Offset > PI) Offset -= 2*PI;
   if ( (Offset >= (PI/2)) || (Offset <= -(PI/2)) )
-	 return 0;
+    return 0;
   if (Offset == 0) return 1;
   if (BeamWidth == 0) return 0;
 
@@ -1827,26 +2179,26 @@ double SinAntennaGain(double Offset, double BeamWidth)
 double Pulse(struct SRadar *r, double t)
 {
   if (r->Envelope == 0) // rect
-	 {
-		if ( (t >= 0) && (t < (r->PulseWidth)) ) return 1;
-		return 0;
-	 }
+    {
+      if ( (t >= 0) && (t < (r->PulseWidth)) ) return 1;
+      return 0;
+    }
   else if (r->Envelope == 1)  // linear ramp
-	 {
-		if ( (t >= r->RiseTime) && (t < (r->PulseWidth-r->FallTime)) ) return 1;
-		if ( (t < r->RiseTime) && (t >= 0) ) return (t / r->RiseTime);
-		if ( (t >= (r->PulseWidth - r->FallTime)) && (t<r->PulseWidth) ) return
-		  (1 - ((t - (r->PulseWidth - r->FallTime))/r->FallTime));
-		return 0;
-	 }
+    {
+      if ( (t >= r->RiseTime) && (t < (r->PulseWidth-r->FallTime)) ) return 1;
+      if ( (t < r->RiseTime) && (t >= 0) ) return (t / r->RiseTime);
+      if ( (t >= (r->PulseWidth - r->FallTime)) && (t<r->PulseWidth) ) return
+        (1 - ((t - (r->PulseWidth - r->FallTime))/r->FallTime));
+      return 0;
+    }
   else if (r->Envelope == 2)  // user defined
-	 {
-		return (Interpolate(  (r->EnvelopeDef).NoP[0],
-				  (r->EnvelopeDef).XAxis[0].DataArray,
-				  (r->EnvelopeDef).YAxis[0].DataArray,
-				  (r->EnvelopeDef).Coeff[0], t/r->PulseWidth,(r->EnvelopeDef).IntMethod[0]));
+    {
+      return (Interpolate(  (r->EnvelopeDef).NoP[0],
+              (r->EnvelopeDef).XAxis[0].DataArray,
+              (r->EnvelopeDef).YAxis[0].DataArray,
+              (r->EnvelopeDef).Coeff[0], t/r->PulseWidth,(r->EnvelopeDef).IntMethod[0]));
 
-	 }
+    }
   else return 0;
 }
 //-------------------------------------------------------------------------//
@@ -1867,11 +2219,18 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
     double **Data, long PulseNo, long DataXSize, double *PulseFreq,
     double **RangeDelay,  double **TargetRadialVel, double **ReturnAmp,
     double *MaxMagnitude, struct STarget *FirstTarget,
-    struct SPlatform *FirstPlatform,struct SSurface *FirstSurface, double ***SurfP)
+    struct SPlatform *FirstPlatform,struct SSurface *FirstSurface, double ***SurfP
+    ,double **RadarDir)
 {
   long PNo, TargetNo, SurfaceNo;
   double DelaySlope,PulseCenter,MaxMagOfPulse,MaxAmp;
   double SecPerSample;
+  long Pow2SamplePoints, UsedSamples,CSample,PulseBegin2, PulseEnd2;
+  double *Template,Phase,t,PulseExtendInSec;
+  double *OverSampledTemplate,Cycle,SecPerSample2,Mult;
+  long Pow2SamplePoints2, UsedSamples2;
+  long RSample,HalfBWSamples;
+  long ZeroedSamples;
 
   *FirstPlatform = *FirstPlatform;
 
@@ -1897,91 +2256,390 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
   // find also maximum magnitude of all pulses
   *MaxMagnitude = 0;
 
+ /*
+
+  // start new
+
+  // the actual bandlimited pulse is wider than the nominal Pulsewidth
+  // as specified in the radar parameters - by a factor of 'OverSampleFactor'
+  // real pulse extends over 'PulseExtendInSec' including bandlimited 'ripple'
+  // We want to return however  CurrentSim->PWidth*(samples / pulse) samples
+  PulseExtendInSec = CurrentSim->PWidth * r->PulseWidth;
   if (CurrentSim->SimTYPE == RAW_RETURN)
-	 {
+    SecPerSample = (SlantEndTime-SlantStartTime)/double(DataXSize);
+  else if (CurrentSim->SimTYPE == MATCHED_FILTER)
+    SecPerSample = double(1) / (CurrentSim->SampleFreq*2);
+
+  // output (NOT oversampled) array parameters
+  // used (non-zero) samples
+  UsedSamples = round(0.5*PulseExtendInSec / SecPerSample);
+  // how many samples need to be stored ?
+  // NOTE - as we actually display range and not range-delay, the
+  // pulse is actually only half it's real length
+  // Also use power of 2 samples
+  Pow2SamplePoints = (long)(pow(2,ceil(log(ceil(0.5*PulseExtendInSec /
+    SecPerSample))*double(1.442695040888964))));
+
+  // calculate pulse template
+  Template = DVector(0,Pow2SamplePoints*2);
+  // set all to zero
+  for (CSample=0;CSample<Pow2SamplePoints*2;CSample++)
+    Template[CSample] = 0;
+
+  // internal (oversampled) array parameters
+  SecPerSample2 = double(0.5)/(r->ChirpBW*CurrentSim->OverSampleFactor);
+  if (SecPerSample2 > SecPerSample)
+    SecPerSample2 = SecPerSample;
+  // used (non-zero) samples
+  UsedSamples2 = round(0.5*PulseExtendInSec*(CurrentSim->OverSampleFactor/
+  CurrentSim->PWidth) / SecPerSample2);
+  Pow2SamplePoints2 = (long)(pow(2,ceil(log(ceil(0.5*PulseExtendInSec*
+  (CurrentSim->OverSampleFactor/ CurrentSim->PWidth) /SecPerSample2))*double(1.442695040888964))));
+  // calculate pulse OverSampledTemplate
+  OverSampledTemplate = DVector(0,Pow2SamplePoints2*2);
+  // set all to zero
+  for (CSample=0;CSample<Pow2SamplePoints2*2;CSample++)
+    OverSampledTemplate[CSample] = 0;
+
+  // from what time to what time do we have the pulse
+  PulseBegin2 = round(double(CurrentSim->OverSampleFactor-1)*double(UsedSamples2)/
+    (double(2)* double(CurrentSim->OverSampleFactor)));
+  PulseEnd2 = round(double(CurrentSim->OverSampleFactor+1)*double(UsedSamples2)/
+    (double(2)* double(CurrentSim->OverSampleFactor)));
+
+  // calculate OverSampledTemplate
+  for (CSample=0; CSample<UsedSamples2; CSample++)
+    {
+      t = (double(2)*(double)CSample - (double)UsedSamples2) * SecPerSample2;
+      if (r->PulseType == MONO)
+        {
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = 1;
+              OverSampledTemplate[CSample*2+1] = 0;
+            }
+        }
+      else if (r->PulseType == BARKER)
+        {
+          Cycle = fmod(floor((double(CSample) * CurrentSim->OverSampleFactor /
+                  double(UsedSamples2))*
+                 BarkerCodeLength[r->BarkerCode]),
+                  BarkerCodeLength[r->BarkerCode]);
+          if (BarkerCode[r->BarkerCode][(int)Cycle] < 0)
+            Phase = PI;
+          else
+            Phase = 0;
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = cos(Phase);
+              OverSampledTemplate[CSample*2+1] = sin(Phase);
+            }
+         }
+      else if (r->PulseType == CHIRP)
+        {
+          Phase = fmod(PI*DelaySlope*t*t,TwoPi);
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = cos(Phase);
+              OverSampledTemplate[CSample*2+1] = sin(Phase);
+            }
+          else
+            {
+              OverSampledTemplate[CSample*2] = 0;//.01*cos(Phase);
+              OverSampledTemplate[CSample*2+1] = 0;//.01*sin(Phase);
+            }
+        }
+      else if (r->PulseType == OTHER_PULSE)
+        {
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = 1;
+              OverSampledTemplate[CSample*2+1] = 0;
+            }
+        }
+    } // end for CSample
+
+  // convert into bandlimited pulse
+  if (CurrentSim->OverSampleFactor != 1)
+    {
+      HalfBWSamples = double(Pow2SamplePoints2) / (2*CurrentSim->OverSampleFactor);
+      CFFT(OverSampledTemplate-1,Pow2SamplePoints2,1);
+      for (CSample=HalfBWSamples;CSample<Pow2SamplePoints2-HalfBWSamples;CSample++)
+        {
+         OverSampledTemplate[CSample*2] = 0;
+         OverSampledTemplate[CSample*2+1] = 0;
+        }
+      CFFT(OverSampledTemplate-1,Pow2SamplePoints2,-1);
+      // normalize
+      Mult = double(1)/double(Pow2SamplePoints2);
+      for (CSample=0; CSample<UsedSamples2; CSample++)
+        {
+          OverSampledTemplate[CSample*2] *= Mult;
+          OverSampledTemplate[CSample*2+1] *= Mult;
+        }
+    }
+  // downsample
+  //
+//  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
+ //      CurrentSim->PWidth))*double(0.5);
+ // if (ZeroedSamples <= 0) ZeroedSamples = 0;
+  ZeroedSamples = 0;
+      double StartUsedS = (CurrentSim->OverSampleFactor - CurrentSim->PWidth)*0.5*UsedSamples2/
+                    CurrentSim->OverSampleFactor;
+  for (CSample=StartUsedS; CSample<UsedSamples2-StartUsedS; CSample++)
+    {
+
+
+      RSample = round(double(CSample-StartUsedS) * (double(UsedSamples)/double(UsedSamples2-2*StartUsedS)));
+    //  RSample = round(double(CSample) * (double(UsedSamples)/double(UsedSamples2))*(
+    //  CurrentSim->OverSampleFactor / CurrentSim->PWidth));
+      if ((RSample >=ZeroedSamples) && (RSample < (UsedSamples-ZeroedSamples)))
+        {
+              Template[RSample*2] = OverSampledTemplate[CSample*2];
+              Template[RSample*2+1] = OverSampledTemplate[CSample*2+1];
+        }
+    }
+    //test
+//  UsedSamples -= 2*ZeroedSamples;
+//  if (UsedSamples < 0) UsedSamples=0;
+
+*/
+
+
+  // the actual bandlimited pulse is wider than the nominal Pulsewidth
+  // as specified in the radar parameters - by a factor of 'OverSampleFactor'
+  // real pulse extends over 'PulseExtendInSec' including bandlimited 'ripple'
+  PulseExtendInSec = CurrentSim->OverSampleFactor * r->PulseWidth;
+  if (CurrentSim->SimTYPE == RAW_RETURN)
+    SecPerSample = (SlantEndTime-SlantStartTime)/double(DataXSize);
+  else if (CurrentSim->SimTYPE == MATCHED_FILTER)
+    SecPerSample = double(1) / (CurrentSim->SampleFreq*2);
+
+  // output (NOT oversampled) array parameters
+  // used (non-zero) samples
+  UsedSamples = round(0.5*PulseExtendInSec / SecPerSample);
+  // how many samples need to be stored ?
+  // NOTE - as we actually display range and not range-delay, the
+  // pulse is actually only half it's real length
+  // Also use power of 2 samples
+  Pow2SamplePoints = (long)(pow(2,ceil(log(ceil(0.5*PulseExtendInSec /
+    SecPerSample))*double(1.442695040888964))));
+                                             
+  // calculate pulse template
+  Template = DVector(0,Pow2SamplePoints*2);
+  // set all to zero
+  for (CSample=0;CSample<Pow2SamplePoints*2;CSample++)
+    Template[CSample] = 0;
+
+  // internal (oversampled) array parameters
+  SecPerSample2 = double(0.5)/(r->ChirpBW*CurrentSim->OverSampleFactor);
+  if (SecPerSample2 > SecPerSample)
+    SecPerSample2 = SecPerSample;
+  // used (non-zero) samples
+  UsedSamples2 = round(0.5*PulseExtendInSec / SecPerSample2);
+  Pow2SamplePoints2 = (long)(pow(2,ceil(log(ceil(0.5*PulseExtendInSec /
+    SecPerSample2))*double(1.442695040888964))));
+  // calculate pulse OverSampledTemplate
+  OverSampledTemplate = DVector(0,Pow2SamplePoints2*2);
+  // set all to zero
+  for (CSample=0;CSample<Pow2SamplePoints2*2;CSample++)
+    OverSampledTemplate[CSample] = 0;
+
+  // from what time to what time do we have the pulse
+  PulseBegin2 = round(double(CurrentSim->OverSampleFactor-1)*double(UsedSamples2)/
+    (double(2)* double(CurrentSim->OverSampleFactor)));
+  PulseEnd2 = round(double(CurrentSim->OverSampleFactor+1)*double(UsedSamples2)/
+    (double(2)* double(CurrentSim->OverSampleFactor)));
+
+  // calculate OverSampledTemplate
+  for (CSample=0; CSample<UsedSamples2; CSample++)
+    {
+      t = (double(2)*(double)CSample - (double)UsedSamples2) * SecPerSample2;
+      if (r->PulseType == MONO)
+        {
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = 1;
+              OverSampledTemplate[CSample*2+1] = 0;
+            }
+        }
+      else if (r->PulseType == BARKER)
+        {
+          Cycle = fmod(floor((double(CSample) * CurrentSim->OverSampleFactor /
+                  double(UsedSamples2))*
+                 BarkerCodeLength[r->BarkerCode]),
+                  BarkerCodeLength[r->BarkerCode]);
+          if (BarkerCode[r->BarkerCode][(int)Cycle] < 0)
+            Phase = PI;
+          else
+            Phase = 0;
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = cos(Phase);
+              OverSampledTemplate[CSample*2+1] = sin(Phase);
+            }
+         }
+      else if (r->PulseType == CHIRP)
+        {
+          Phase = fmod(PI*DelaySlope*t*t,TwoPi);
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = cos(Phase);
+              OverSampledTemplate[CSample*2+1] = sin(Phase);
+            }
+          else
+            {
+              OverSampledTemplate[CSample*2] = 0;//.01*cos(Phase);
+              OverSampledTemplate[CSample*2+1] = 0;//.01*sin(Phase);
+            }
+        }
+      else if (r->PulseType == OTHER_PULSE)
+        {
+          if ( (CSample > PulseBegin2) && (CSample <= PulseEnd2) )
+            {
+              OverSampledTemplate[CSample*2] = 1;
+              OverSampledTemplate[CSample*2+1] = 0;
+
+                //      Template[CSample*2] += Interpolate(  (r->PulseDef).NoP[0],
+                //                  (r->PulseDef).XAxis[0].DataArray,
+                //                  (r->PulseDef).YAxis[0].DataArray,
+                //                  (r->PulseDef).Coeff[0], temp0/r->PulseWidth,(r->PulseDef).IntMethod[0])*Pulse(r,temp0*2);
+                //      Template[CSample*2+1] += Interpolate(  (r->PulseDef).NoP[1],
+                //                  (r->PulseDef).XAxis[1].DataArray,
+                //                   (r->PulseDef).YAxis[1].DataArray,
+                //                  (r->PulseDef).Coeff[1], temp0/r->PulseWidth,(r->PulseDef).IntMethod[1])*Pulse(r,temp0*2);
+
+            }
+        }
+    } // end for CSample
+
+  // convert into bandlimited pulse
+  if (CurrentSim->OverSampleFactor != 1)
+    {
+      HalfBWSamples = double(Pow2SamplePoints2) / (2*CurrentSim->OverSampleFactor);
+      CFFT(OverSampledTemplate-1,Pow2SamplePoints2,1);
+      for (CSample=HalfBWSamples;CSample<Pow2SamplePoints2-HalfBWSamples;CSample++)
+        {
+         OverSampledTemplate[CSample*2] = 0;
+         OverSampledTemplate[CSample*2+1] = 0;
+        }
+      CFFT(OverSampledTemplate-1,Pow2SamplePoints2,-1);
+      // normalize
+      Mult = double(1)/double(Pow2SamplePoints2);
+      for (CSample=0; CSample<UsedSamples2; CSample++)
+        {
+          OverSampledTemplate[CSample*2] *= Mult;
+          OverSampledTemplate[CSample*2+1] *= Mult;
+        }
+    }
+  // downsample again
+  //
+  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
+       CurrentSim->PWidth))*double(0.5);
+  if (ZeroedSamples <= 0) ZeroedSamples = 0;
+  for (CSample=0; CSample<UsedSamples2; CSample++)
+    {
+      RSample = round(double(CSample) * (double(UsedSamples)/double(UsedSamples2)));
+      if ((RSample >=ZeroedSamples) && (RSample < (UsedSamples-ZeroedSamples)))
+        {
+              Template[RSample*2] = OverSampledTemplate[CSample*2];
+              Template[RSample*2+1] = OverSampledTemplate[CSample*2+1];
+        }
+    }
+    //test
+//  UsedSamples -= 2*ZeroedSamples;
+//  if (UsedSamples < 0) UsedSamples=0;
+
+  if (CurrentSim->SimTYPE == RAW_RETURN)
+    {
     // time (seconds) per sample = sampling period
    // modified note due to round function in CalcAziPoint function
   //  SecPerSample = double(0.5)/(CurrentSim->SampleFreq);
     SecPerSample = (SlantEndTime-SlantStartTime)/double(DataXSize);
-		// for every pulse do
-		for (PNo=0;PNo<PulseNo;PNo++)
-		  {
+      // for every pulse do
+      for (PNo=0;PNo<PulseNo;PNo++)
+        {
             // tell somebody how far we are... (CalcProcess is global)
             CalcProgress = (int)((float(PNo)/float(PulseNo))*100);
             if (UserAbort) return;
-			 // calculate one pulse
-			 CalcOnePulse(Data[PNo], DataXSize, SlantStartTime,
-					 SecPerSample, TargetNo, PulseFreq,
-					 RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
-					 PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP,SurfaceNo);
+          // calculate one pulse
+          CalcOnePulse(Data[PNo], DataXSize, SlantStartTime,
+                SecPerSample, TargetNo, PulseFreq,
+                RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
+                PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP,SurfaceNo,
+                 Template, CurrentSim->OverSampleFactor, Pow2SamplePoints,
+                 UsedSamples, FirstSurface,ZeroedSamples,RadarDir);
+
           if (MaxMagOfPulse > *MaxMagnitude)
             *MaxMagnitude = MaxMagOfPulse;
-		  }
-	 }
+        }
+    }
   else if (CurrentSim->SimTYPE == MATCHED_FILTER)
-	 {
-		double *OnePulse, Fac, temp,*MatchFilterA, norm;
-		long i,j, Shift, SamplePoints;
-		Complex MF;
+    {
+      double *OnePulse, Fac, temp,*MatchFilterA, norm;
+      long i,j, Shift, SamplePoints;
+      Complex MF;
 
-		// actual number of points calculated (>Samplepoints because
-		// 1. calculations needs to extend beyond the screen output range because
-		// of matched filter
-		// 2. FFT is faster with power of twos
-		// find the next higher power of 2
+      // actual number of points calculated (>Samplepoints because
+      // 1. calculations needs to extend beyond the screen output range because
+      // of matched filter
+      // 2. FFT is faster with power of twos
+      // find the next higher power of 2
         // Only 1/2 a PW needs to be added as the PW is half in slant range
         // - see documentation  RLORD
-		SamplePoints = (long)(pow(2,ceil(log(CurrentSim->SampleFreq*2*
-			((SlantEndTime-SlantStartTime)+double(0.5)*r->PulseWidth + PulseCenter) )*double(1.442695041))));
-		// as the peak of the matched filter occurs at the end of the pulse, i.e.
-		// when the MF overlaps with the pulse (which occurs at 1/2 pulsewidth
-		// behind the actual target), move the whole array by that amount +
+      SamplePoints = (long)(pow(2,ceil(log(CurrentSim->SampleFreq*2*
+         ((SlantEndTime-SlantStartTime)+double(0.5)*r->PulseWidth + PulseCenter) )*double( 1.442695040888964 ))));
+      // as the peak of the matched filter occurs at the end of the pulse, i.e.
+      // when the MF overlaps with the pulse (which occurs at 1/2 pulsewidth
+      // behind the actual target), move the whole array by that amount +
         // we have to sample 1/2 a PW before.. therefor 1 PW
         Shift = (long)(r->PulseWidth*CurrentSim->SampleFreq*2*double(0.5));
-		// time between two samples
+      // time between two samples
     SecPerSample = double(1) / (CurrentSim->SampleFreq*2);
-		// conversion factor from samples in memory to pixels, i.e. Samples/Pizel
-		Fac = (SlantEndTime-SlantStartTime)*CurrentSim->SampleFreq*2/(double)DataXSize;
+      // conversion factor from samples in memory to pixels, i.e. Samples/Pizel
+      Fac = (SlantEndTime-SlantStartTime)*CurrentSim->SampleFreq*2/(double)DataXSize;
         // normalization factor such that amplitude is independent of sampling freq
         norm = double(1)/(SamplePoints * CurrentSim->SampleFreq*2);
-		OnePulse = DVector(0,SamplePoints*2);
-		// matched filter
-		MatchFilterA = DVector(0,SamplePoints*2);
-		// set all to zero
-		for (i=0;i<SamplePoints*2;i++)
-		  MatchFilterA[i] = 0;
-		// find matched filter values
-		for (i=0;i<SamplePoints;i++)
-		  {
-			 MF = MatchFilter(double(2*i)/(CurrentSim->SampleFreq*2), r);
-			 MatchFilterA[2*i] = MF.real;
-			 MatchFilterA[2*i+1] = MF.imag;
-		  }
-		// convert MatchFilter into frequency domain
- 		CFFT(MatchFilterA-1,SamplePoints,1);
-		// for every pulse do
-		for (PNo=0;PNo<PulseNo;PNo++)
-		  {
+      OnePulse = DVector(0,SamplePoints*2);
+      // matched filter
+      MatchFilterA = DVector(0,SamplePoints*2);
+      // set all to zero
+      for (i=0;i<SamplePoints*2;i++)
+        MatchFilterA[i] = 0;
+      // find matched filter values
+      for (i=0;i<SamplePoints;i++)
+        {
+          MF = MatchFilter(double(2*i)/(CurrentSim->SampleFreq*2), r);
+          MatchFilterA[2*i] = MF.real;
+          MatchFilterA[2*i+1] = MF.imag;
+        }
+      // convert MatchFilter into frequency domain
+       CFFT(MatchFilterA-1,SamplePoints,1);
+      // for every pulse do
+      for (PNo=0;PNo<PulseNo;PNo++)
+        {
           // Note that it is necessary to start sampling 1/2 a PW before the
           // actual window starts (= 1/4 PW in slant range)
-		    // tell somebody how far we are... (CalcProcess is global)
+          // tell somebody how far we are... (CalcProcess is global)
              CalcProgress = (int)((float(PNo)/float(PulseNo))*100);
              if (UserAbort) return;
-			 CalcOnePulse(OnePulse, SamplePoints, SlantStartTime-(PulseCenter*0.5),
-					 SecPerSample, TargetNo, PulseFreq,
-  					 RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
-					 PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP, SurfaceNo );
-			 // convert pulse to frequency domain
-			 CFFT(OnePulse-1,SamplePoints,1);
-			 // multiply matched filter with return pulse = time convolution
-			 for (i=0;i<SamplePoints;i++)
-				{
- 				  temp = OnePulse[2*i];
- 				  OnePulse[2*i] = OnePulse[2*i]*MatchFilterA[2*i]-OnePulse[2*i+1]*MatchFilterA[2*i+1];
- 				  OnePulse[2*i+1] = temp*MatchFilterA[2*i+1]+OnePulse[2*i+1]*MatchFilterA[2*i];
-				}
-			 // convert back to time domain
- 			 CFFT(OnePulse-1,SamplePoints,-1);
+          CalcOnePulse(OnePulse, SamplePoints, SlantStartTime-(PulseCenter*0.5),
+                SecPerSample, TargetNo, PulseFreq,
+                  RangeDelay, TargetRadialVel, ReturnAmp,PNo, r,
+                PulseCenter, DelaySlope, &MaxMagOfPulse, SurfP, SurfaceNo,
+                 Template, CurrentSim->OverSampleFactor, Pow2SamplePoints,
+                 UsedSamples, FirstSurface, ZeroedSamples,RadarDir);
+          // convert pulse to frequency domain
+          CFFT(OnePulse-1,SamplePoints,1);
+          // multiply matched filter with return pulse = time convolution
+          for (i=0;i<SamplePoints;i++)
+            {
+               temp = OnePulse[2*i];
+               OnePulse[2*i] = OnePulse[2*i]*MatchFilterA[2*i]-OnePulse[2*i+1]*MatchFilterA[2*i+1];
+               OnePulse[2*i+1] = temp*MatchFilterA[2*i+1]+OnePulse[2*i+1]*MatchFilterA[2*i];
+            }
+          // convert back to time domain
+           CFFT(OnePulse-1,SamplePoints,-1);
           // In case of the matched filter it is
           // necessary to divide by SamplePoints * SampleFreq*2, to get a factor
           // which is independent of Sampling frequency (i.e. to overcome the
@@ -1990,7 +2648,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
           // normalize such that amplitude is independent of sampling freq
           // and find highest amp
           MaxMagOfPulse = 0;
- 		  for (i=0;i<SamplePoints;i++)
+         for (i=0;i<SamplePoints;i++)
             {
               OnePulse[2*i] *= norm;
               OnePulse[2*i+1] *= norm;
@@ -2002,19 +2660,22 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
           MaxMagOfPulse = sqrt(MaxMagOfPulse);
           if (MaxMagOfPulse > *MaxMagnitude)
             *MaxMagnitude = MaxMagOfPulse;
-			 // scale into pixel space
-			 for (i=0;i<DataXSize;i++)
-				{
-				  j = long(double(i) * Fac) + Shift;
-				  if (j >= SamplePoints) j = SamplePoints-1;
-				  Data[PNo][i*2] = OnePulse[2*j];
-				  Data[PNo][i*2+1] = OnePulse[2*j+1];
-				}
-		  } // end for PNo
-		Free_DVector(MatchFilterA,0);
-		Free_DVector(OnePulse,0);
+          // scale into pixel space
+          for (i=0;i<DataXSize;i++)
+            {
+              j = long(double(i) * Fac) + Shift;
+              if (j >= SamplePoints) j = SamplePoints-1;
+              Data[PNo][i*2] = OnePulse[2*j];
+              Data[PNo][i*2+1] = OnePulse[2*j+1];
+            }
+        } // end for PNo
+      // free memory allocated
+      Free_DVector(MatchFilterA,0);
+      Free_DVector(OnePulse,0);
+    }  // end if SimTYPE = MF
+  Free_DVector(Template,0);
+  Free_DVector(OverSampledTemplate,0);
 
-	 }  // end if SimTYPE = MF
 }
 //-------------------------------------------------------------------------//
 extern int CalcProgress2;
@@ -2029,7 +2690,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   long SamplePoints, TargetNo,PNo,i;
   bool Finished=FALSE;
   double *PulseFreq, **RangeDelay, **TargetRadialVel, **ReturnAmp,
-			**Data,*PulseSendTime,***SurfP;
+         **Data,*PulseSendTime,***SurfP;
   double I,Q,MaxMagnitudeTemp;
   double FracPart,IntPart, Norm, Center;
   int bytes;
@@ -2037,31 +2698,33 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   FILE *OutFilep;
   struct SRadar *CRadar, *R; // current radar
   bool Clipped;
+  double OldGlobalUnderSampleSurf;
+  double **RadarDir;
 
   bool RadarFound = false;
   R =  FP->FirstRadar;
   CRadar = R;
   while (R != NULL)
-	{
-	  if (CompStrNI(R->RadarName, ThisSim->RadarName, strlen(R->RadarName)) == 0)
-	    {
+   {
+     if (CompStrNI(R->RadarName, ThisSim->RadarName, strlen(R->RadarName)) == 0)
+       {
         CRadar = R;
         RadarFound = true;
         break;
       }
-	  R = R->next;
-	}
+     R = R->next;
+   }
   if (!RadarFound) return 2;
 
   OutFilep = fopen(ThisSim->FileName, "wb");  // append to file, if not exists, create it
   if (!OutFilep)
- 	{
- 	  return 3;
- 	}
+    {
+      return 3;
+    }
 
   // figure out how many pulses to write
   FindPulsesInRange(ThisSim->AzimuthStart,ThisSim->AzimuthEnd,
-				    CRadar,&FirstPulse,&LastPulse);
+                CRadar,&FirstPulse,&LastPulse);
   TotalPulseNo = (LastPulse - FirstPulse) + 1;
   if (TotalPulseNo <= 0) TotalPulseNo = 1;
   // total number of targets
@@ -2078,6 +2741,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   SurfP = DMatrix3(0,SurfaceNo-1,0,PulsesPerSession-1,0,8);
   PulseSendTime = DVector(0,PulsesPerSession-1);
   Data = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
+
   // now write the pulses in session for memory reasons (e.g. 0-99,100-199 etc.)
   SavePulseEnd = -1;
   // calculate the multiplication factor such that LSB is the right amp.
@@ -2092,14 +2756,14 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   *ClippedSamples = 0;
   *ZeroSamples = 0;
   do
-	  {
-	    SavePulseStart = SavePulseEnd+1;
-	    SavePulseEnd = SavePulseStart+PulsesPerSession-1;
-	    if (SavePulseEnd >= (TotalPulseNo-1))
-		    {
-			    SavePulseEnd = TotalPulseNo-1;
-			    Finished = TRUE;
-		    }
+     {
+       SavePulseStart = SavePulseEnd+1;
+       SavePulseEnd = SavePulseStart+PulsesPerSession-1;
+       if (SavePulseEnd >= (TotalPulseNo-1))
+          {
+             SavePulseEnd = TotalPulseNo-1;
+             Finished = TRUE;
+          }
       PulseNo = SavePulseEnd - SavePulseStart + 1;
 
       #ifdef COMPILE_FOR_WINDOWS32
@@ -2108,42 +2772,52 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
         printf("*");
       #endif
 
-	    // calculate time when each pulse is sent and the corresponding freq
-	    for (PNo=0;PNo<PulseNo;PNo++)
-		    {
-			    PulseSendTime[PNo] = FindPulseSendTime(PNo+FirstPulse+SavePulseStart,
-									 CRadar);
-			    PulseFreq[PNo] = FindPulseFreq(PNo+FirstPulse+SavePulseStart,
-					  			 CRadar);
-		    }
+       // calculate time when each pulse is sent and the corresponding freq
+       for (PNo=0;PNo<PulseNo;PNo++)
+          {
+             PulseSendTime[PNo] = FindPulseSendTime(PNo+FirstPulse+SavePulseStart,
+                            CRadar);
+             PulseFreq[PNo] = FindPulseFreq(PNo+FirstPulse+SavePulseStart,
+                           CRadar);
+          }
 
+      RadarDir = DMatrix(0,PulseNo-1,0,1);
       // calculate range-delay, return amp etc. for each pulse
       CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar, PulseSendTime,
                   PulseNo, FP->FirstTarget, FP->FirstPlatform,
-                  FP->FirstSurface, SurfP, FirstPulse+SavePulseStart);
+                  FP->FirstSurface, SurfP, RadarDir, FirstPulse+SavePulseStart);
+
+      // we do the full number of PTs now (surfaces) - let's indicate that
+      // see surfaces for more info
+      OldGlobalUnderSampleSurf = GlobalUnderSampleSurf;
+      GlobalUnderSampleSurf = 0;
 
       // Calculate Data array of size (PulseNo x SamplePoints)
       CalcArray2(CRadar, ThisSim, Data, PulseNo, SamplePoints, PulseFreq,
                  RangeDelay, TargetRadialVel, ReturnAmp, &MaxMagnitudeTemp,
                  FP->FirstTarget, FP->FirstPlatform,
-                 FP->FirstSurface, SurfP);
+                 FP->FirstSurface, SurfP, RadarDir);
+
+      // change back to old value
+      GlobalUnderSampleSurf = OldGlobalUnderSampleSurf;
+
       if (MaxMagnitudeTemp > *MaxMagnitude) *MaxMagnitude = MaxMagnitudeTemp;
       if (UserAbort) break;
-	    // calculate the offset
+       // calculate the offset
       if (ThisSim->A2Dbits == 1)
         Center = 1;
       else
-	      Center = pow(2,ThisSim->A2Dbits-1)-1;
-	    // write array to file
-		  for (PNo=0;PNo<PulseNo;PNo++)
-	      {
+         Center = pow(2,ThisSim->A2Dbits-1)-1;
+       // write array to file
+        for (PNo=0;PNo<PulseNo;PNo++)
+         {
           if (UserAbort) break;
-	        for (i=0;i<SamplePoints;i++)
-					 {
+           for (i=0;i<SamplePoints;i++)
+                {
              (*TotalSampleNo)++;
              Clipped = false;
-	  		     I = round(Norm*Data[PNo][2*i]);
-			       Q = round(Norm*Data[PNo][2*i+1]);
+                I = round(Norm*Data[PNo][2*i]);
+                Q = round(Norm*Data[PNo][2*i+1]);
              // check limits
              if (I>Center+1) {I = Center+1; Clipped=true;}
              if (I<-Center) {I = -Center; Clipped=true;}
@@ -2152,42 +2826,42 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
              if (Clipped) (*ClippedSamples)++;
              if ((I == 0) && (Q == 0)) (*ZeroSamples)++;
              // now write data in either ascii or binary
-    	       if (ThisSim->FileType == ASCII) //ASCII
-		           {
-					       fprintf(OutFilep,"%1.0f %1.0f\n",I,Q);
+              if (ThisSim->FileType == ASCII) //ASCII
+                 {
+                      fprintf(OutFilep,"%1.0f %1.0f\n",I,Q);
 // special case for for automatic rotation
 //                 fprintf(OutFilep,"%4.0f %4.0f  ",I,Q);
                }
              else if (ThisSim->FileType == ASCIIwithBrackets) //ASCII but (I,Q)
-		           {
-					       fprintf(OutFilep,"(%1.0f,%1.0f) ",I,Q);
+                 {
+                      fprintf(OutFilep,"(%1.0f,%1.0f) ",I,Q);
                }
              else // BINARY
                {
-					       I += Center;
-					       Q += Center; // add offset such that range is from 0 to (2^x)-1
-					       for (bytes = 0;bytes < A2DBytes; bytes++)
-						       {
-							       I = I/256;
-							       FracPart = modf(I,&IntPart);
-							       fprintf(OutFilep,"%c",(char)(FracPart*256));
-							       I = IntPart;
-						       }
-					       for (bytes = 0;bytes < A2DBytes; bytes++)
-						       {
-							       Q = Q/256;
-							       FracPart = modf(Q,&IntPart);
-							       fprintf(OutFilep,"%c",(char)(FracPart*256));
-							       Q = IntPart;
-						       }
-					     }  // end else binary
+                      I += Center;
+                      Q += Center; // add offset such that range is from 0 to (2^x)-1
+                      for (bytes = 0;bytes < A2DBytes; bytes++)
+                         {
+                            I = I/256;
+                            FracPart = modf(I,&IntPart);
+                            fprintf(OutFilep,"%c",(char)(FracPart*256));
+                            I = IntPart;
+                         }
+                      for (bytes = 0;bytes < A2DBytes; bytes++)
+                         {
+                            Q = Q/256;
+                            FracPart = modf(Q,&IntPart);
+                            fprintf(OutFilep,"%c",(char)(FracPart*256));
+                            Q = IntPart;
+                         }
+                    }  // end else binary
            } // for all samplepoints
           // add separator between succesive pulses
 // comment next line out for no lf between pulses
-			    if (ThisSim->FileType == ASCII) fprintf(OutFilep,"\n");
-			    if (ThisSim->FileType == ASCIIwithBrackets) fprintf(OutFilep,"\n");
+             if (ThisSim->FileType == ASCII) fprintf(OutFilep,"\n");
+             if (ThisSim->FileType == ASCIIwithBrackets) fprintf(OutFilep,"\n");
         } // PNo
-	  } while (!Finished);
+     } while (!Finished);
    #ifndef COMPILE_FOR_WINDOWS32
      printf("\n");
    #endif
@@ -2200,6 +2874,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   Free_DVector(PulseSendTime,0);
   Free_DMatrix(Data,0,0);
   Free_DMatrix3(SurfP,0,0,0);
+  Free_DMatrix(RadarDir,0,0);
 
 // special case for rotation
 // fprintf(OutFilep,"\n");
@@ -2302,9 +2977,9 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
 
     // find platform position and velocities for all pulses
     for (PFNo = 0;PFNo<PlatformNo;PFNo++)      // for all platforms
-	    {
-	  	  // find the platform
-		    p = PointToPlatform(FP->FirstPlatform, PFNo+1);
+       {
+          // find the platform
+          p = PointToPlatform(FP->FirstPlatform, PFNo+1);
         // show platform position
         if (((VisibleOpt >> 2) & 1) == 1)
           {
@@ -2316,9 +2991,9 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
                 strcat(Head3,"   X (m)      Y (m)      Z (m)   ");
                 strcat(Head4,"---------- ---------- ---------- ");
               }
-         	  // calculate the platform position when pulse was sent
+              // calculate the platform position when pulse was sent
             FindPlatformPosition(p,PulseSendTime[PNo-FirstPulse],PlatformPos);
-	          if (Comma)
+             if (Comma)
               sprintf(temp,"%10.4G,%10.4G,%10.4G", PlatformPos[0],
                 PlatformPos[1], PlatformPos[2]);
             else
@@ -2327,7 +3002,7 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
             strcat(str,temp);
             if (Comma) strcat(str,","); else strcat(str," ");
           }
-		    // show platform velocity
+          // show platform velocity
         if (((VisibleOpt >> 3) & 1) == 1)
           {
             if (!HeaderSetup)
@@ -2338,9 +3013,9 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
                 strcat(Head3,"  X (m/s)    Y (m/s)    Z (m/s)  ");
                 strcat(Head4,"---------- ---------- ---------- ");
               }
-         	  // calculate the platform position when pulse was sent
+              // calculate the platform position when pulse was sent
             FindPlatformVelocity(p,PulseSendTime[PNo-FirstPulse],PlatformVel);
-	          if (Comma)
+             if (Comma)
               sprintf(temp,"%10.4G,%10.4G,%10.4G", PlatformVel[0],
                 PlatformVel[1], PlatformVel[2]);
             else
@@ -2349,7 +3024,7 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
             strcat(str,temp);
             if (Comma) strcat(str,","); else strcat(str," ");
           }
-		    // show platform rotation
+          // show platform rotation
         if (((VisibleOpt >> 4) & 1) == 1)
           {
             if (!HeaderSetup)
@@ -2360,9 +3035,9 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
                 strcat(Head3,"  X (deg)    Y (deg)    Z (deg)  ");
                 strcat(Head4,"---------- ---------- ---------- ");
               }
-         	  // calculate the platform position when pulse was sent
+              // calculate the platform position when pulse was sent
             FindPlatformRotation(p,PulseSendTime[PNo-FirstPulse],PlatformRot);
-	          if (Comma)
+             if (Comma)
               sprintf(temp,"%10.4G,%10.4G,%10.4G", PlatformRot[0]*RadToDeg,
                 PlatformRot[1]*RadToDeg, PlatformRot[2]*RadToDeg);
             else
@@ -2371,7 +3046,7 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
             strcat(str,temp);
             if (Comma) strcat(str,","); else strcat(str," ");
           }
-		  }  // end for PFNo
+        }  // end for PFNo
 
      // show target range-delay, return-amp, radial velocity
      if ((((VisibleOpt >> 5) & 1) == 1) || (((VisibleOpt >> 6) & 1) == 1) ||
@@ -2388,13 +3063,18 @@ int SaveGeometryData(struct SGeometry *ThisGeo,
 
          SinglePulseSendTime[0] = PulseSendTime[PNo-FirstPulse];
 
+ 
+
+      // PulseNo = 1
+      double **RadarDir = DMatrix(0,0,0,1);
          // calculate range-delay, return amp etc. for each pulse
          CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar,
              SinglePulseSendTime, 1, FP->FirstTarget,
-             FP->FirstPlatform, FP->FirstSurface, SurfP, FirstPulse);
+             FP->FirstPlatform, FP->FirstSurface, SurfP, RadarDir, FirstPulse);
+      Free_DMatrix(RadarDir,0,0);
 
          for (TNo=0;TNo<TargetNo;TNo++)       // for each point target do
-	         {
+            {
              // check if with given range
              DistToTarget = RangeDelay[TNo][0]*0.5*LIGHT_SPEED; // in m
              if ((DistToTarget >= ThisGeo->SlantStart) &&
@@ -2508,11 +3188,11 @@ void FindRadar(char *RadarName, struct SRadar **Radar,
   // in case name not defined return NULL
   *Radar =  NULL;
   while (R != NULL)
-	{
-	  if (stricmp((const char *)R->RadarName, (const char *)RadarName) == 0)
-	    { *Radar = R; break; }
-	  R = R->next;
-	}
+   {
+     if (stricmp((const char *)R->RadarName, (const char *)RadarName) == 0)
+       { *Radar = R; break; }
+     R = R->next;
+   }
 }
 */
 //-------------------------------------------------------------------------//
@@ -2520,8 +3200,8 @@ double FindBandwidth(struct SRadar *r)
 {
   double BW;
   // find bandwidth
- 	if ((r->PulseType == MONO) || (r->PulseType == BARKER)) BW = 0;      // mono pulse
-	else if (r->PulseType == CHIRP) BW = r->ChirpBW;   // chirp pulse
+    if ((r->PulseType == MONO) || (r->PulseType == BARKER)) BW = 0;      // mono pulse
+   else if (r->PulseType == CHIRP) BW = r->ChirpBW;   // chirp pulse
   else BW = r->ChirpBW;
 
   return BW;

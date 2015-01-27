@@ -98,6 +98,11 @@ __published:	// IDE-managed Components
   TSaveDialog *SaveBitmapDialog;
   TBitBtn *BBitmap;
   TBitBtn *BHelp;
+	TGroupBox *GroupBox3;
+	TEdit *EOverSample;
+	TLabel *Label16;
+	TEdit *EPWidth;
+	TLabel *Label17;
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);
 	void __fastcall FormMouseDown(TObject *Sender, TMouseButton Button,
 	TShiftState Shift, int X, int Y);
@@ -146,6 +151,15 @@ __published:	// IDE-managed Components
 
   void __fastcall BBitmapClick(TObject *Sender);
   void __fastcall BHelpClick(TObject *Sender);
+	
+	void __fastcall EOverSampleKeyPress(TObject *Sender, char &Key);
+	void __fastcall EOverSampleExit(TObject *Sender);
+	
+	void __fastcall EPWidthExit(TObject *Sender);
+	void __fastcall EPWidthKeyPress(TObject *Sender, char &Key);
+	
+	
+	
 private:	// User declarations
     // -------------- variables ---------------
     // border between window and graph

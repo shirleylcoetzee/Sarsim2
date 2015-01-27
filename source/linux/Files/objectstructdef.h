@@ -5,7 +5,6 @@
 #define ObjectStructDefH
 #include <values.h>
 
-
 // RTL - added definition of PI for linux compilation
 #define PI 3.141592653589793238462643383279
 
@@ -172,6 +171,12 @@
 // dynamic range if dB are shown
 #define DYNAMIC_RANGE 200       // (in dB)
 
+#define TINY_NUM 1E-30
+
+// used for conversion of surfaces into PTs
+#define USE_SURFP_ARRAY 0
+#define USE_TRI_ARRAY   1
+
 // variables used for each coordinate
 struct SAxis
   {
@@ -225,6 +230,23 @@ struct SSurface
   {
 	 char   Name[MAX_NAME_LENGTH];       // Name of moving platform structure
 	 double Tri[3][3];                   // Position of all 3 points in m
+     int    GlobalUnderSample;           // 0 = Do not use global undersample
+                                         // factor, 1-use it
+     double USampleFactor;               // 1 = no undersample, e.g. 100
+                                         // = calc every 100th sample
+     double InPlaneStdDev;               // In-plane jitter (% of sample spacing)
+     double OutPlaneStdDev;              // Out-plane jitter (% of sample spacing)
+//     int    Pattern;                     // 0 =square, 1 = triangle
+     double PTDensity;                   // density between targets
+     int    Reflec;                      // 0 = isotropic, 1 = directional
+     int    Gain;                        // 0 = cos, 1 = other
+	 SDataDefinition GainDataDef;        // define 'other' gain pattern
+     int    BothSidesReflect;            // 0 - no, 1 - yes
+     int    AssumeConstNormal;           // 0 - no, 1 - yes
+     double RCSdev;                      // RCS deviations in percent
+     double RCSmult;                     // RCS multiplication factor
+     double PosSeed;                     // seed values for position errors
+     double RCSSeed;                     // seed values for RCS deviations
 	 struct SSurface *next;              // Pointer to next element
 	 struct SSurface *previous;          // Pointer to previous element
   };
@@ -326,7 +348,10 @@ struct SSimulation
 	 double LSBvalue;                       // V
 	 int FileType;                          // 0 = ASCII, 1 = BINARY
 	 int SimTYPE;                   // 0 = raw, 1 = MatchedFilter, 2 = SRP etc.
-   int PTPos;                     // 0 = begin, 1 = center
+     int PTPos;                     // 0 = begin, 1 = center
+     double OverSampleFactor;               // Bandlimited oversampled pulse (1=
+                                            // no oversampling, etc.)  
+     double PWidth;                         // Actual width used of pulse
 	 struct SSimulation *next;              // Pointer to next element
 	 struct SSimulation *previous;          // Pointer to previous element
   };

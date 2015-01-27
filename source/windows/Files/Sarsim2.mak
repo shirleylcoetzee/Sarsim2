@@ -5,8 +5,8 @@ VERSION = BCB.01
 BCB = $(MAKEDIR)\..
 !endif
 # ---------------------------------------------------------------------------
-PROJECT = sarsim2.exe
-OBJFILES = sarsim2.obj main.obj targetform.obj linkedlist.obj general.obj \
+PROJECT = Sarsim2.exe
+OBJFILES = Sarsim2.obj main.obj targetform.obj linkedlist.obj general.obj \
    graph.obj graphform.obj SimuForm.obj platformform.obj radarform.obj parser.obj \
    engine.obj focus.obj loadsavedata.obj CalcThread.obj SaveSimData.obj \
    SaveProgress.obj WaitForThread.obj OldSim.obj about.obj showscript.obj \

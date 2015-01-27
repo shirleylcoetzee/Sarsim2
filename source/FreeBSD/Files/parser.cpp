@@ -72,7 +72,7 @@ struct SStateM StateMG[8] = {
      };
 
 // simulation parser
-struct SStateM StateMS[12] = {
+struct SStateM StateMS[14] = {
 				// state 0
 				  { 2, 0, 0, 1,            // Type, min, max
 					 {"","","","",""},    // names
@@ -131,7 +131,17 @@ struct SStateM StateMS[12] = {
 				// state 11
 				  { 12, 0, 0,1,        // Type, min, max
 					 {"BEG","CEN","","",""},    // names
-					 {-1,-1,0,0,0},NULL           // next states
+					 {12,12,0,0,0},NULL           // next states
+				  },
+				// state 12
+				  { 1, 1, 100,1,        // Type, min, max
+					 {"","","","",""},    // names
+					 {13,0,0,0,0},NULL           // next states
+				  },
+				// state 13
+				  { 1, 1, 100,1,        // Type, min, max
+					 {"","","","",""},    // names
+					 {-1,0,0,0,0},NULL           // next states
 				  },
 		};
 // radar parser
@@ -1075,6 +1085,8 @@ int ExecuteCommand(int LastFunction,
 		  StateMS[9].SP = &(NS.SimTYPE);
 		  StateMS[10].SP = &(NS.FileName);
 		  StateMS[11].SP = &(NS.PTPos);
+		  StateMS[12].SP = &(NS.OverSampleFactor);
+		  StateMS[13].SP = &(NS.PWidth);
 		  Error =  RunStateMachine(StateMS, ParameterList,ParameterCount,LineCount);
 
       // check if platform exists

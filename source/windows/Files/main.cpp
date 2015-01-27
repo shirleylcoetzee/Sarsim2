@@ -62,7 +62,7 @@ void __fastcall TMainForm::NewTargetClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::NewSurface1Click(TObject *Sender)
 {
-/*
+
   // make a copy of the default Surface to SurfaceForm->Surface
   CopySurface(&(SurfaceF->Surface),&DefaultSurfaceValues);
   SurfaceF->ShowModal();
@@ -79,7 +79,7 @@ void __fastcall TMainForm::NewSurface1Click(TObject *Sender)
   // free memory allocated by copying Surface
   else if (SurfaceF->ModalResult == mrCancel)
     FreeSurfaceDataDef(&(SurfaceF->Surface));
- */   
+    
 }
 //---------------------------------------------------------------------------
 void TMainForm::ModifySurface(struct SSurface *s)
@@ -494,6 +494,59 @@ void TMainForm::CalcNewSTimeArray()
 	 }
 }
 //---------------------------------------------------------------------------
+void TMainForm::DrawLittleCoordSystem()
+{
+  // now create main coordinate system
+  long i,j;
+  double C[7][3],RotatedC[7][3];
+  double AxisL = 30/ZoomX;
+  double F[3];
+
+  F[0]=0; F[1]=0; F[2]=0; //focus stays at center
+
+  for (i=0;i<3;i++)
+    for (j=0;j<7;j++)
+      C[j][i] = 0;
+
+  C[0][0] = AxisL;
+  C[1][1] = AxisL;
+  C[2][2] = AxisL;
+  C[4][0] = AxisL*1.2;
+  C[5][1] = AxisL*1.2;
+  C[6][2] = AxisL*1.2;          //ObjectBox->Width
+
+  RotatePoints3(C, RotatedC, 7,  ClientWidth - 50, Height - ClientHeight + 30,
+   ZoomX, ZoomY, Rot,Pos, F);
+  if (ShowLittleCoordSystemAxes)
+	 {
+        Canvas->Pen->Style = psSolid;
+  //      Canvas->Pen->Width = 1;
+        Canvas->Pen->Color = clRed;
+     	Canvas->MoveTo(RotatedC[3][2],RotatedC[3][1]);
+        Canvas->LineTo(RotatedC[0][2],RotatedC[0][1]);
+        Canvas->Pen->Color = clGreen;
+		Canvas->MoveTo(RotatedC[3][2],RotatedC[3][1]);
+		Canvas->LineTo(RotatedC[1][2],RotatedC[1][1]);
+        Canvas->Pen->Color = clBlue;
+		Canvas->MoveTo(RotatedC[3][2],RotatedC[3][1]);
+		Canvas->LineTo(RotatedC[2][2],RotatedC[2][1]);
+
+        Canvas->Pen->Color = clBlack;
+        Canvas->Brush->Color = clSilver;
+        Canvas->Pen->Width = 1;
+        Canvas->Font->Color = clBlack;
+        Canvas->Brush->Style = bsClear;
+		Canvas->Font->Size = 11;
+//        Canvas->Font->Style = Canvas->Font->Style << fsBold;//fsBold;        Set
+       	Canvas->TextOut(RotatedC[4][2]-4,RotatedC[4][1]-7,"X");
+		Canvas->TextOut(RotatedC[5][2]-4,RotatedC[5][1]-7,"Y");
+		Canvas->TextOut(RotatedC[6][2]-4,RotatedC[6][1]-7,"Z");
+ //       Canvas->Font->Style = Canvas->Font->Style >> fsBold;//fsBold;        Set
+	 }
+  Canvas->Font->Size = 8;
+  Canvas->Pen->Width = 1;
+}
+//---------------------------------------------------------------------------
 void TMainForm::DrawCoordSystem()
 {
   // now create main coordinate system
@@ -638,6 +691,8 @@ void __fastcall TMainForm::FormMouseDown(TObject *Sender, TMouseButton Button,
           ZoomXOld = ZoomX;
 	      ZoomYOld = ZoomY;
 	      RButtonDown = TRUE;
+	  // capture mouse
+	  SetCapture(Handle);  // Direct all subsequent mouse input to this window
           ZoomMode = TRUE;
 	      RightBClickPoint.x = X;
 	      RightBClickPoint.y = Y;
@@ -689,6 +744,7 @@ void __fastcall TMainForm::FormMouseUp(TObject *Sender, TMouseButton Button,
   else if ((Button == mbRight) && RButtonDown)
     {
 	  RButtonDown = FALSE;
+      ReleaseCapture();
       ZoomMode = FALSE;
 	  RightBClickPoint.x = X;
 	  RightBClickPoint.y = Y;
@@ -728,29 +784,104 @@ void TMainForm::CalcCoordSystemOffset()
 //---------------------------------------------------------------------------
 void TMainForm::DrawSurfaces()
 {
-  SSurface *t;                 // general pointer to Surface
-  SPlatform *p;               // general pointer to platform
+  struct SSurface *s;                 // general pointer to Surface
+  struct SPlatform *p;               // general pointer to platform
   long i,j;
   // T contains Surface position, RotatedT the position projected
   // onto the XY plane
   // 0-2 - actual surface points, 3-5 - project onto x/y plane, 6-7 normal vector
-  double T[8][3],RotatedT[8][3];
+  // 8 - PTMAX+8 PTs
+//  double **T, **RotatedT;//T[1000][3],RotatedT[1000][3];
+
+
+ // double AntennaDirAzi, AntennaDirElev, TRayAzi, TRayElev, OffsetAzi, OffsetElev;
+//  double AntennaGain, AntennaGainT, AntennaGainR;
+
+  #define PTMAX 5000
+  double T[PTMAX+8][3],RotatedT[PTMAX+8][3];
   double DirVecL = (20/ZoomX);
   long PFN;
   double DirAzi,DirEle;
   double S[3],Ang;
   long Shade;
+  double NormVecUnit[3];
+
 
   // now draw Surfaces
-  t=FirstSurface;
-  while (t != NULL)
+  long PTsUsed, LimitPTs;
+  double Density, TriArea, **CoordPT;
+  double L10[3], L20[3], NormVec[3], temp[3][3];
+  long TotalPTs,CPT;
+  struct SPlatform  *RadarPF;      // pointer to radar platform
+  long RadarPFNo;             // number of radar platform
+  double PlatformPosC[3],PlatformRotC[3];
+  double AntennaDirAzi, AntennaDirElev;
+  double OffsetAzi,OffsetElev, TRayAzi, TRayElev;
+  struct SRadar *r;
+  double AntennaGain;
+
+  int TH, TW;
+  char str[80];
+
+  r = FirstRadar;
+  if (r != NULL)
+    {
+      // find radar platform
+      FindPlatform(r->PlatformName, &RadarPF, &RadarPFNo, FirstPlatform);
+      FindPlatformPosition(RadarPF,STime,PlatformPosC);
+      FindPlatformRotation(RadarPF,STime,PlatformRotC);
+
+      // find the direction into which radar is pointing relative to
+      // the radar platform
+      FindAntennaDir(r, STime, PlatformPosC, PlatformRotC, &AntennaDirAzi,&AntennaDirElev);
+    }
+
+  s=FirstSurface;
+  while (s != NULL)
 	{
+
+       if (GlobalUnderSampleSurf == 0)  // this is only true if we write to disk
+      // sort of indicator - use all PTs
+        {
+          Density = s->PTDensity / 100000;
+        }
+       else
+        {
+      if (s->GlobalUnderSample == 1)
+        Density = s->PTDensity / GlobalUnderSampleSurf;
+      else
+        Density = s->PTDensity / s->USampleFactor;
+        }
+
+      for (CPT=0;CPT<3;CPT++) // for all 3 points on the triangle
+        for (j=0;j<3;j++)  // for all 3 coords
+          temp[CPT][j] = s->Tri[CPT][j]; //SurfP[SNo][PNo][CPT*3+j];   // temp[0-2] = actual triangle points
+      SubtractVec(temp[1], temp[0], L10);
+      SubtractVec(temp[2], temp[0], L20);
+      // calculate unnormalized normal vector (perp vec)
+      CrossP(L10, L20, NormVec);               // normal vector
+      TriArea = FindMag(NormVec)*0.5;
+      LimitPTs = ceil(TriArea*Density*1.1+100);
+      CoordPT = DMatrix(0,LimitPTs-1,0,2);
+//      T = DMatrix(0,8+LimitPTs-1,0,2);
+//      RotatedT = DMatrix(0,8+LimitPTs-1,0,2);
+
+      ConvertSurfaceToPTs(USE_TRI_ARRAY,s,0, &PTsUsed, LimitPTs, Density,
+        CoordPT, 0, NULL, NormVecUnit);
+
+      TotalPTs = PTsUsed;
+
+      for (CPT=0;(CPT<TotalPTs) && (CPT<PTMAX);CPT++) // for all 3 points on the triangle
+        {
+    	  Copy3DPoint(T[8+CPT],CoordPT[CPT]);
+        }
+
     // find pointer to Surface point platform
-	  FindPlatform(t->Name, &p, &PFN, FirstPlatform);
+	  FindPlatform(s->Name, &p, &PFN, FirstPlatform);
 	  // find Surface position
-	  Copy3DPoint(T[0],t->Tri[0]);
-	  Copy3DPoint(T[1],t->Tri[1]);
-	  Copy3DPoint(T[2],t->Tri[2]);
+	  Copy3DPoint(T[0],s->Tri[0]);
+	  Copy3DPoint(T[1],s->Tri[1]);
+	  Copy3DPoint(T[2],s->Tri[2]);
 	  // make a copy
 	  Copy3DPoint(T[3],T[0]);
 	  Copy3DPoint(T[4],T[1]);
@@ -763,19 +894,19 @@ void TMainForm::DrawSurfaces()
 	  T[6][0] = (T[0][0]+T[1][0]+T[2][0])*0.33333333;
 	  T[6][1] = (T[0][1]+T[1][1]+T[2][1])*0.33333333;
 	  T[6][2] = (T[0][2]+T[1][2]+T[2][2])*0.33333333;
-	  FindSurfaceNormal(t, &DirAzi, &DirEle);
+	  FindSurfaceNormal(s, &DirAzi, &DirEle);
 	  ConvertAnglesToVec(T[7], DirVecL, DirAzi, DirEle);
     T[7][0] += T[6][0];
-    T[7][1] += T[6][1];
+    T[7][1] += T[6][1];                   // castimg
     T[7][2] += T[6][2];
 	  // rotate points
-	  RotateNPoints(T, RotatedT, 8, PlatformRot[PFN]);
+	  RotateNPoints(T, RotatedT, 8+TotalPTs, PlatformRot[PFN]);
 	  // add relative point Surface position to platform position
-	  for (j=0;j<8;j++)
+	  for (j=0;j<8+TotalPTs;j++)
   	  for (i=0;i<3;i++)
       	T[j][i] = RotatedT[j][i] + PlatformPos[PFN][i];
 	  // now rotate to get screen coordinates
-	  RotatePoints3(T, RotatedT, 8, OffsetX, OffsetY, ZoomX, ZoomY, Rot, Pos,
+	  RotatePoints3(T, RotatedT, 8+TotalPTs, OffsetX, OffsetY, ZoomX, ZoomY, Rot, Pos,
 						 Focus);
 	  // and draw Surface
 
@@ -815,6 +946,50 @@ void TMainForm::DrawSurfaces()
  	  	    Canvas->MoveTo(RotatedT[i][2],RotatedT[i][1]);
 	  	    Canvas->LineTo(RotatedT[j][2],RotatedT[j][1]);
         }
+
+      Canvas->Pen->Style = psSolid;
+      Canvas->Pen->Color = clBlack;
+      Canvas->Brush->Color = clRed;
+        // PTs on surface
+ 	    for (i=8;i<8+TotalPTs;i++)
+        {
+          if (r != NULL)
+            {
+
+          TRayAzi = AziAngle(CoordPT[i-8]);
+          TRayElev = ElevAngle(CoordPT[i-8]);
+
+          OffsetAzi = -AntennaDirAzi + TRayAzi + PI;
+          OffsetElev = fabs(AntennaDirElev - TRayElev);
+
+          AntennaGain = fabs(FindAntennaGainRT(OffsetAzi, OffsetElev, r));
+
+//          sprintf(str,"%.3f",AntennaGain);
+
+          if ((fabs(AntennaGain) < TINY_NUM) || (AntennaGain == 0))
+            sprintf(str,"%.3G",double(-200));
+          else if (AntennaGain > 0)
+            {
+              if (fabs(log10(AntennaGain)) < TINY_NUM)
+                sprintf(str,"0");
+              else
+                sprintf(str,"%.3f",log10(AntennaGain));
+            }
+          else
+            sprintf(str,"Err");
+
+ 		  Canvas->Pen->Style = psSolid;
+          Canvas->Font->Color = clGray;
+          TW = Canvas->TextWidth(str);
+          TH = Canvas->TextHeight(str);
+          Canvas->Brush->Color = clWhite;
+		  Canvas->TextOut(RotatedT[i][2]-TW*0.5,RotatedT[i][1]-TH*0.5-7,str);
+          Canvas->Brush->Color = clRed;
+        }
+   	     Canvas->Ellipse(RotatedT[i][2]-2,RotatedT[i][1]-2,RotatedT[i][2]+3,RotatedT[i][1]+3);
+        }
+
+
      }
     // draw normal vector
     Canvas->Pen->Style = psSolid;
@@ -834,8 +1009,12 @@ void TMainForm::DrawSurfaces()
           }
       }
     // next surface
-	  t = t->next;
+	  s = s->next;
+      Free_DMatrix(CoordPT,0,0);
+  //    Free_DMatrix(T,0,0);
+  //    Free_DMatrix(RotatedT,0,0);
    } // end while
+
 }
 //---------------------------------------------------------------------------
 void TMainForm::DrawTargets()
@@ -1126,7 +1305,7 @@ void TMainForm::FreeAllVariables()
   FreeRadarList(&FirstRadar);
   FreeSimulationList(&FirstSimulation);
   FreeGeometryList(&FirstGeometry);
-   
+
 }
 //---------------------------------------------------------------------------
 void TMainForm::SetupAllVariables()
@@ -1159,14 +1338,15 @@ void TMainForm::SetupAllVariables()
   Rot[0] = -90*DegToRad; Rot[1] = -30*DegToRad; Rot[2] = -30*DegToRad;
   ZoomX = 0.01; ZoomY = ZoomX;
   Pos[0] = 0; Pos[1] = 0; Pos[2] = 0;
-  Focus[0] = 0; Focus[1] = 0; Focus[2] = 0;
+  Focus[0] = 1000; Focus[1] = 0; Focus[2] = 0;
   FocusPlatform = NULL;
   LButtonDown = FALSE;
   RButtonDown = FALSE;
   ZoomMode = FALSE;
+  ShowLittleCoordSystemAxes = TRUE;
   ShowCoordSystemAxes = TRUE;
   ShowElevationLines = TRUE;
-  ShowSurfaceOutlines = false;
+  ShowSurfaceOutlines = true;
   STime = 0;
   LeftBClickPoint.x = 0;
   LeftBClickPoint.y = 0;
@@ -1229,6 +1409,7 @@ void __fastcall TMainForm::FormPaint(TObject *Sender)
 
   DrawSurfaces();
   DrawCoordSystem();
+  DrawLittleCoordSystem();
   DrawTargets();
   DrawRadars();
   DrawPlatforms();
@@ -1619,8 +1800,8 @@ void __fastcall TMainForm::ScriptFile1Click(TObject *Sender)
 void __fastcall TMainForm::SpeedButton4Click(TObject *Sender)
 {
 //  Application->HelpFile = "SARSIMHLP.HLP";
-//  Application->HelpCommand(HELP_CONTENTS, 0);
-  Application->HelpJump("main");
+  Application->HelpCommand(HELP_CONTENTS, 0);
+//  Application->HelpJump("main");
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DeleteSurface1Click(TObject *Sender)
@@ -1762,5 +1943,12 @@ void __fastcall TMainForm::Contents1Click(TObject *Sender)
 {
   Application->HelpFile = "SARSIMHLP.HLP";
   Application->HelpCommand(HELP_CONTENTS, 0);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::LCoordClick(TObject *Sender)
+{
+  LCoord->Checked = !LCoord->Checked;
+  ShowLittleCoordSystemAxes = LCoord->Checked;
+  Invalidate();
 }
 //---------------------------------------------------------------------------

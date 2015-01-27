@@ -382,7 +382,7 @@ void __fastcall TSimulationForm::FormShow(TObject *Sender)
   // always at least as high as necessary
   if (CurrentSim.SimTYPE == RAW_RETURN)
     {
-      EditSampleF->Text = "oo";
+      EditSampleF->Text = "Screen";
       EditSampleF->Enabled = FALSE;
     }
   // estimated maximum magnitude
@@ -450,6 +450,10 @@ void __fastcall TSimulationForm::FormShow(TObject *Sender)
   // don't show in dB
   ShowdB = false;
   FinishedInitializing = TRUE;
+
+  EOverSample->Text = FloatToStr(CurrentSim.OverSampleFactor);
+  EPWidth->Text = FloatToStr(CurrentSim.PWidth);
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TSimulationForm::EXStartExit(TObject *Sender)
@@ -1179,5 +1183,47 @@ void __fastcall TSimulationForm::BBitmapClick(TObject *Sender)
 void __fastcall TSimulationForm::BHelpClick(TObject *Sender)
 {
   Application->HelpJump("simwing");
+}
+//---------------------------------------------------------------------------
+void __fastcall TSimulationForm::EOverSampleKeyPress(TObject *Sender, char &Key)
+{
+  if (Key == (unsigned char)ENTER_KEY)
+    EOverSampleExit(Sender);
+}
+//---------------------------------------------------------------------------
+void __fastcall TSimulationForm::EOverSampleExit(TObject *Sender)
+{
+  // busy updating -> quit that
+  if (Busy) StopThread();
+  char s[80];
+  double t;
+  t = atof(EOverSample->Text.c_str());
+  if (t<1 || t>100)
+    t=1;
+  CurrentSim.OverSampleFactor = t;
+  sprintf(s,FORMAT_6, CurrentSim.OverSampleFactor);
+  EOverSample->Text = s;
+  UpdateGraphBitmap(FALSE);
+}
+//---------------------------------------------------------------------------
+void __fastcall TSimulationForm::EPWidthExit(TObject *Sender)
+{
+  // busy updating -> quit that
+  if (Busy) StopThread();
+  char s[80];
+  double t;
+  t = atof(EPWidth->Text.c_str());
+  if (t<1 || t>100)
+    t=1;
+  CurrentSim.PWidth = t;
+  sprintf(s,FORMAT_6, CurrentSim.PWidth);
+  EPWidth->Text = s;
+  UpdateGraphBitmap(FALSE);
+}
+//---------------------------------------------------------------------------
+void __fastcall TSimulationForm::EPWidthKeyPress(TObject *Sender, char &Key)
+{
+  if (Key == (unsigned char)ENTER_KEY)
+     EPWidthExit(Sender);
 }
 //---------------------------------------------------------------------------

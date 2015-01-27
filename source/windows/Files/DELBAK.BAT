@@ -15,6 +15,12 @@ del *.prn
 del *.xls
 del *.hlp
 del simuaddon.*
+del *.zip
+del *.gid
+del scrap.*
+del *.log
+del *.bmp
+del unit1.*
 
 
 

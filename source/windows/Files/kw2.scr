@@ -1,0 +1,34 @@
+! Radar Simulator SARSIM II (version WIN32-280698a)
+! (C)1997,1998 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$SURFACE 
+Earth  ! Platform
+1000, -10, 0  ! Point 1 X,Y,Z (m)
+1000, 50, 0  ! Point 2 X,Y,Z (m)
+1000, 0, 10  ! Point 3 X,Y,Z (m)
+
+
+

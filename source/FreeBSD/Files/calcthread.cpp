@@ -36,6 +36,7 @@ void __fastcall TCalcThread::Execute()
   double **TargetRadialVel;
   double **ReturnAmp;
   double ***SurfP;
+  double **RadarDir;
 
   // calculate number of pulses
   FindPulsesInRange(CurrentSim.AzimuthStart,CurrentSim.AzimuthEnd,CRadar,
@@ -79,11 +80,14 @@ void __fastcall TCalcThread::Execute()
   TargetRadialVel = DMatrix(0,TargetNo-1,0,PulseNo-1);
   ReturnAmp = DMatrix(0,TargetNo-1,0,PulseNo-1);
   SurfP = DMatrix3(0,SurfaceNo-1,0,PulseNo-1,0,8);
+  RadarDir = DMatrix(0,PulseNo-1,0,1);
+
 
   // calculate range-delay, return amp etc. for each pulse
   CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar, PulseSendTime,
                 PulseNo, MainForm->FirstTarget, MainForm->FirstPlatform,
-                 MainForm->FirstSurface, SurfP, FirstPulse);
+                 MainForm->FirstSurface, SurfP, RadarDir, FirstPulse);
+
 
   if (ShowAllTargets)  // this is the special case there we want to
                        // adjust the range such that all targets are shown
@@ -139,7 +143,7 @@ void __fastcall TCalcThread::Execute()
   CalcArray2(CRadar, &CurrentSim, Data, PulseNo, SamplePoints, PulseFreq,
              RangeDelay, TargetRadialVel, ReturnAmp, &MaxMagnitude,
              MainForm->FirstTarget, MainForm->FirstPlatform,
-             MainForm->FirstSurface, SurfP);
+             MainForm->FirstSurface, SurfP,RadarDir);
 
   // free arrays allocated
   Free_DVector(PulseFreq,0);
@@ -147,6 +151,7 @@ void __fastcall TCalcThread::Execute()
   Free_DMatrix(TargetRadialVel,0,0);
   Free_DMatrix(ReturnAmp,0,0);
   Free_DMatrix3(SurfP,0,0,0);
+  Free_DMatrix(RadarDir,0,0);
 }
 /*
 //---------------------------------------------------------------------------

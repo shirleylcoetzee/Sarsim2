@@ -6,10 +6,10 @@
 
 
 // version number
-// #define version "LINUX-030698a\0"
+// #define version "LINUX-231098a\0"
 
 // Edited by RTL, 22/03/2004; corrected return power amplitude
-#define version "LINUX-280698b\0"
+#define version "LINUX-231098b\0"
 
 
 
@@ -19,3 +19,6 @@
 
 // if surfaces are NOT used (or compiled for linux) comment next line
 // #define WITH_SURFACE_ALGORITHM
+
+
+

@@ -1,0 +1,121 @@
+! Radar Simulator SARSIM II (version WIN32-280698a)
+! (C)1997,1998 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+
+$TARGET Earth  ! Platform
+1000, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1010, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1020, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1050, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1070, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1090, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1100, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1110, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+1130, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+$RADAR
+Radar1               ! Name of radar
+Earth                ! Platform name of radar
+CHIRP
+0.05                 ! (GHz) Chirp bandwidth
+1000                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+1000                 ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+1                    ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+ISOTROPIC            ! Isotropic transmitter antenna
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+0                    ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+Radar1               ! Name of radar
+948.02               ! (m) Slant range start
+1355.91              ! (m) Slant range end
+-0.581203            ! (s) Azimuth range start
+0.563377             ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.05                 ! (GHz) Sample frequency
+0                    ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+sim1.bin             ! File Name of output file
+                     ! Size : 1145 (Azimuth) x 136 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+
+

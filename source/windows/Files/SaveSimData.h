@@ -67,6 +67,11 @@ __published:	// IDE-managed Components
   TLabel *Label19;
   TLabel *Label20;
   TBitBtn *BitBtn2;
+	TGroupBox *GroupBox4;
+	TLabel *Label21;
+	TLabel *Label22;
+	TEdit *EOverSample;
+	TEdit *EPWidth;
 	void __fastcall BitBtn1Click(TObject *Sender);
 	void __fastcall BCloseClick(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
@@ -86,6 +91,10 @@ __published:	// IDE-managed Components
   
   
   void __fastcall BitBtn2Click(TObject *Sender);
+	void __fastcall EOverSampleExit(TObject *Sender);
+	void __fastcall EOverSampleKeyPress(TObject *Sender, char &Key);
+	void __fastcall EPWidthExit(TObject *Sender);
+	void __fastcall EPWidthKeyPress(TObject *Sender, char &Key);
 private:	// User declarations
     long PointsSlant;
     long PointsAzi;

@@ -52,6 +52,12 @@ double Dist3D(double x1[3], double x2[3]);
 void ConvertToUpperCase( char *DataString );
 double Min(double a, double b);
 double Max(double a, double b);
+void SubtractVec(double a[3], double b[3], double Result[3]);
+void DivVec(double a[3], double fac, double Result[3]);
+void AddVec(double a[3], double b[3], double Result[3]);
+void MultVec(double a[3], double fac, double Result[3]);
+
+
 
 #ifdef WITH_SURFACE_ALGORITHM
 // add surf

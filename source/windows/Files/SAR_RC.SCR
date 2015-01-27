@@ -1,0 +1,233 @@
+! Radar Simulator SARSIM II version A01 (c) 1997 R.L.
+
+
+$PLATFORM  EARTH
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+0                    ! (deg) X-axis Rotation
+0                    ! (deg) Y-axis Rotation
+0                    ! (deg) Z-axis Rotation
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+$PLATFORM  PLANE
+TRAJECTORY
+CUBIC                ! Interpolation method for Position X (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Y (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Z (m) vs Time (s)
+INLINE
+2                    ! Number of samples for Position X (m) vs Time (s)
+0, 100  1, -100
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0, -10000
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0, 2000
+NOT_ALIGNED
+0                    ! (deg) X-axis Rotation
+0                    ! (deg) Y-axis Rotation
+0                    ! (deg) Z-axis Rotation
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$TARGET EARTH  ! Platform
+0, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-100, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+100, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-190, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+190, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-190, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-170, 80, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-100, 100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+-20, 80, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+0, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+100, 55, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET EARTH  ! Platform
+190, 100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+150, 80, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+50, 30, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+150, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+50, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+0, -50, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET earth  ! Platform
+-50, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+-150, -100, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+-190, -50, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+-190, 40, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+-140, 95, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+-60, 93, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+$TARGET Earth  ! Platform
+0, 40, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+
+$RADAR
+RADAR1               ! Name of radar
+PLANE                ! Platform name of radar
+CHIRP
+0.1                  ! (GHz) Chirp bandwidth
+800                  ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+300                  ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+5.3                  ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+30                   ! (deg) Elevation beam width
+30                   ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+-11.3                ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+RADAR1               ! Name of radar
+10010                ! (m) Slant range start
+10510                ! (m) Slant range end
+-0.5                 ! (s) Azimuth range start
+1.499                ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.15                 ! (GHz) Sample frequency
+1.68257E-07          ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+SIM1.ASC             ! File Name of output file
+                     ! Size : 600 (Azimuth) x 500 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+
+

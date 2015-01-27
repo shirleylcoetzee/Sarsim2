@@ -14,7 +14,6 @@
 #include <stdlib.h>
 #include <math.h>
 #include <values.h>
-
 #include <ctype.h>
 #include "vector.h"
 
@@ -723,6 +722,7 @@ double FindMag(double x[3])
 {
   return sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]);
 }
+//-------------------------------------------------------------------------//
 // return cross product
 void CrossP(double a[3], double b[3], double Result[3])
 {
@@ -730,6 +730,35 @@ void CrossP(double a[3], double b[3], double Result[3])
   Result[1] = a[2]*b[0] - a[0]*b[2];
   Result[2] = a[0]*b[1] - a[1]*b[0];
 }
+//-------------------------------------------------------------------------//
+void SubtractVec(double a[3], double b[3], double Result[3])
+{
+  Result[0] = a[0] - b[0];
+  Result[1] = a[1] - b[1];
+  Result[2] = a[2] - b[2];
+}
+//-------------------------------------------------------------------------//
+void DivVec(double a[3], double fac, double Result[3])
+{
+  Result[0] = a[0] / fac;
+  Result[1] = a[1] / fac;
+  Result[2] = a[2] / fac;
+}
+//-------------------------------------------------------------------------//
+void MultVec(double a[3], double fac, double Result[3])
+{
+  Result[0] = a[0] * fac;
+  Result[1] = a[1] * fac;
+  Result[2] = a[2] * fac;
+}
+//-------------------------------------------------------------------------//
+void AddVec(double a[3], double b[3], double Result[3])
+{
+  Result[0] = a[0] + b[0];
+  Result[1] = a[1] + b[1];
+  Result[2] = a[2] + b[2];
+}
+//-------------------------------------------------------------------------//
 
 // addition surf
 

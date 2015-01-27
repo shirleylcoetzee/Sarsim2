@@ -1,0 +1,107 @@
+! Radar Simulator SARSIM II (version WIN32-250298a)
+! (C)1997 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  EARTH
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+$PLATFORM  PLANE
+TRAJECTORY
+CUBIC                ! Interpolation method for Position X (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Y (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Z (m) vs Time (s)
+INLINE
+2                    ! Number of samples for Position X (m) vs Time (s)
+0, 0  
+1, -90
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0, -4500
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0, 3500
+NOT_ALIGNED
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$SURFACE 
+EARTH  ! Platform
+0, -30, 0  ! Point 1 X,Y,Z (m)
+-40, 30, 0  ! Point 2 X,Y,Z (m)
+40, 30, 0  ! Point 3 X,Y,Z (m)
+
+
+
+$RADAR
+RADAR                ! Name of radar
+PLANE                ! Platform name of radar
+CHIRP
+0.1                  ! (GHz) Chirp bandwidth
+1024                 ! (ns)  zero to zero Pulse width
+LINEAR               ! Linear ramp envelope
+20                   ! (ns)  Pulse rise time
+20                   ! (ns)  Pulse fall time
+CONSTANT             ! Constant PRI
+400                  ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+5.3                  ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+60                   ! (deg) Elevation beam width
+6                    ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+-40                  ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+RADAR                ! Name of radar
+5550                 ! (m) Slant range start
+5870                 ! (m) Slant range end
+-0.64                ! (s) Azimuth range start
+0.6399               ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.12                 ! (GHz) Sample frequency
+1.95932579E-07       ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+D:\work\sarsim2\surf\idl\TEST.BIN ! File Name of output file
+                     ! Size : 512 (Azimuth) x 256 (Slant Range) points
+CENTRE               ! Point Target position relative to pulse
+
+
