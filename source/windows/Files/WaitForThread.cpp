@@ -26,6 +26,6 @@ void __fastcall TWaitThread::Execute()
 //---------------------------------------------------------------------------
 void TWaitThread::UpdateProgress()
 {
-  Synchronize(DoVisualUpdate);
+  Synchronize(&DoVisualUpdate);
 }
 

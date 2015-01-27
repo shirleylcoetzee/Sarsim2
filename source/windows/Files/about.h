@@ -8,6 +8,7 @@
 #include <vcl\Forms.hpp>
 #include <vcl\ExtCtrls.hpp>
 #include <vcl\Buttons.hpp>
+#include <Graphics.hpp>
 //---------------------------------------------------------------------------
 class TAboutForm : public TForm
 {
@@ -25,6 +26,9 @@ __published:	// IDE-managed Components
   TPanel *Panel1;
   TLabel *Label1;
   TLabel *LExp;
+        TLabel *Label7;
+        TLabel *Label8;
+        TLabel *lLastBuild;
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FormClose(TObject *Sender, TCloseAction &Action);

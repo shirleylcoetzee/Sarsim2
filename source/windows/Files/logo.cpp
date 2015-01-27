@@ -30,3 +30,10 @@ void __fastcall TLogoForm::FormPaint(TObject *Sender)
   Height = Image1->Height;
 }
 //---------------------------------------------------------------------------
+void __fastcall TLogoForm::Image1Click(TObject *Sender)
+{
+  Close();
+  Timer1->Enabled = false;
+  MainForm->Visible = true;
+}
+//---------------------------------------------------------------------------

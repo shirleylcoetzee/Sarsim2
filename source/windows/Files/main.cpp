@@ -923,7 +923,9 @@ void TMainForm::DrawSurfaces()
           Shade = Shade + 256*Shade +65536*Shade;
         }
       // draw solid surface
-      POINT P[4];
+      //POINT P[4];
+      //changed by abarta to a newer version
+      TPoint P[4];
  	    for (i=0;i<3;i++)
         {
           P[i].x = RotatedT[i][2];
@@ -1338,7 +1340,8 @@ void TMainForm::SetupAllVariables()
   Rot[0] = -90*DegToRad; Rot[1] = -30*DegToRad; Rot[2] = -30*DegToRad;
   ZoomX = 0.01; ZoomY = ZoomX;
   Pos[0] = 0; Pos[1] = 0; Pos[2] = 0;
-  Focus[0] = 1000; Focus[1] = 0; Focus[2] = 0;
+  //abarta Focus[0] changed to 0 from 1000m
+  Focus[0] = 0; Focus[1] = 0; Focus[2] = 0;
   FocusPlatform = NULL;
   LButtonDown = FALSE;
   RButtonDown = FALSE;

@@ -3,6 +3,8 @@
 #pragma hdrstop
 #include "dest.h"
 #include "about.h"
+//added by abarta
+#include <stdio.h>
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"
 TAboutForm *AboutForm;
@@ -11,6 +13,9 @@ TAboutForm *AboutForm;
 __fastcall TAboutForm::TAboutForm(TComponent* Owner)
 	: TForm(Owner)
 {
+ char temp[100];
+ sprintf(temp,"Last Build on: %s at %s",__DATE__,__TIME__);
+ this->lLastBuild->Caption = temp;
 }
 //---------------------------------------------------------------------------
 void __fastcall TAboutForm::Timer1Timer(TObject *Sender)

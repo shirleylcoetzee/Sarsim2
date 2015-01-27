@@ -233,6 +233,28 @@ void HLStoRGB( double H, double L, double S, unsigned char *r,
 //  return RGB((BYTE)(r*255),(BYTE)(g*255),(BYTE)(b*255));
 }
 //-------------------------------------------------------------------------//
+//added by abarta
+/**
+*  Calulated the max of 2 numbers
+*/
+double max (double a, double b)
+{
+ if (a < b)
+  return b;
+ else
+  return a;
+}
+/**
+*  Calulated the min of 2 numbers
+*/
+double min(double a, double b)
+{
+ if (a < b)
+  return a;
+ else
+  return b;
+}
+
 void RGBtoHSL(double r, double g, double b, double *H, double *S, double *L )
 {
    double delta;

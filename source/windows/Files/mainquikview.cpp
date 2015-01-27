@@ -10,6 +10,8 @@
 #include "selectpal.h"
 #include "general.h"
 #include "objectstructdef.h"
+//added by abarta
+#include <stdio.h>
 
 // minimum change of range values such that an update occurs
 #define MIN_CHANGE 0.9

@@ -12,6 +12,10 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+//added by abarta for rand()
+#include <stdlib.h>
+#include <time.h>
+//---------------------------
 #include "general.h"
 #include "linkedlist.h"
 #include "vector.h"
@@ -1167,7 +1171,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                   double SecPerSample,long TargetNo, double *PulseFreq,
                   double **RangeDelay, double **TargetRadialVel,
                   double **ReturnAmp,long PNo, SRadar *r, double PulseCenter,
-                  double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
+				  double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
             long SurfaceNo, double *Template, double OverSampleFactor,
             long Pow2SamplePoints, long UsedSamples, struct SSurface *FirstSurface,
             long ZeroedSamples,double **RadarDir)
@@ -1227,7 +1231,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 
   // calculate noise amplitude
   if ((r->PulseType == MONO) || (r->PulseType == BARKER))
-    RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*(1/r->PulseWidth));
+	RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*(1/r->PulseWidth));
   else if (r->PulseType == CHIRP)
     RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*r->ChirpBW);
   else if (r->PulseType == OTHER_PULSE)
@@ -1241,7 +1245,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 
   // for all targets
   for (TNo=0;TNo<TargetNo;TNo++)
-    {
+	{
       AddPhase = fmod(TwoPi * (   // phase shift due to range
                              -(PulseFreq[PNo]*RangeDelay[TNo][PNo])  ),TwoPi);
       SinCalc = sin(AddPhase);
@@ -1274,10 +1278,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
       s = PointToSurface(FirstSurface, SNo+1);
 
       if (GlobalUnderSampleSurf == 0)  // this is only true if we write to disk
-      // sort of indicator - use all PTs
-        {
+	  // sort of indicator - use all PTs
+		{
           Density = s->PTDensity;
-        }
+		}
       else
         {
           if (s->GlobalUnderSample == 1)
@@ -1324,10 +1328,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
             {
           AntennaDirAzi=RadarDir[PNo][0];
           AntennaDirElev=RadarDir[PNo][1];
-          TRayAzi = AziAngle(CoordPT[CPT]);
+		  TRayAzi = AziAngle(CoordPT[CPT]);
           TRayElev = ElevAngle(CoordPT[CPT]);
           OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
-          OffsetElev = fabs(AntennaDirElev - TRayElev);
+		  OffsetElev = fabs(AntennaDirElev - TRayElev);
 
           AntennaGain = FindAntennaGainRT(OffsetAzi, OffsetElev, r);
 /*
@@ -1374,10 +1378,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                                 (r->AntennaRDef).XAxis[0].DataArray,
                                 (r->AntennaRDef).YAxis[0].DataArray,
                                 (r->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaRDef).IntMethod[0]))*
-                             dBToFac(Interpolate((r->AntennaRDef).NoP[1],
+							 dBToFac(Interpolate((r->AntennaRDef).NoP[1],
                                 (r->AntennaRDef).XAxis[1].DataArray,
                                 (r->AntennaRDef).YAxis[1].DataArray,
-                                (r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
+								(r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
             }
 
           AntennaGain = sqrt(AntennaGainR * AntennaGainT);
@@ -1424,12 +1428,12 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                             (s->GainDataDef).YAxis[0].DataArray,
                             (s->GainDataDef).Coeff[0], Angle*RadToDeg,
                             (s->GainDataDef).IntMethod[0]));
-                }
+				}
            }
 
 
           AddPhase = fmod(TwoPi * (   // phase shift due to range
-                             -(PulseFreq[PNo]*SurfRangeDelay[CPT])  ),TwoPi);
+							 -(PulseFreq[PNo]*SurfRangeDelay[CPT])  ),TwoPi);
           SinCalc = sin(AddPhase);
           CosCalc = cos(AddPhase);
 
@@ -1453,7 +1457,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
     //      for (CSample=0;CSample<UsedSamples;CSample++)
           for (CSample=ZeroedSamples;CSample<UsedSamples-ZeroedSamples;CSample++)   //
             {
-              RealSample = CSample + PulseInsertStart;
+			  RealSample = CSample + PulseInsertStart;
               if ((RealSample >= 0) && (RealSample < SamplePoints))
                 {
                   OnePulse[RealSample*2] += Amp*
@@ -1463,22 +1467,41 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                  }
 
             }
-        } // end for all surface PTs
+		} // end for all surface PTs
       Free_DMatrix(CoordPT,0,0);
       Free_DVector(SurfRangeDelay,0);
   }  // end for all surf
 
+  //added by abarta
+  //generate a random seed for each pulse
+  srand(time(NULL));
+  r_seed = rand();
+  /*
+	// distance between target and radar
+		  double TargetPosRelativeToRadar[3];
+		  double TargetDist = sqrt( DotProduct(TargetPosRelativeToRadar,
+							TargetPosRelativeToRadar, 3) );
+  */
+  //------------------
   for (CSample=0;CSample<SamplePoints;CSample++)
     {
       // add noise
-      if (RootOfNoisePower != 0)
+	  if (RootOfNoisePower != 0)
         {
-          OnePulse[CSample*2] += Gaussian(0,RootOfNoisePower,false);
-          OnePulse[CSample*2+1] += Gaussian(0,RootOfNoisePower,false);
-        }
-      Amp = OnePulse[CSample*2] * OnePulse[CSample*2] +
-            OnePulse[CSample*2+1] * OnePulse[CSample*2+1];
-      if (Amp > *MaxMagOfPulse)
+		  if (r->ApplyAGC == 1) {
+			   OnePulse[CSample*2] += (Gaussian(0,RootOfNoisePower,false) * 1e8);
+			   OnePulse[CSample*2+1] += (Gaussian(0,RootOfNoisePower,false) * 1e8);
+		  }
+		  else
+		  {
+              OnePulse[CSample*2] += Gaussian(0,RootOfNoisePower,false);
+			  OnePulse[CSample*2+1] += Gaussian(0,RootOfNoisePower,false);
+          }
+		}
+
+	  Amp = OnePulse[CSample*2] * OnePulse[CSample*2] +
+			OnePulse[CSample*2+1] * OnePulse[CSample*2+1];
+	  if (Amp > *MaxMagOfPulse)
         *MaxMagOfPulse = Amp;
     }
   *MaxMagOfPulse = sqrt(*MaxMagOfPulse);
@@ -1997,45 +2020,43 @@ double **RadarDir, long FirstPulse)
 
           // the radar equation : NOTE that ReturnAmp contains the amplitude
           // not the power (which would be the square of that)
-          if (TargetDist > 0)
-         {
-           if (Radar->ApplyAGC)
-             {
+		  if (TargetDist > 0)
+		 {
+		   if (Radar->ApplyAGC)
+		   {
 
+			 /*               if (Radar->AGCType == 0)
+					 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+			   else
+				   ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+			 }
+		   else
+				 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
+								 (TargetDist * TargetDist);
+  */
 
+  // Edited by RTL on 21/03/2004
+//			double tragetDstTemp = TargetDist * TargetDist;
+			if (Radar->AGCType == 0)
+				ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+									   AntennaGain * sqrt(RCS));
+			else
+				ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+									   AntennaGain * sqrt(RCS));
+			 }
+		   else
+			   ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+			   AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
 
-//               if (Radar->AGCType == 0)
-//                     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//               else
-// /*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//             }
-//           else
-//                 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
-//                                  (TargetDist * TargetDist);
+			 //ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+			 //						AntennaGain * sqrt(RCS));
+			 //int stophere=0;
+		 }
+		  else
+			ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
 
-// Edited by RTL on 21/03/2004
-               if (Radar->AGCType == 0)
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS));
-               else
-/*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                        AntennaGain * sqrt(RCS));
-             }
-           else
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
-
-
-
-
-
-
-         }
-          else
-            ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
-
-        } // for each pulse end
-    }  // for each target end
+		} // for each pulse end
+	}  // for each target end
 
 
   // free memory allocated
@@ -2376,7 +2397,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
         {
           OverSampledTemplate[CSample*2] *= Mult;
           OverSampledTemplate[CSample*2+1] *= Mult;
-        }
+        }                                             
     }
   // downsample
   //

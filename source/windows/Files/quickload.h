@@ -5,6 +5,8 @@
 #include "io.h"
 #include "loadfile.h"
 #include "objectstructdef.h"
+//added by abarta
+#include <stdio.h>
 #define BUFFERSIZE 8192  //2048
 class TQuickRead {
   private :

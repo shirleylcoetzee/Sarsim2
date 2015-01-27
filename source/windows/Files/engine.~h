@@ -68,7 +68,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
 void CalcGeometry(double **RangeDelay,double **ReturnAmp,double **TargetRadialVel,
 struct SRadar *Radar,double *PulseSendTime, long PulseNo, struct STarget *FirstTarget,
 struct SPlatform *FirstPlatform, struct SSurface *FirstSurface, double ***SurfP,
-double **RadarDir);
+double **RadarDir, long FirstPulse);
 
 
 void FindSurfaceNormal(SSurface *s, double *AziAng, double *EleAng);

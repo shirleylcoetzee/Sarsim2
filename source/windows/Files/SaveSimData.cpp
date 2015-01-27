@@ -417,7 +417,7 @@ void TSaveSimForm::SaveData(double *MaxMagnitude, double *TotalSampleNo,
   Free_DMatrix(Data,0,0);
   Free_DMatrix3(SurfP,0,0,0);
   fclose(OutFilep);
-*/
+  */
 }
 
 //---------------------------------------------------------------------------

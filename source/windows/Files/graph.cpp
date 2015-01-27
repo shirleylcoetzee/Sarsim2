@@ -7,6 +7,9 @@
 #include "general.h"
 #include <math.h>
 #include <values.h>
+
+//added by abarta
+#include <stdio.h>
 //---------------------------------------------------------------------------
 
 // global variables

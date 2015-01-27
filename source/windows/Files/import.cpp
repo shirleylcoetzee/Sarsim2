@@ -7,6 +7,8 @@
 #include "main.h"
 #include "general.h"
 #include "linkedlist.h"
+//added by abarta
+#include <stdio.h>
 
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"

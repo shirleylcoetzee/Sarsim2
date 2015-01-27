@@ -7,6 +7,8 @@
 #include "linkedlist.h"
 #include "graphform.h"
 #include "general.h"
+//added by abarta
+#include <stdio.h>
 //---------------------------------------------------------------------------
 #pragma resource "*.dfm"
 extern double GlobalUnderSampleSurf;

@@ -7,6 +7,7 @@
 #include <vcl\StdCtrls.hpp>
 #include <vcl\Forms.hpp>
 #include <vcl\ExtCtrls.hpp>
+#include <Graphics.hpp>
 //---------------------------------------------------------------------------
 class TLogoForm : public TForm
 {
@@ -15,6 +16,7 @@ __published:	// IDE-managed Components
   TTimer *Timer1;
   void __fastcall Timer1Timer(TObject *Sender);
   void __fastcall FormPaint(TObject *Sender);
+	void __fastcall Image1Click(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
   __fastcall TLogoForm(TComponent* Owner);

@@ -6,7 +6,10 @@
 // #define version "WIN32-231098a\0"
 
 // RTL - new version; corrected power return
-#define version "WIN32-231098b\0"
+//#define version "WIN32-231098b\0"
+
+//2005 new updates and bug fixes - Adam Barta adambarta@gmail.com
+#define version "WIN32-300106\0"
 
 // destination (operating system)
 #define COMPILE_FOR_WINDOWS32  // we want to compile it for windows

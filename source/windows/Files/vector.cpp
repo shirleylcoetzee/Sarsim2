@@ -3,6 +3,10 @@
 #pragma hdrstop
 #include "vector.h"
 #include "math.h"
+//added by abarta
+#include <iostream>
+using namespace std;
+
 
 //---------------------------------------------------------------------------
 Vec::Vec(int m)   // constructor Vec a(3)
@@ -50,7 +54,7 @@ double & Vec::operator[](int i)  // access : double x = a[3]
 Vec Vec::operator+(Vec &op)      // + operator
 {
  Vec temp(row);
- if(row!=op.row) {cout<<"Parameter not match in Vec +\n";exit(0);}
+  if(row!=op.row) {cout << "Parameter not match in Vec +\n";exit(0);}
  int i;
  for(i=0;i<row;i++) temp.dm[i]=dm[i]+op.dm[i];
  return temp;
