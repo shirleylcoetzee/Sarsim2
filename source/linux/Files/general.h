@@ -7,7 +7,7 @@
 #define M_MOD 2147483647.0  // modulus
 #include <stdlib.h>
 
-#include "vector.h"
+#include <vector>
 
 #ifdef COMPILE_FOR_WINDOWS32
   void SetRect(TRect *Rect, int left, int top, int right, int bottom);
@@ -26,7 +26,7 @@ double Sa(double x);
 double dBToFac(double dB);
 double FacTodB(double Fac);
 void Swap(double *A, double *B);
-double round(double x);
+//double round(double x);
 void FindPolyCoeff(double *t, double *y, int n, double **Coeff);
 void gauss(double **a,double *c,double *x, int n);
 double SciNotation(double N,int *expo);

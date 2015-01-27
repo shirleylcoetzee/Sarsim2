@@ -8,6 +8,7 @@
 #include "engine.h"
 #include <time.h>
 #include <math.h>
+#include <cstring>
 
 // structure containing entry points (first element pointers)
 // for all linked lists

@@ -13,6 +13,8 @@
 #include "parser.h"
 #include "engine.h"
 #include "objectstructdef.h"
+#include <cmath>
+#include <cstring>
 
 //---------------------------------------------------------------------------
 bool LoadDataFile(char FileName[],SDataDefinition *DataDef)

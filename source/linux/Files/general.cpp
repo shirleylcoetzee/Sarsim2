@@ -15,7 +15,7 @@
 #include <math.h>
 #include <values.h>
 #include <ctype.h>
-#include "vector.h"
+#include <vector>
 
 #ifdef COMPILE_FOR_WINDOWS32
 void SetRect(TRect *Rect, int left, int top, int right, int bottom)

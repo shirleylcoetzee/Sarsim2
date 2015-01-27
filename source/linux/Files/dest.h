@@ -15,10 +15,9 @@
 
 // destination (operating system)
 //#define COMPILE_FOR_WINDOWS32  // we want to compile it for windows
-                               // comment this line if to compile for unix
+                      // comment out this line if to compile for unix
 
-// if surfaces are NOT used (or compiled for linux) comment next line
-// #define WITH_SURFACE_ALGORITHM
+// if surfaces are NOT used (or compiled for linux) comment next line #define WITH_SURFACE_ALGORITHM
 
 
 

@@ -14,6 +14,7 @@
 #include "engine.h"
 #include "linkedlist.h"
 #include <values.h>
+#include <cstring>
 
 extern const char FunctionNames[MAX_FUNCTIONS][12];
 extern struct SSimulation DefaultSimulationValues;

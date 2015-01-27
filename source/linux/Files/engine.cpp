@@ -14,7 +14,7 @@
 #include <string.h>
 #include "general.h"
 #include "linkedlist.h"
-#include "vector.h"
+#include <vector>
 
 // small number to encounter rounding errors
 const double ROUNDERROR = 1E-12;

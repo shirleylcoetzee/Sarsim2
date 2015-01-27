@@ -10,6 +10,7 @@
 #include "linkedlist.h"
 #include "general.h"
 #include <ctype.h>
+#include <cstring>
 
 //-------------------------------------------------------------------------//
 // Function CopySurface                                                     //
