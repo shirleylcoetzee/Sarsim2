@@ -1,0 +1,199 @@
+
+
+SarSim II Upgrade
+-----------------
+
+
+The objective is to upgrade SarSim II from a purely monostatic simulation
+system to a bistatic/multistatic simulation system.
+
+
+In order to make this upgrade as efficient as possible, the following
+implementation issues will be observed:
+
+1. The script file, which contains all the radar/target/simulation parameters,
+   will not be changed.  Therefore the modules which write and read the
+   script file will also not be changed.
+
+2. The graphical user interface will also not be changed.  This also implies
+   that there is no change in the way that radars, targets or platforms are
+   described.
+
+
+
+In order to comply with the above two provisions, SarSim II would *always*
+need to operate in a multistatic mode.  This has the following implications:
+
+1. As soon as more than one radar is defined, the output of every radar will
+   be detected by every other radar.  Note that the simulator operates at
+   baseband, and it is the baseband signals from all other radars that
+   are coherently summed to produce the sampled output of a particular radar.
+
+2. As before, only the output of *one* radar, chosen by the user, is saved
+   to disk.  However, this output is now a coherent combination of all
+   defined radars.
+
+3. If a radar is to act as a receiver only, its output power could be set
+   to zero.
+
+4. If a radar is to act as a transmitter only, it should not be chosen
+   when writing the simulation output to disk.
+
+
+
+The simulator currently works as follows:
+
+Starting at time=0s, the return of transmitted pulse #1 is calculated
+over the selected range interval.
+Then, at time=1xPRI, the return of transmitted pulse #2 is calculated
+over the same selected range interval.
+The user can select an azimuth range, which will extend the number
+of transmitted pulses into the future, at intervals equal to the PRI,
+or into the past, at intervals equal to the PRI.
+
+The important thing to realise is that SarSim II is inherently a
+*pulsed* radar system simulator.  Let us imagine two radars, one
+transmitter and one receiver, situated at the same position.  For
+the receiver to "see" the echoes due to the transmitter, it has to
+have the same PRF.  One cannot just oberserve one long range line,
+during which one should receive multiple echoes!
+
+There is another problem, related to the above.  Let us again imagine
+one transmitter and one receiver, but this time the transmitter is
+very far away from the receiver.  The separation distance is such,
+that the echoe of pulse #1 would only arrive at the receiver during
+the second sampling interval.  However, due to the way SarSim II is
+written, this ambiguous return would not be seen!
+
+This ambiguity problem could possibly have a solution: Let's say
+we want to be able to resolve the first ambiguity, and that the
+PRI is 3 seconds, and the sampling window extends from 1-2 seconds.
+Thus we would be sampling from 1-2 seconds, and again at 4-5 seconds
+for the second pulse.  Now, we could let the sampling window extend
+from 1-5 seconds, which means we would be sampling from 1-5 seconds
+and again at 4-8 seconds.  During post-processing, we could coherently
+add the return from 4-5 seconds during the first sampling period to
+the return from 4-5 seconds of the second sampling period.
+
+The above solution has (at least) one problem: If the received signal
+contains noise, we would be adding noise twice!  The solution to this
+problem would be to add the noise during post-processing, and let
+SarSim II calculate noise-free samples.
+
+
+
+Can a receiver receive the direct illumination of a transmitter?
+
+No.  SarSim II only calculates the return off point targets.
+This problem might be solved by placing a point target with a
+suitable RCS at exactly the same position as the transmitter.
+Initial tests have shown that SarSim II has no inherent
+problems (such as divide-by-zero) with a point target being
+situated at the same position as a radar.
+
+
+
+Can we simulate a receiver that is receiving continuously?
+
+It is conceivable that the sampling window in range extends from zero
+to the PRI, which would mean that there should be a seamless transition
+from pulse to pulse.  However, it must be investigated how "seamless"
+this transition is, or if there are any "glitches".
+
+
+
+Can we simulate a transmitter that is transmitting continuously?
+
+It is conceivable that the duty cycle could be set to 100%, or,
+conversely, that the pulse length is equal to the PRI.  Again,
+it must be investigated how "seamless" the transition from pulse
+to pulse is, or if there are any "glitches", perhaps due to lack 
+of coherency.  Many CW transmitters use some kind of frequency
+modulation.  If it is simply linear FM with only an up-ramp in
+frequency, this could, perhaps, be modelled with a simple chirp
+waveform.  If it is more complicated, like a triangular 
+frequency ramp, then, perhaps, a saved waveform can be uploaded.
+
+
+
+Can different radars have different centre frequencies?
+
+Yes, they could.  Since only the baseband signals are added
+together, it is inherently assumed that the receiver can
+receive and demodulate any centre frequency.  This is,
+ofcourse, not always possible in practice.
+
+
+
+Can different radars have different PRFs?
+
+No.  At least not yet.  All the SarSim II calculations are done
+at instances equal to the PRI, and it is believed that to
+overcome this limitation would result in a major re-write of
+the simulator.
+
+
+
+Is it possible to simulate a simple bistatic TV scenario?
+
+It seems possible.
+An omni-directional TV transmitter could transmit a user-defined 
+signal with a certain PRF.  Furthermore, an omni-directional 
+point target would be placed at the TV transmitter in order to 
+provide the necessary "reflection" for the receiver(s).
+The aircraft target could be placed on a moving platform with
+a user-defined trajectory.
+The receiver (either omnidirectional or directional) would have 
+to have the same PRF as the transmitter, and transmit an arbitrary 
+waveform with zero power.  Note that there might be interference
+between the direct transmission of the transmitter and the
+reflected echoe from the target.  One could use a directional
+receiver to try and minimise the TV signal.  If the receiver
+is supposed to be shielded from the transmitter, one can easily
+remove the point target placed at the transmitter.
+One can also point two receivers at the target, but their
+respective outputs would have to be saved in two separate files.
+A third receiver could be pointed at the transmitter, in order
+to obtain a sample of the transmitted waveform.  For this
+scenario, the point target at the transmitter has to be present.
+
+In practice, the signals from the two receivers might be mixed
+together at some IF in order to obtain direction of arrival.
+In SarSim II, all signals are at baseband, although this should
+not be too big a problem.
+Furthermore, in practice the receiver looking straight at the
+transmitter might provide a phase-locked local oscillator in
+order to measure the Doppler shift in the other receiver(s).
+In SarSim II, one has to contend with zero-drift transmitters,
+and assume that any Doppler in the received signal is due to
+target motion.
+Regarding Doppler, SarSim II takes "snapshots" of the scene
+in order to calculate the received echoe.  During every 
+"snapshot", the target is stationary!  This means that there
+will not be any Doppler shift in the received echoe due to
+target motion.  There will only be a phase shift from pulse
+to pulse, because of target motion.  This might be a problem
+for such a simulation!
+
+
+
+
+
+Conclusions
+
+SarSim II was not designed to be multistatic, and therefore
+there are quite a few issues which would need to be looked
+at very carefully.
+
+Ideally, a multistatic radar simulator would be completely 
+designed *before* writing the software.  However, because
+a multistatic SarSim II would be extremely useful, it is
+believed that the additional investment made into SarSim II
+would not be in vain.
+
+
+
+
+
+
+
