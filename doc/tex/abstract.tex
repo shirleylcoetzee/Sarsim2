@@ -1,0 +1,89 @@
+%TCIDATA{LaTeXparent=0,0,thesis.tex}
+                      
+
+\chapter*{Abstract}
+
+\addcontentsline{toc}{chapter}{Abstract}
+
+This dissertation describes the design and implementation of a radar
+simulator called Sarsim2. The radar simulator was originally developed to
+produce \textit{synthetic range profiles} (SRPs) of complex aircraft models.
+It was then expanded and upgraded to generate simulated \textit{synthetic
+aperture radar} (SAR) data.
+
+Over the last few years a substantial amount of work has been carried out by
+the \textit{Radar Remote Sensing Group} (RRSG) at the \textit{University of
+Cape Town }(UCT) to produce SRPs of aircraft targets using an L-Band search
+radar of Reutech Systems. The high range resolution that can be obtained
+from SRP processing makes it feasible to extract characteristic features
+from a profile obtained from an aircraft. The ultimate aim of producing SRPs
+is to use these extracted features for\textit{\ non-cooperative target
+recognition} (NCTR), i.e.\ to be able to identify an aircraft type from the
+echo signal received by the radar. The radar simulator was written to
+produce SRPs of aircraft models, which could then be used to investigate the
+feasibility of various aircraft-identification algorithms.
+
+The stepped-frequency processing required to obtain SRPs of aircraft targets
+has initiated further research in the RRSG into more efficient
+stepped-frequency processing techniques, and the radar simulator has been
+used extensively to generate simulated data.
+
+The RRSG group is also actively involved with SAR processing techniques, and
+the radar simulator has been invaluable in providing necessary simulation
+data to test various processing algorithms.
+
+One of the main objectives of this simulator was to have an easy-to-use
+graphical interface, which can show results in real-time. This requirement
+makes it necessary to find some way of reducing the required computation.
+The solution implemented may be called WYSIWIC (what you see is what is
+calculated). This means that the data is only calculated to a resolution
+depending on the screen resolution. Only when the data is saved to disk will
+it be calculated and written with the required sampling rate.
+
+Some of the features of the radar simulator include:
+
+\begin{itemize}
+\item  Chirp, monochrome and user-defined pulse modulations
+
+\item  Stepped-frequency implementation with constant or user-defined
+frequency increments
+
+\item  Independent moving platforms with user-defined paths
+
+\item  Generation of text script files
+
+\item  Configurable A/D conversion
+
+\item  Angle dependent \textit{radar cross section} (RCS) of point targets
+
+\item  Rotating antennas, spot mode SAR
+
+\item  Point target and platform motion errors
+
+\item  All user-defined functions can be imported by a separate text file
+
+\item  Powerful image viewer which can display SAR files of practically any
+size
+\end{itemize}
+
+The program has been kept flexible so that features (for example using
+real-life antenna gain patterns) can be loaded with ease.
+
+The graphical frontend of the simulator was initially written in C++ using
+the \textit{Object Windows Library }(OWL) of Borland C++~5.0, but was then
+rewritten with Borland C++ Builder, which made the development much easier.
+Borland C++ Builder (BCB) can be considered as the best \textit{Rapid
+Application Development }(RAD) tool currently available, offering visual
+components combined with the flexibility and speed of C++. The simulator
+exploits the protected memory model of 32 bit programs which has the
+advantages of crash protection and practically no memory restrictions. It
+therefore has to run under either Windows~95 or Windows~NT~4.0. For
+portability reasons all the code (except the windows front end) has been
+written in ANSI~C++. All processor intensive calculation routines have been
+written as threads. This makes other tasks running in the background more
+responsive and also enables the user to abort a calculation at any time.
+
+A second program has been included, which is basically the same program
+without the graphical frontend. This program is portable as it is written in
+pure ANSI~C++. It performs like a compiler which reads the script files
+(text files) and writes the required simulation files to disk.

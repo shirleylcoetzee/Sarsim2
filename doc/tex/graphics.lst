@@ -1,0 +1,64 @@
+Archive:  ../graphics.zip
+ Length  Method   Size  Ratio   Date    Time   CRC-32     Name
+ ------  ------   ----  -----   ----    ----   ------     ----
+  46759  Defl:N   17198  63%  09-18-97  14:44  31dfc7d8   antennapt.eps
+  68612  Defl:N   24591  64%  09-22-97  10:58  bc4705cd   cbandplane.cdr
+  87182  Defl:N   30462  65%  09-22-97  10:59  45bf4df8   cbandplane.eps
+  87316  Defl:N   87307   0%  09-22-97  11:33  a886de5c   cbandsim.gif
+  86358  Defl:N   14781  83%  09-22-97  13:33  6157a579   cbandsimscr.cdr
+ 114452  Defl:N   47890  58%  09-22-97  13:38  019a45fe   cbandsimscr.eps
+  21776  Defl:N    4525  79%  09-17-97  15:48  bdb1e5bd   data save structure.cdr
+  50499  Defl:N   18570  63%  09-17-97  15:52  295363a6   data save structure.eps
+  94515  Defl:N   94052   1%  09-20-97  13:47  944e22be   exradar.gif
+  58348  Defl:N   58265   0%  09-20-97  14:05  ceda5498   exrawret.gif
+  72405  Defl:N   71943   1%  09-20-97  14:00  04c5626a   extarget.gif
+  70922  Defl:N   70899   0%  09-20-97  14:14  71cff478   exzoom.gif
+  47124  Defl:N    6439  86%  09-19-97  10:34  3c32070f   int-pulses.cdr
+  53646  Defl:N   17574  67%  09-19-97  10:35  9029cd54   int-pulses.eps
+ 290462  Defl:N  112060  61%  09-22-97  20:45  25addeb5   radar2.wmf
+  29182  Defl:N    4964  83%  09-18-97  15:11  2bb067eb   radarpulse.cdr
+  52950  Defl:N   17794  66%  09-18-97  15:12  698afdc6   radarpulse.eps
+ 217049  Defl:N  214424   1%  09-18-97  09:37  6991e5e7   rawretur.gif
+  45719  Defl:N   45675   0%  09-22-97  11:11  bdf2a28b   r_setup.gif
+  37432  Defl:N   13995  63%  02-28-97  13:19  4bb59bdd   sar_r.bmp
+  30852  Defl:N   30329   2%  09-17-97  15:01  efeb2110   savedata.gif
+  48156  Defl:N   48117   0%  09-23-97  10:29  69fdfdee   scriptv.gif
+  91998  Defl:N   14928  84%  09-22-97  20:51  b4d66003   simulat.cdr
+ 202320  Defl:N   76929  62%  09-22-97  20:52  d9d59531   simulat.wmf
+ 106542  Defl:N   15679  85%  09-22-97  20:40  5c26c829   target.cdr
+ 351834  Defl:N  132363  62%  09-22-97  20:43  d7512896   target.wmf
+   4254  Defl:N    3649  14%  09-22-97  14:19  7b70a5cc   toolbar.gif
+ 431394  Defl:N  163211  62%  11-27-97  10:07  5783b97b   platform.wmf
+  47124  Defl:N    6377  87%  09-22-97  15:04  46323dde   prf.cdr
+  53688  Defl:N   17558  67%  09-22-97  15:05  ce514e65   prf.eps
+  23312  Defl:N    4426  81%  09-22-97  14:50  d41b6f73   pulse.cdr
+  51167  Defl:N   17397  66%  09-22-97  14:46  b0b169ef   pulse.eps
+  49954  Defl:N    8348  83%  10-02-97  10:17  cb8a7560   pulsedef.cdr
+  69019  Defl:N   23884  65%  10-02-97  10:18  3b261f43   pulsedef.eps
+  24938  Defl:N    4029  84%  10-02-97  09:53  0da23ae2   pulsepos.cdr
+  42981  Defl:N   14334  67%  10-01-97  14:05  569b1d6a   pulsepos.eps
+ 144598  Defl:N   20553  86%  02-26-97  10:10  5f9f1789   radar1.cdr
+ 251964  Defl:N   96668  62%  09-22-97  20:45  6fb3592b   radar1.wmf
+ 170496  Defl:N   24236  86%  02-26-97  11:47  f49716ee   radar2.cdr
+  58636  Defl:N    9528  84%  09-22-97  21:06  235a4535   userdef.cdr
+  75643  Defl:N   25270  67%  09-22-97  21:07  3c137617   userdef.eps
+  51626  Defl:N   51575   0%  09-18-97  09:32  8a41a106   userdef.gif
+  56882  Defl:N   20515  64%  09-22-97  21:07  809206ea   userdef.wmf
+ 193955  Defl:N  193560   0%  09-23-97  09:25  93bd4581   viewer.gif
+  24403  Defl:N   23814   2%  09-18-97  17:20  bba61c64   windowex.gif
+  19628  Defl:N    4245  78%  09-18-97  14:41  eb22e61a   antennapt.cdr
+  34280  Defl:N    6539  81%  09-19-97  09:46  2524dfde   int-window.cdr
+  58487  Defl:N   21166  64%  09-19-97  09:47  99cb2251   int-window.eps
+5536546  Defl:N   76414  99%  10-13-97  10:10  a1c6ab60   interpolation.cdr
+2067708  Defl:N   27486  99%  09-19-97  19:09  5fae4aef   interpolation.emf
+  32483  Defl:N   31938   2%  09-23-97  09:29  55a50f1b   loadsim.gif
+  35752  Defl:N   35739   0%  09-18-97  09:35  7f660850   mainscre.gif
+   7088  Stored    7088   0%  09-20-97  13:57  3f1b98b4   new-1.gif
+  34128  Defl:N   26795  22%  09-20-97  14:00  a2703971   new-2.tif
+  34774  Defl:N   34225   2%  09-18-97  09:24  f3598b72   newplatf.gif
+  48601  Defl:N   48047   1%  09-18-97  18:49  100bc6cc   newradar1.gif
+  52172  Defl:N   51617   1%  09-18-97  09:28  d1fa872d   newradar2.gif
+  30964  Defl:N   30407   2%  09-18-97  09:23  a6a594ba   newtarge.gif
+ 178634  Defl:N   24495  86%  10-28-97  11:27  07aa2da9   platform.cdr
+ ------          ------  ---                              -------
+12461689         2446886  80%                              59 files

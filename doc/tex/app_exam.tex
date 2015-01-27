@@ -1,0 +1,783 @@
+%TCIDATA{LaTeXparent=0,0,thesis.tex}
+                      
+
+\chapter{Examples for Sarsim II\label{app:examples}}
+
+\section{Introduction}
+
+The discrete analysis of radar signals, which are nothing else than
+electromagnetic waves sent in a specific pattern, demands very powerful
+computers. To undertake the task of writing a simulator is always a
+compromise between accuracy and execution time. Many simulators have been
+written to model the return of complex objects like aircraft or ships by
+approximating them by a large number of surfaces. Although these simulations
+(taking multiple reflections into account) give fairly reasonable
+approximations for simple bodies, calculation times are usually measured in
+hours.
+
+A short description of the methods used in this case will be given:
+
+The simulator used here models the reflective surface by means of very small
+perfect `mirrors' called point targets. In theory, everything could be
+modelled by an extremely large number of these point targets and the
+reflected signal would just be a linear combination of these. However for
+most simulation purposes a small number of point targets will be used to get
+a clear picture of what the effects of changing certain conditions entail.
+
+A radar is considered to be the transmitter and receiver of electromagnetic
+pulses. Usually short bursts of energy are transmitted in regular intervals
+at a certain carrier frequency. Sometimes the pulse is not modulated
+(monochrome pulse), however more often it is. A very common linear frequency
+modulation is called `chirp'. The purpose of modulation is to increase the
+pulse length (less peak power required) without sacrificing resolution.
+After reception the signals are mixed to baseband, in other words the
+carrier frequency component is removed. For the purpose of this simulator,
+the output will always be at baseband, due to the simple reason that
+sampling at typical carrier frequencies would require an enormous number of
+samples. (In practice the signal would be mixed to some intermediate
+frequency). The simulator therefore can only do simulations which require
+baseband signals.
+
+As the reflected pulse will be a replica of the transmitted pulse (although
+scaled in amplitude and shifted in phase), the simulator does a rather
+simple task. It calculates the distance and the relative radial velocity of
+all given point targets and constructs a sampled return array by adding
+`pulses' at calculated positions within the array. Power losses introduced
+by range and antenna gains are taken into account. Effectively the simulator
+takes the burden of calculating the geometry setup at any given time. For
+very simple simulations, this might be trivial, however for non-linear
+moving targets or special antenna gain patterns for example, a computer
+simulation is the only practical option.
+
+The following pages will describe simple scenarios which will be simulated.
+The results will be verified by applicable formulas.
+
+\smallskip
+
+\smallskip The next section will describe the use of Excel, Matlab and IDL
+to view the simulation results saved in the ASCII files.%
+%TCIMACRO{\TeXButton{newpage}{\newpage}}
+%BeginExpansion
+\newpage%
+%EndExpansion
+
+\subsection{\protect\smallskip Simulation results on Excel}
+
+When the simulation is run, the raw return will display the actual waveform
+pulse as shown in Figure \ref{raw.gif}. To see the individual pulses, edit
+the range and azimuth values in the window box. In this example, the slant
+range is from 0 to 2000 m and the azimuth range is from 0 to 1.5 ms.
+
+\smallskip To view the graph on Microsoft Excel, follow the steps below:
+
+\begin{itemize}
+\begin{itemize}
+\item  Save file in ASCII format (for this example, the LSB was 1.67572$%
+\cdot 10^{-6}$\thinspace mV).
+
+\item  Open file in Excel. The `Text Import Wizard' window will appear.
+
+\item  Select option `delimited' in the dialog box.
+
+\item  Click `Next' and select `Tab' and `Space' in the `Delimiters' window.
+
+\item  Click `Finish'.
+\end{itemize}
+\end{itemize}
+
+\FRAME{fhFU}{5.118in}{3.435in}{0pt}{\Qcb{Raw Return Window}}{\Qlb{raw.gif}}{%
+raw.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+5.118in;height 3.435in;depth 0pt;original-width 459.9375pt;original-height
+307.875pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/Raw.gif';file-properties "XNPEU";}}
+
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+Figure \ref{simt1.gif}\ shows some of the values obtained from the
+simulation.
+
+\FRAME{fhFU}{3.659in}{2.7103in}{0pt}{\Qcb{Excel Worksheet for Simulation}}{%
+\Qlb{simt1.gif}}{simt1.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "USEDEF";valid_file "F";width
+3.659in;height 2.7103in;depth 0pt;original-width 328.25pt;original-height
+242.375pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/simt1.gif';file-properties "XNPEU";}}
+
+The spreadsheet will give a series of I and Q values. The number of values
+will depend on the sampling frequency and the slant range used. For this
+example, the sampling frequency was 20 times the Nyquist rate (0.2 MHz) and
+the slant range was from 0 to 2000\thinspace m. The number of values
+obtained for one single pulse was 53. The magnitude, phase and slant range
+can be calculated from these values as follows:
+
+\begin{equation}
+\text{Magnitude}=\sqrt{\text{I}^{2}+\text{Q}^{2}}
+\end{equation}
+
+\begin{equation}
+\text{Phase}=\left[ \limfunc{atan}\left( \frac{\text{Q}}{\text{I}}\right) -%
+\frac{\text{180}}{\pi }\right] \pm n\pi \text{ where n is an integer}
+\end{equation}
+
+\begin{equation}
+\text{Slant range}=\frac{\text{c}}{\text{f}_{s}}
+\end{equation}
+
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+Figure \ref{sim1.gif}\ displays the graphs of Magnitude and Phase against
+Slant Range.
+
+\FRAME{fhFU}{4.4668in}{2.7268in}{0pt}{\Qcb{Graph of Magnitude and Phase
+against Slant Range}}{\Qlb{sim1.gif}}{sim1.gif}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 4.4668in;height 2.7268in;depth
+0pt;original-width 401.25pt;original-height 243.9375pt;cropleft "0";croptop
+"1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/sim1.gif';file-properties "XNPEU";}}
+
+\subsection{\protect\smallskip Simulation Results in Matlab}
+
+The program to view the magnitude of the pulse is given below:
+\begin{verbatim}
+ 
+load F:\filename.asc  %loads the I and Q values from the ASCII file into a
+                      %matrix called `filename'
+ 
+X = filename (:,1);   %X is a vector representing the I values of 'filename'
+Y = filename (:,2);   %Y is the vector representing the Q values of
+                      %`filename'
+ 
+Z = X + i*Y;          %Z is a vector of complex numbers
+B = abs(Z);           %B is a vector representing the magnitude of Z
+k = length(B);        %assigns the length of the vector to a variable k
+ 
+d=1:k;             
+ 
+W=(299792500/8E6)*d;  %converts from number of pulses to range in meters
+ 
+plot(B(1:k))          %plots the graph of B against W
+ 
+title(`Graph of Magnitude against Slant Range')  %title of graph
+xlabel(`Slant Range (m)')                        %labelling of x-axis
+ylabel(`Magnitude (mV)')                         %labelling of y-axis
+ 
+\end{verbatim}
+
+The graph is shown in Figure \ref{mat.gif}.
+
+\FRAME{fhFU}{4.4348in}{3.3935in}{0pt}{\Qcb{Graph of Magnitude against Slant
+Range }}{\Qlb{mat.gif}}{mat.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "USEDEF";valid_file "F";width
+4.4348in;height 3.3935in;depth 0pt;original-width 398.25pt;original-height
+304.125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/mat.gif';file-properties "XNPEU";}}
+
+\smallskip
+
+\smallskip 
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+\subsection{\protect\smallskip Simulation Results in IDL}
+
+The program to view the Magnitude and the Phase of the pulse is given below:
+\begin{verbatim}
+ 
+filename = 'sim11.asc'
+arrlength = 53             ;assigns the number of values in the file to a
+                           ;variable called arrlength
+A = complexarr(arrlength)  ;creates an array of complex numbers of size 53
+X = fltarr(54)             ;creates an array of floating-point numbers
+line = ``                  ;creates a string called 'line'
+realpart = 0.0             ;initializes the real part of the complex array
+imagpart = 0.0             ;initializes the imaginary part of the complex array
+ 
+Openr, 1, filename         ;opens the file 'filename' for reading only
+ 
+For i = 0,(arrlength - 1) Do Begin
+readf, 1, line             ;reads each line of the file filename into the
+                           ;string called 'line'
+reads, line, realpart, imagpart ;the components of the line is read into
+                                ;variables 'realpart' and 'imagpart'
+A(i) = complex(realpart, imagpart);stores the values into the complex array
+Endfor
+Close, 1                        ;closes the file 'filename'
+ 
+B = abs(A)                      ;returns the magnitude
+C = atan(imaginary(A), float(A));returns the phase
+D = C*57.3                      ;converts the phase from radians to degrees
+ 
+For j = 0,(arrlength) Do Begin
+X(j) = (299792500/8E6)*j        ;converts the number of pulses into
+                                ;range(m)and stores them into an array
+Endfor
+ 
+;Routine to plot the graphs of Magnitude and Phase against Slant Range
+;In order to plot the two graphs, which have different min values and
+;max values, the Oplot and Yrange procedures are used.
+ 
+Plot,X,B,Yrange = [-120,150], $ ;plots the graph of Magnitude against
+                                ;Slant Range with the range of the Y-axis
+                                ;between (-120,150)
+ 
+Title='Graph of Magnitude and Phase against Slant Range',$ ;title of the graph
+Xtitle = 'Slant Range (m)'                   ;title for the X-axis
+Ytitle = 'Magnitude (mV) and Phase (Degrees) ;title for the Y-axis
+ 
+Oplot,X,D                       ;plots the graph of Phase against Slant
+                                ;Range on the same axes as the previous graph
+End
+\end{verbatim}
+
+The graph is shown in Figure \ref{idl.gif}.
+
+\FRAME{fhFU}{4.7573in}{2.3947in}{0pt}{\Qcb{Graph of Magnitude and Phase
+against Slant Range}}{\Qlb{idl.gif}}{idl.gif}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 4.7573in;height 2.3947in;depth 0pt;original-width
+452.4375pt;original-height 226.625pt;cropleft "0";croptop "1";cropright
+"1";cropbottom "0";filename 'H:/helvin/RADAR/idl.gif';file-properties
+"XNPEU";}}
+
+\section{\protect\smallskip A stationary point target}
+
+The purpose of this simulation is to demonstrate:
+
+\begin{itemize}
+\item  the phase shift of the reflected pulse due to range delay,
+
+\item  power loss due to distance,
+
+\item  and pulse compression by using matched filters.
+\end{itemize}
+
+\subsection{Setup}
+
+\smallskip This very simple example consists of a radar located at the
+origin and a stationary point target on the $x$-axis at a distance of 1
+kilometre..
+
+\smallskip The radar parameters are as follows:
+
+\begin{itemize}
+\item  \smallskip Radar Position: origin of the `Earth' coordinate system
+
+\item  \smallskip Pulse Type: monochrome
+
+\item  \smallskip Pulsewidth: $T_{p}=5000$ ns
+
+\item  \smallskip Pulse Repetition Frequency: 1000 Hz
+
+\item  \smallskip Carrier Frequency: 1 GHz
+
+\item  \smallskip Output Power: 1 kW
+
+\item  Target cross-section: 1 m$^{2}$
+\end{itemize}
+
+\smallskip 
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+\smallskip Figure \ref{1} shows the geometrical setup of the radar and the
+point target.\smallskip 
+
+\FRAME{fhFU}{2.6844in}{2.2779in}{0pt}{\Qcb{ Geometry Setup}}{\Qlb{1}}{%
+radar3.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.6844in;height 2.2779in;depth 0pt;original-width 640.625pt;original-height
+542.75pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/EXAMPLES/Radar3.gif';file-properties "XNPEU";}}
+
+\subsection{\protect\smallskip \protect\smallskip Results}
+
+A typical simulation window is shown in Figure \ref{2}. Slow time (azimuth)
+is presented on the $y$-axis (increasing from bottom to top), while fast
+time (shown as slant range) is displayed on the $x$-axis.
+
+\FRAME{fhFU}{2.3912in}{3.4886in}{0pt}{\Qcb{Magnitude against Slant Range for
+Raw Return}}{\Qlb{2}}{statargr.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.3912in;height 3.4886in;depth 0pt;original-width 380.1875pt;original-height
+556.3125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/statargr.gif';file-properties "XNPEU";}}
+
+Several facts can be observed from Figure \ref{2}. The target is stationary,
+positioned at 1 km as specified. The pulse extends over 750 m in range. The
+actual pulse length is twice that ($c\cdot T_{P}=1500$ m), the discrepancy
+is due to the fact that the range and not the range delay is shown on the $x$%
+-axis. In other words the time scale has been divided by a factor of two, as
+the pulse has to travel back and forth. The pulse repetition interval (PRI)
+is 1 ms.
+
+After saving the data the phase and magnitude of the pulse can be
+determined. Usually data is sampled with 8 bit or 12 bit accuracy. For this
+example 8 bits will be used. The least significant bit value is chosen such
+that the signal makes optimum use of the dynamic range without saturation
+occurring. (In reality there will always be some saturation occurring due to
+noise.)
+
+For the given data the following values were obtained:
+
+Least significant bit value = $1.6757\cdot 10^{-6}$ mV
+
+$I=-24=(-24-127)\cdot 1.6757\cdot 10^{-6}$ mV = -253 $\ \mu $V (in-phase
+component)
+
+$Q=-121=(-121-127)\cdot 1.6757\cdot 10^{-6}$ mV = -415.6 $\mu $V (quadrature
+component)
+
+If the data is saved in binary format an offset of $\left( 2^{n-1}-1\right) $
+is added, where $n$ specifies the number of bits used.
+
+\subsection{Analysis}
+
+\subsubsection{Sampling spacing}
+
+In this specific simulation the data has been sampled at 20 times the
+Nyquist rate, therefore $f_{s}=20\cdot 2\cdot \frac{1}{T_{P}}=8$ MHz.
+
+For the given range window of 2 km shown in Figure \ref{2}, 53 samples were
+taken. Each sample corresponds to $\frac{c}{2f_{s}}$ meters in range, where $%
+c=299792500$ $\frac{\text{m}}{\text{s}}$.
+
+\subsubsection{\protect\smallskip Power loss}
+
+\smallskip Although the return pulse is of the same shape as the radiated
+one, the magnitude is significantly less than the radiated pulse. The
+received power is given by the following equation:
+
+\begin{equation}
+\text{P}_{received}=\frac{\text{P}_{transmitted}\cdot G^{2}\cdot \lambda
+^{2}\cdot \sigma }{(4\cdot \pi )^{3}\cdot R^{4}}
+\end{equation}
+where
+
+\begin{itemize}
+\item  $\sigma =$ target cross-section
+
+\item  $\lambda =$ wavelength of pulse
+
+\item  $R=$ distance to target
+
+\item  $G=$ Antenna gain
+\end{itemize}
+
+For the given scenario the received power would be:
+
+\begin{eqnarray}
+\text{P}_{received} &=&\frac{\text{P}_{transmitted}\cdot G^{2}\cdot \lambda
+^{2}\cdot \sigma }{(4\cdot \pi )^{3}\cdot R^{4}} \\
+&=&\frac{1000\cdot 1\cdot 0.2998^{2}\cdot 1}{(4\cdot \pi )^{3}\cdot 1000^{4}}
+\\
+&=&45.293269\cdot 10^{-15}\text{ W}
+\end{eqnarray}
+
+which gives a corresponding amplitude (assuming the ubiquitous 1 $\Omega $
+resistor) of:
+
+\begin{equation}
+\text{Magnitude}=\sqrt{\text{P}_{received}}=2.1282\cdot 10^{-4}\text{ mV}
+\end{equation}
+
+The simulated value gives a magnitude of $\sqrt{I^{2}+Q^{2}}=2.128\cdot
+10^{-4}$ mV, which agrees with the above result.
+
+\subsubsection{Phase shift}
+
+The phase of the return pulse is determined by the wavelength and the
+distance to the radar and is given by:
+
+\begin{equation}
+\text{Phase}=2\cdot \pi \cdot \left( -2\cdot d\cdot \frac{f}{c}\right) 
+\end{equation}
+
+where $c$ is the velocity of light and\ $d$ is the radar-target distance. As
+the phase wraps around every 2$\pi $ radians, only the remainder can be
+determined. For a point target at a distance of 1000 m:
+
+\begin{eqnarray}
+\text{Phase} &=&\func{mod}\left[ 2\cdot \pi \cdot \left( -2\cdot d\cdot 
+\frac{f}{c}\right) ,2\cdot \pi \right]  \\
+&=&\func{mod}\left[ 2\cdot \pi \cdot \left( -2\cdot 1000\cdot \frac{10^{9}}{%
+299792500}\right) ,2\cdot \pi \right]  \\
+&=&-1.7653 \\
+&=&101.15\deg 
+\end{eqnarray}
+
+\ \ \ \ \ \ \ \ The simulation values give the same value: Phase $=-\frac{%
+\pi }{2}-\arctan (\frac{-24}{-121})=-101.22\deg $. The slight discrepancy is
+due to the 8 bit quantisation of the samples.
+
+\subsubsection{Range Compression}
+
+In pulse compression, the return pulse from the raw return is
+compressed.\smallskip  This is achieved by using a matched filter. The
+concept of range compression will be explained in more detail in the
+following section.
+
+The choice of a radar waveform will affect radar performance in terms of
+range, Doppler, and angle measurements, as well as the system's detection
+performance. For example, a short monochromatic pulse of timelength $t_{p}$
+will allow a resolution of
+
+\begin{equation}
+\text{R}_{s}=\frac{c\cdot t_{p}}{2}
+\end{equation}
+\smallskip 
+
+Therefore, targets that are closer in distance than R$_{s}$ cannot be easily
+``resolved'' or separated, because the returns will overlap. The important
+parameter for range resolution is bandwidth; thus, a monochrome pulse has an
+effective bandwidth B$_{p}=\frac{1}{t_{p}}$. The effective bandwidth for a
+monochrome pulse waveform is the bandwidth of the pulse spectrum. By making
+a pulse shorter, or the effective bandwidth larger, range resolution is
+improved. However, the amount of energy contained in the pulse diminishes as
+the pulse shortens.
+
+Improved detection is achieved by proper filtering or processing of the
+received signal. The use of a matched filter optimises performance in the
+presence of white, Gaussian noise. The return pulse is convolved with a
+conjugate replica of itself. Since the pulse is rectangular in shape, a
+convolution with itself will give a triangular pulse.
+
+As can be seen from Figure \ref{3}, the resultant pulse is triangular in
+shape. Since range-compression is computationally intensive, the sampling
+rate can be set. Using low values for the sampling rate (less than the
+Nyquist frequency) should be avoided due to aliasing. In this example, the
+sampling rate used is a hundred (100) times the Nyquist frequency. It is to
+be noted that neither the magnitude nor the phase changes when the return
+pulse is range compressed.\smallskip \FRAME{fhFU}{2.1447in}{3.103in}{0pt}{%
+\Qcb{Magnitude against Slant Range for Range Compression}}{\Qlb{3}}{%
+statargc.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.1447in;height 3.103in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/Statargc.gif';file-properties "XNPEU";}}
+
+The importance of pulse compression will be demonstrated in more detail in
+the next example.%
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+\section{\protect\smallskip \protect\smallskip A moving point target}
+
+The previous simulation demonstrated fixed point targets. For this
+simulation the target will move relative to the radar. The purpose is to
+demonstrate:
+
+\begin{itemize}
+\item  moving point targets
+
+\item  chirp modulation
+
+\item  matched filters
+
+\item  range resolution
+
+\item  Doppler frequency shift
+
+\item  and the concept of moving platforms.
+\end{itemize}
+
+A platform is a convenient way of grouping targets, which are not moving
+relative to each other, together. Their position and velocity can then be
+set by just defining the trajectory of that specific platform.
+
+\subsection{Setup}
+
+\smallskip \smallskip The radar parameters are as follows:
+
+\begin{itemize}
+\begin{itemize}
+\item  Radar position: origin of the `Earth' coordinate system
+
+\item  \smallskip Pulse Type: chirp
+
+\item  Bandwidth: 0.1 GHz
+
+\item  \smallskip Pulsewidth, $T_{p}$: 2500 ns
+
+\item  Pulse Repetition Frequency: 1 kHz
+
+\item  Carrier Frequency: 0.5 GHz
+
+\item  Output power: 1 kW
+
+\item  Target Cross-section: 1 m$^{2}$
+\end{itemize}
+\end{itemize}
+
+\smallskip There are two targets that are 8 meters apart. They have been
+grouped on a platform and the parameters for the platform are:
+
+\begin{itemize}
+\begin{itemize}
+\item  $x$ = 300 m and moving at a speed of 50 ms$^{-1}$ in the $x$-direction
+
+\item  $y$ = 0
+
+\item  $z$ = 0.
+\end{itemize}
+\end{itemize}
+
+The geometrical setup is given in Figure \ref{4}.
+
+\FRAME{fhFU}{2.0072in}{2.6342in}{0pt}{\Qcb{Geometry Setup}}{\Qlb{4}}{%
+movetarg.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.0072in;height 2.6342in;depth 0pt;original-width 318.4375pt;original-height
+419.3125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/EXAMPLES/Movetarg.gif';file-properties "XNPEU";}}
+
+\subsection{Results}
+
+\subsubsection{Raw Return}
+
+\smallskip The pulse type used in this example is a chirp pulse. For chirp
+waveforms, the frequency f$_{0}$ is not kept constant throughout the pulse,
+but is linearly modulated from f$_{0}$ to $\left( \text{f}_{0}+\Delta \text{f%
+}\right) $. $\Delta $f can be positive (up chirp) or negative (down chirp).
+The result is a waveform which has a bandwidth that is independent of the
+pulse length T$_{p}$. Thus, a pulse with large T$_{p}$ and large $B$ can be
+constructed. The reason for using a chirp waveform, is to have a high energy
+pulse which increases the range resolution capability of the radar. The
+transmit waveform is generated with a frequency versus time domain waveform
+as shown in Figure \ref{5}.
+
+\FRAME{fhFU}{3.0329in}{2.1508in}{0pt}{\Qcb{Frequency against time domain
+waveform}}{\Qlb{5}}{chirp.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.0329in;height 2.1508in;depth 0pt;original-width 292.875pt;original-height
+207pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/Chirp.gif';file-properties "XNPEU";}}
+
+%TCIMACRO{\TeXButton{pagebreak}{\pagebreak}}
+%BeginExpansion
+\pagebreak%
+%EndExpansion
+
+Figure \ref{6} shows the raw return for the simulation (only one pulse is
+shown here for clarity). Due to the fact that there are two targets that are
+close together, it is very difficult to separate the two targets from each
+other. The received pulse consists of the return pulse from the two targets
+interfering with each other.
+
+\FRAME{fhFU}{3.7654in}{2.3341in}{0pt}{\Qcb{Simulation Window for Real Part
+of Raw Return}}{\Qlb{6}}{movr.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.7654in;height 2.3341in;depth 0pt;original-width 901.125pt;original-height
+556.3125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/movr.gif';file-properties "XNPEU";}}
+
+\subsubsection{Range Compression}
+
+In order to be able to distinguish between the two targets, range
+compression is used. This is shown in Figure \ref{7}. From the figure, it
+can be seen that the first target is at 300 m and the second one is at 308 m.
+
+\FRAME{fhFU}{3.0978in}{2.7112in}{0pt}{\Qcb{Magnitude of Signal after Range
+Compression}}{\Qlb{7}}{movc.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.0978in;height 2.7112in;depth 0pt;original-width 634.625pt;original-height
+554.8125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/movc.gif';file-properties "XNPEU";}}
+
+The theoretical resolution of the radar is determined by the using the
+following equation:
+
+\begin{equation}
+\Delta R_{s}=\frac{c}{2\cdot B}
+\end{equation}
+
+where $B$ = bandwidth of the chirp pulse.
+
+For the given bandwidth of 100 MHz, the resolution will be 1.5
+meters.\smallskip
+
+\subsubsection{Phase Shift}
+
+\smallskip The first return of the first 9 pulses (the first pulse is sent
+at time $t=0$ seconds) were sampled (after range compression), and the
+corresponding phase values are shown in Figure \ref{targ2}. As the platform
+is moving into positive $x$-direction, this will introduce a phase shift of
+the return array for every pulse. The PRF = 1 kHz, therefore the target will
+move 0.05 m/pulse. This corresponds to a phase shift of $2\cdot \pi \left( 
+\frac{-2\cdot d}{\lambda }\right) =-1.0472$ radians, as verified in Figure 
+\ref{targ2}. Point targets 1 and 2 are positioned at 300 m and 308 m
+respectively at time $t=0$ seconds.
+
+\FRAME{fhFU}{4.0231in}{2.8963in}{0pt}{\Qcb{Phase shift}}{\Qlb{targ2}}{%
+targ2.eps}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.0231in;height 2.8963in;depth 0pt;original-width 361.375pt;original-height
+259.5625pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/EXAMPLES/Targ2.eps';file-properties "XNPEU";}}
+
+\section{Search Radar}
+
+This example consists of a rotating antenna beam with a certain antenna gain
+pattern an a single point target. A measure of the ability of an antenna to
+concentrate energy in a particular direction is called the gain. Two
+different, but related, definitions of antenna gain are the directive gain
+and the power gain. The directive gain is descriptive of the antenna pattern.
+
+The directive gain of a transmitting antenna is defined as the
+ratio\smallskip 
+\begin{equation}
+G_{D}=\frac{\text{maximum radiation intensity}}{\text{average radiation
+intensity}}
+\end{equation}
+
+\smallskip The radiation intensity is the power per unit solid angle in the
+direction ($\eta ,\epsilon $) and is denoted by P($\eta ,\epsilon $). The
+two-angle coordinates commonly used with ground-based antennas are azimuth
+angle $\eta $ and elevation angle $\epsilon $.
+
+A simple approximation to typical antenna gain patterns is the $\frac{\sin
+(x)}{x}$ shape. This can be analytically calculated by considering the
+current distributions across a circular aperture. The power radiation
+pattern is \ a $\left( \frac{\sin (x)}{x}\right) ^{2}$ pattern. Figure~\ref
+{gain} shows an example for a beamwidth of 10 degrees.
+
+\FRAME{fhFU}{3.4221in}{2.3454in}{0pt}{\Qcb{Magnitude gain pattern for a
+beamwidth of 10 degrees}}{\Qlb{gain}}{ejfck000.wmf}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 3.4221in;height 2.3454in;depth
+0pt;original-width 475.125pt;original-height 324.625pt;cropleft "0";croptop
+"1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/EXAMPLES/Ejfck000.wmf';file-properties "XNPEU";}}
+
+The half-power points would be at an offset of 5 degrees off the beam
+centre. The amplitude gain is calculated by:
+
+\begin{equation}
+\text{Gain}=\frac{\sin (x)}{x},\text{ }x=0.88\cdot \pi \cdot \frac{\text{sin}%
+(\theta )}{\text{Beamwidth}}
+\end{equation}
+
+\subsection{Setup}
+
+\smallskip This example consists of a search radar and a stationary point
+target.\smallskip  The simulation parameters for the radar are as follows:
+
+\begin{itemize}
+\item  Monochrome pulse modulation, pulsewidth 5000 ns
+
+\item  \smallskip Pulse repetition frequency: 400 Hz
+
+\item  \smallskip Carrier frequency: 1 GHz
+
+\item  \smallskip Output power: 1 kW
+
+\item  $\sin (x)/x$ transmitter antenna gain, elevation beamwidth 30
+degrees,\ azimuth beamwidth 1 degrees
+
+\item  \smallskip Rotation rate 24 deg/s, beam elevation angle 30 degrees
+
+\item  Target offset : $x$ = 1000 m, \smallskip $y$ = 1000 m, $z$ = 816 m
+(distance = 1632.74~m)
+\end{itemize}
+
+\FRAME{fhFU}{2.6705in}{2.5365in}{0pt}{\Qcb{Geometry setup}}{\Qlb{geo}}{%
+rotrad.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.6705in;height 2.5365in;depth 0pt;original-width 478.0625pt;original-height
+453.9375pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/EXAMPLES/Rotrad.gif';file-properties "XNPEU";}}
+
+\subsection{\protect\smallskip Results}
+
+The transmitter antenna gain pattern is a simple $\frac{\sin (x)}{x}$, the
+power radiation pattern of the return pulse is a $\left( \frac{\sin (x)}{x}%
+\right) ^{2}$. As can be seen from Figure \ref{8}, the return pulse has a
+mainlobe and sidelobes of decreasing magnitude.
+
+\smallskip \FRAME{fhFU}{5.5677in}{3.4229in}{0pt}{\Qcb{Graph of Magnitude
+against Sample Number for Raw Return}}{\Qlb{8}}{searchr.gif}{%
+\special{language "Scientific Word";type "GRAPHIC";maintain-aspect-ratio
+TRUE;display "ICON";valid_file "F";width 5.5677in;height 3.4229in;depth
+0pt;original-width 455.4375pt;original-height 279.3125pt;cropleft
+"0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/Searchr.gif';file-properties "XNPEU";}}
+
+\smallskip
+
+\subsubsection{Power Loss}
+
+\smallskip The transmitted power is 1 kW and the received power at the beam
+centre is calculated as follows:\smallskip 
+\begin{eqnarray}
+\text{P}_{received} &=&\frac{\text{P}_{transmitted}\cdot G^{2}\cdot \lambda
+^{2}\cdot \sigma }{(4\cdot \pi )^{3}\cdot R^{4}} \\
+&=&\frac{1000\cdot 1\cdot 0.2998^{2}\cdot 1}{(4\cdot \pi )^{3}\cdot
+(1632.745)^{4}} \\
+&=&6.37324\cdot 10^{-15}\text{ W}
+\end{eqnarray}
+
+\smallskip 
+\begin{equation}
+\text{Magnitude}=\sqrt{\text{P}_{received}}=7.9833\cdot 10^{-5}\text{ mV}
+\end{equation}
+
+\smallskip
+
+The value obtained from the simulation is $7.97376\cdot 10^{-5}$ mV.
+
+\subsubsection{\protect\smallskip Phase Calculation}
+
+\smallskip \smallskip The $(x,y,z)$ coordinates for the target are (1000,
+1000, 816).
+
+\smallskip The distance of the target from the radar is $d=1632.744928$ m,
+\smallskip $f=1$ GHz and \smallskip $c=299792500$ ms$^{-1}$.\smallskip 
+\begin{eqnarray}
+Phase &=&\func{mod}\left( 2\cdot \pi \cdot \left( -2\cdot d\cdot \frac{f}{c}%
+\right) ,2\cdot \pi \right)  \\
+&\approx &-\pi 
+\end{eqnarray}
+
+\smallskip
+
+The phase is $-180$ degrees and from the simulation values, it can be seen
+that the Q values are all zero and the I values are negative.
+
+\subsection{\protect\smallskip \protect\smallskip Range Compression}
+
+\smallskip The range compression result is shown in Figure \ref{9}. This was
+obtained by convolving the raw return pulse with a conjugate replica of
+itself.
+
+\subsubsection{Resolution}
+
+The theoretical resolution of the radar is
+
+\begin{equation}
+\Delta R_{s}=\frac{c}{2\cdot B}=\frac{299792500\cdot T_{p}}{2}=749.5
+\end{equation}
+
+\FRAME{fhFU}{5.4699in}{3.3451in}{0pt}{\Qcb{Magnitude against Sample Number
+for Range Compression.}}{\Qlb{9}}{searchco.gif}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 5.4699in;height 3.3451in;depth
+0pt;original-width 457.6875pt;original-height 279.3125pt;cropleft
+"0";croptop "1";cropright "1";cropbottom "0";filename
+'H:/helvin/RADAR/Searchco.gif';file-properties "XNPEU";}}
+
+The difference between the mainlobe and the first sidelobe levels is 13.5
+dB. With filtering, the sidelobes can be reduced at the expense of
+resolution.

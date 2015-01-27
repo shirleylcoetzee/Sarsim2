@@ -1,0 +1,269 @@
+%TCIDATA{LaTeXparent=0,0,THESIS.TEX}
+                      
+
+\chapter{Getting Started\label{chapter:start}}
+
+This chapter introduces the radar simulator by setting up a very simple
+simulation.
+
+\section{The start-up window\label{chapter:quickstart}}
+
+Start the program by executing ``sarsim2.exe'' either from the command
+prompt or by double-clicking on the icon in Windows. A screen with a
+coordinate-system on the right and a list of objects on the left will appear
+as shown in Figure \ref{mainscre}.
+
+\FRAME{fhFU}{5.8591in}{4.4486in}{0pt}{\Qcb{Main window}}{\Qlb{mainscre}}{%
+mainscre.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+5.8591in;height 4.4486in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Mainscre.gif';file-properties "XNPEU";}}
+
+This radar simulator uses three different kinds of objects: platforms, point
+targets and radars.
+
+\begin{itemize}
+\item  \textbf{Platforms} are user-defined coordinate systems which can move
+independently on any path seen relative to the ``Earth'' coordinate system
+which will be explained below. All point targets or radars defined on that
+platform will be stationary as seen from that coordinate system.
+
+\item  \textbf{Point targets }are infinitely small points which reflect
+electromagnetic energy. The amount of reflection depends on their surface
+area and their directional vector. This will be explained in more detail in
+Chapter~\ref{chapter:commands}.
+
+\item  \textbf{Radars} are the actual energy-transmitting devices. They can
+be positioned onto any platform (however their position is always at the
+origin of that platform), and there are numerous parameters to be set which
+will be explained in Chapter~\ref{chapter:commands}.
+\end{itemize}
+
+\subsection{The ``EARTH'' coordinate system}
+
+The coordinate system shown on the start-up window is the most fundamental
+one and all other objects will be positioned relative to it. It is
+conveniently called ``Earth''. The origin of the ``Earth'' coordinate system
+is at $x=0$, $y=0$ and $z=0$ with the red, green and blue lines representing
+the $x$-axis, $y$-axis and $z$-axis respectively. The labelled ends are
+pointing in the positive direction. There are distance marks on the axes
+(for example $10$\thinspace km) to give some sense of scale. Below the top
+border of the window, the azimuth and elevation angle of the current
+viewpoint are shown. Using the mouse, one can manipulate the coordinate
+system in three ways:
+
+\begin{enumerate}
+\item  Rotate: To rotate the axes, push and hold the left mouse button and
+move the mouse in the required direction. Moving it up and down will change
+the elevation angle, moving it left and right changes the azimuth angle.
+
+\item  Zoom: To zoom in or out, push and hold the right mouse button and
+move it up or down. The distance marks on the axes should start moving.
+
+\item  There is a way of changing the focus point (the point around which
+the coordinate system turns). This is described in Section~\ref{focuspoint}.
+\end{enumerate}
+
+In the top-left corner the current simulation time is given, i.e.~what one
+sees is a snapshot at that given time. This helps visualising the position
+of point targets and platforms at specific times. The time instance can be
+changed by entering a time into the edit-box or by clicking on the
+left/right scroll buttons just to the right of the edit-box.
+
+On the left, a box containing a list of all objects is given. The order
+depends on the relative positioning, i.e.~all objects placed on a platform
+will appear (indented) just below it.
+
+\subsection{Placing objects}
+
+To place a new object (point target, radar or platform), select the required
+object from the ``Geometry'' menu. A dialog with a whole set of parameters
+will appear. All of the parameters are set to some default value and most of
+them don't have to be changed for most of the simpler simulations. Use the 
+\textbf{Tab} key or the mouse to navigate through the dialogs. By clicking
+on the \textbf{OK} button, the object will appear on the screen (if in
+sight). A short-cut to create new objects is the toolbar on top of the
+screen (see Figure~\ref{toolbar}).
+
+\FRAME{fhFU}{2.9533in}{0.2949in}{0pt}{\Qcb{The toolbar}}{\Qlb{toolbar}}{%
+toolbar.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.9533in;height 0.2949in;depth 0pt;original-width 529.25pt;original-height
+48.9375pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Toolbar.gif';file-properties "XNPEU";}}
+
+\subsection{Editing objects}
+
+There are two ways to edit objects. One is to double-click the object on the
+list given on the left side, the other is to right-click the object itself
+in the coordinate system. This only applies to point targets and
+radars---use the list to modify platforms.
+
+\subsection{Deleting objects}
+
+To delete a point target or radar right-click it in the coordinate system
+and choose ``Delete Point Target'' / ``Delete Radar'' from the appearing
+menu. To delete a platform choose the required platform from the list.
+
+\section{A simple example}
+
+This section will show how to create a simple simulation with a single point
+target. The simulation parameters are given in Table~\ref{tab:simparams}.
+
+%TCIMACRO{\TeXButton{B}{\begin{table}[tbp] \centering}}
+%BeginExpansion
+\begin{table}[tbp] \centering%
+%EndExpansion
+\begin{tabular}{|c|c|}
+\hline
+Type of pulse modulation & chirp pulse \\ \hline
+$B$ & 50 MHz \\ \hline
+$f_{c}$ & 1 GHz \\ \hline
+$T_{p}$ & 5000 ns \\ \hline
+PRF & 1 kHz \\ \hline
+$P_{tx}$ & 1 kW \\ \hline
+antenna gain & isotropic \\ \hline
+$d$ & 3000 m \\ \hline
+$\sigma $ & 3 m$^{2}$ \\ \hline
+\end{tabular}
+\caption{Simulation Parameters\label{tab:simparams}}%
+%TCIMACRO{\TeXButton{E}{\end{table}}}
+%BeginExpansion
+\end{table}%
+%EndExpansion
+
+\begin{itemize}
+\item  Clear (if necessary) the current simulation by selecting \textit{File
+/ New} on the menu.
+
+\item  Create a new radar by selecting \textit{Geometry / New Radar} (or by
+clicking on the \textbf{Radar} button). A window as shown in Figure~\ref
+{exradar} will appear.\FRAME{fhFU}{3.4281in}{3.4151in}{0pt}{\Qcb{Radar setup
+window (1/2)}}{\Qlb{exradar}}{exradar.gif}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 3.4281in;height 3.4151in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Exradar.gif';file-properties
+"XNPEU";}}
+
+Change the pulse type to ``Chirp'' by selecting the \textbf{Chirp} radio
+button (circled in Figure~\ref{exradar}). (Radio buttons are the round
+circles with one having a black dot in it, meaning this option is selected).
+The remaining parameters will have the correct parameters by default. Click
+the \textbf{OK} button. A radar (dotted circle with a grey disc in it) will
+appear at the origin of the \textbf{Earth} coordinate system. On the list at
+the left a ``Radar: Radar1'' entry under ``Platform: Earth'' will appear.
+
+\item  Create a point target by selecting \textit{Geometry / New Target} (or
+the according \textbf{Target} button).
+\end{itemize}
+
+\FRAME{fhFU}{3.3088in}{2.3713in}{0pt}{\Qcb{Point target setup window}}{\Qlb{%
+extarget}}{extarget.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.3088in;height 2.3713in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Extarget.gif';file-properties "XNPEU";}}
+
+\begin{itemize}
+\item  Set the $x$-coordinate to $3000$\thinspace m and the radar cross
+section to $3$\thinspace m$^{2}$ as indicated in Figure~\ref{extarget}.
+Click on \textbf{OK}. A point target (red dot with black circle around it)
+will appear.
+
+\item  Select \textit{Simulation / Raw return} from the menu. Another window
+will open, shown in Figure~\ref{exrawret}.
+\end{itemize}
+
+\FRAME{fhFU}{3.5648in}{2.4405in}{0pt}{\Qcb{Return signal of a single point
+target}}{\Qlb{exrawret}}{exrawret.gif}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 3.5648in;height 2.4405in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Exrawret.gif';file-properties
+"XNPEU";}}
+
+Shown on the right-hand side of this window is a colour-coded image of the
+received waveform displayed as slant range ($x$-direction) in meter versus
+azimuth time ($y$-direction) in seconds. As the point target is stationary,
+the position of the point target in slant range stays constantly at $3000$
+meters. The colour palette has been mapped such that light blue represents
+the highest positive value, black represents zero and light red the highest
+negative value. The waveform is shown at baseband, i.e.~the frequency
+spectrum has been shifted such that the carrier frequency is removed.
+Initially the pulse shown does not resemble a chirp pulse, because aliasing
+takes place on the screen, i.e.~it is necessary to zoom in, to see the
+details of the chirp pulse.
+
+On the left side the current radar, the simulation window (slant range /
+azimuth) and the display type (real / imaginary / magnitude / phase) can be
+chosen.
+
+To select a different radar, click on the desired radar on the list. For
+this simulation only a single radar is defined.
+
+The simulation window size (slant range and azimuth) can be changed in four
+ways:
+
+\begin{enumerate}
+\item  Changing the values of the slant/azimuth range in the \textbf{%
+edit-boxes} on the left.
+
+\item  Zooming in by selecting an area on the image with the left mouse
+button. This is done by pushing and holding the left mouse button on the
+desired corner and releasing it on the opposite corner. The window will
+update automatically.
+
+\item  Zooming out by a factor of two in either direction by right-clicking
+anywhere on the image. The window will also update automatically.
+
+\item  Showing all targets (i.e.~selecting a slant range spanning from the
+closest to the furthest target) by clicking on the \textbf{Show all targets}
+button.
+\end{enumerate}
+
+If the azimuth scale is such that two pulses are separate by at least $20$
+pixels, the actual waveform of the pulse will be displayed as a graph as
+shown in Figure~\ref{exzoom}.
+
+\FRAME{fhFU}{4.5048in}{3.1713in}{0pt}{\Qcb{Raw return after zooming in}}{%
+\Qlb{exzoom}}{exzoom.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.5048in;height 3.1713in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Exzoom.gif';file-properties "XNPEU";}}
+
+The time instance at which the shown pulses has been transmitted by the
+radar can then be easily identified, for example in this example the PRF is $%
+1$\thinspace kHz, therefore a pulse will be transmitted every $0.001$
+seconds. Note that the graphs of the pulses do not use the azimuth time
+scale on the left, i.e.~the amplitude of the graphs do not correspond to the
+scale in seconds given at the left, but they have their own amplitude scale
+(not shown). Below the image, the highest absolute magnitude within the
+displayed image is shown in millivolt. Note that this value might not be
+accurate due to the sampling process (i.e.~the waveform might have been
+sampled slightly off-peak). For the current simulation a value of $%
+4.095\cdot 10^{-5}$\thinspace mV is shown. For this simple simulation the
+radar equation reduces to:
+
+\begin{eqnarray}
+P_{rx} &=&\frac{P_{tx}\cdot G^{2}\cdot \lambda ^{2}\cdot \sigma }{(4\cdot
+\pi )^{3}\cdot d^{4}} \\
+&=&\frac{1000\cdot 1\cdot 0.3^{2}\cdot 3}{(4\cdot \pi )^{3}\cdot 3000^{4}} \\
+&=&1.67976\cdot 10^{-15}\,\text{W}
+\end{eqnarray}
+
+Therefore the amplitude is given by: 
+\begin{eqnarray}
+Magnitude &=&\sqrt{P_{rx}} \\
+&=&4.095\cdot 10^{-5}\,\text{mV}
+\end{eqnarray}
+
+The whole window can be resized (or maximised) in the usual way, but note
+that the calculation time is proportional to the image size. On slow
+computers it might be advisable to make the window smaller than the default
+size.
+
+To \textbf{save} the window displayed, click on the ``Save Data'' button.
+This function will be explained in more detail in Section~\ref{savedata}.

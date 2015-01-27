@@ -1,0 +1,40 @@
+%TCIDATA{LaTeXparent=0,0,Thesis.tex}
+                      
+
+\chapter{Conclusions\label{chapter:concl}}
+
+The radar simulator described in this dissertation has proven to be
+extremely useful in providing simulated data used for SAR processing
+applications, for stepped-frequency processing applications and also for
+aircraft and ship recognition analysis. The graphical user-interface makes
+it easy to use, since one can see and analyse the returned waveforms before
+writing them to disk. Furthermore, due to efficient programming, it is
+extremely fast, since only the appropriate computations (corresponding to
+the current screen resolution) are executed.
+
+\section{Future work}
+
+As with any software developed, there is always scope for improvement. The
+following items are suggestions for future work:
+
+\begin{itemize}
+\item  Implementation of surfaces. At the moment only point target
+simulations are possible, however for proper SAR and Interferometric SAR
+applications it would be of great benefit to implement proper surface
+simulations.
+
+\item  Bandlimiting of returned (and transmitted) waveforms to reduce
+aliasing. Theoretical radar pulses are never truly bandlimited, due to the
+sharp cutoffs at the signal boundaries. This can lead to aliasing problems,
+even if the returned waveform is sampled well above the Nyquist rate.
+
+\item   Looking at a JAVA implementation, in order to be able to distribute
+a large simulation over a number of machines, and to make the simulator
+platform independent, i.e.~the graphical interface in particular.
+
+\item  Including satellite ephemeris platform trajectories, to facilitate
+spaceborne SAR simulation.
+
+\item  Separate motion scenario generator, to provide motion files for radar
+and targets in complex airborne radar environments.
+\end{itemize}

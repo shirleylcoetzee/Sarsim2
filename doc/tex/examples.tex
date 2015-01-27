@@ -1,0 +1,124 @@
+%TCIDATA{LaTeXparent=0,0,THESIS.TEX}
+                      
+
+\chapter{Example Files\label{chapter:examples}}
+
+Various examples for different applications will be described in this
+chapter. The script files for all examples are available in the \textbf{%
+EXAMPLES} subdirectory.
+
+\section{A typical C-band SAR Application}
+
+For this SAR application a plane is flying in a straight line at some height
+over an area, which has to be investigated. The radar is mounted on the
+plane with a sideways looking beam. The simulation file can be found as ``%
+\textbf{sar\_r.scr'}' in the ``\textbf{examples'}' directory.
+
+This example will model the following scenario:
+
+A plane is flying at $200$\thinspace m/s parallel to the $y$-axis at a
+height of $2000$ meters and $10$\thinspace km horizontal distance from the
+area of interest as shown in Figure~\ref{cbandplane}.
+
+\FRAME{fhFU}{2.1127in}{1.7132in}{0pt}{\Qcb{Geometry setup}}{\Qlb{cbandplane}%
+}{cbandplane.eps}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.1127in;height 1.7132in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/CBANDPLANE.EPS';file-properties "XNPEU";}}
+
+A sidelooking radar is mounted on the plane, the depression angle of the
+beam is $11.3$ degrees. There have been $24$ point targets placed in an
+``R'' shape, extending over $200$\thinspace x\thinspace $400$\thinspace m as
+shown in Figure~\ref{r_setup}.
+
+\FRAME{fhFU}{4.0404in}{3.902in}{0pt}{\Qcb{Point target setup}}{\Qlb{r_setup}%
+}{r_setup.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.0404in;height 3.902in;depth 0pt;original-width 920.6875pt;original-height
+889.0625pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/R_setup.gif';file-properties "XNPEU";}}
+
+The radar parameters are given in Table~\ref{tab:three}.
+
+%TCIMACRO{\TeXButton{B}{\begin{table}[tbp] \centering}}
+%BeginExpansion
+\begin{table}[tbp] \centering%
+%EndExpansion
+\begin{tabular}{|l|l|}
+\hline
+pulse waveform & chirp pulse \\ \hline
+$B$ & 100 MHz \\ \hline
+$f_{c}$ & 5.3 GHz \\ \hline
+$T_{p}$ & 800 ns \\ \hline
+PRF & 300 Hz \\ \hline
+$P_{tx}$ & 1 kW \\ \hline
+losses & none \\ \hline
+noise & none \\ \hline
+beamwidth & 30 degrees \\ \hline
+\end{tabular}
+\caption{Radar Parameters\label{tab:three}}%
+%TCIMACRO{\TeXButton{E}{\end{table}}}
+%BeginExpansion
+\end{table}%
+%EndExpansion
+
+First the PLANE platform is created. This is done by creating a new platform
+with the name ``PLANE'' and defining a trajectory for it. The $x$-coordinate
+decreases linearly by $200$\thinspace m/s, the $y$-coordinate stays constant
+at $-10000$\thinspace m and the $z$-coordinate stays constant at $2000$%
+\thinspace m. Therefore we define the following:
+
+\begin{itemize}
+\item  Position $x=100$\thinspace m at time = $0$\thinspace s
+
+\item  Position $x=-100$\thinspace m at time = $1$\thinspace s
+
+\item  Position $y=-10000\,$m at time = $0$\thinspace s (one point suffices)
+
+\item  Position $z=2000$\thinspace m at time = $0$\thinspace s (one point
+suffices)
+\end{itemize}
+
+The plane will move $200$ meters in $1$ second, being closest to the earth
+origin at $0.5$ seconds.
+
+The next step is to create the radar on the PLANE platform, the given
+parameters need to be entered in the dialogs.
+
+The last step would be to create the point target setup as shown in Figure~%
+\ref{r_setup}. For this setup a simulation has been stored already and can
+be recalled by selecting \textbf{Simulation} / \textbf{Previous}. The window
+shown in Figure~\ref{cbandsim} will appear.
+
+\FRAME{fhFU}{3.9678in}{3.3088in}{0pt}{\Qcb{Simulation window}}{\Qlb{cbandsim}%
+}{cbandsim.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.9678in;height 3.3088in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Cbandsim.gif';file-properties "XNPEU";}}
+
+Because the return signals of the point targets interfere with each other,
+the original R-shape cannot be seen. However after saving this simulation
+window and performing range and azimuth compression on it (in this specific
+example the Chirp Scaling Algorithm has been applied), the image can be
+restored as shown in Figure~\ref{sar_r}. Some artifacts appear on the upper
+and lower border due to the fact that the azimuth range should have covered
+more time.
+
+\FRAME{fbFU}{2.1776in}{2.5996in}{0pt}{\Qcb{Image after processing}}{\Qlb{%
+sar_r}}{sar_r.bmp}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.1776in;height 2.5996in;depth 0pt;original-width 306.6875pt;original-height
+366.8125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Sar_r.bmp';file-properties "XNPEU";}}
+
+The simulation script file will look as shown in Figure~\ref{cbandsimscr}.
+
+\FRAME{fhFU}{6.1376in}{4.4685in}{0pt}{\Qcb{Shortened script file for C-band
+SAR example }}{\Qlb{cbandsimscr}}{cbandsimscr.eps}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 6.1376in;height 4.4685in;depth
+0pt;original-width 361.375pt;original-height 266.375pt;cropleft "0";croptop
+"1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/CBANDSIMSCR.EPS';file-properties "XNPEU";}}

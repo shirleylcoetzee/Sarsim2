@@ -1,0 +1,190 @@
+%TCIDATA{LaTeXparent=0,0,THESIS.TEX}
+                      
+
+\chapter{Script Files\label{chapter:script}}
+
+There are only $4$ commands used in the script files, namely:
+
+\begin{enumerate}
+\item  \textbf{\$TARGET}
+
+\item  \textbf{\$PLATFORM}
+
+\item  \textbf{\$RADAR}
+
+\item  \textbf{\$SIMULATION}
+\end{enumerate}
+
+After each of these commands, a series of parameters need to be given. They
+can be separated by spaces or commas. The number of parameters depend on the
+parameters themselves and can vary considerably. This approach has been
+taken to provide flexibility if the descriptions are complex, and to provide
+better readability if the descriptions are simple. Comments can be made with
+an ``!'' (exclamation mark); all text behind it will be ignored until the
+next line break. The parameters follow the input dialogs closely, so if
+there should be any doubts it might be helpful to look at the corresponding
+dialog.
+
+The order in which the objects are defined in a script file is important.
+They should be in the following order: platforms, targets, radars and then
+simulations.
+
+\section{User-defined functions}
+
+The flowcharts for all $4$ functions will be shown. Some of them contain a
+block called ``Array Definition.'' These blocks contain data on user-defined
+functions and the flow diagram is shown below in Figure~\ref{userdef}. Up to
+three functions can be defined in one block, for example $x$-, $y$- and $z$%
+-coordinates versus time. For each function an interpolation method needs to
+be specified (cubic, matched-filter or linear).
+
+\FRAME{fhFU}{3.8233in}{1.5714in}{0pt}{\Qcb{Flow diagram for user-defined
+function block}}{\Qlb{userdef}}{userdef.wmf}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 3.8233in;height 1.5714in;depth 0pt;original-width
+366pt;original-height 149.125pt;cropleft "0";croptop "1";cropright
+"1";cropbottom "0";filename
+'J:/SARSIM2/DOC/TEX/GRAPHICS/Userdef.wmf';file-properties "XNPEU";}}
+
+User-defined functions can be defined either inline or via an external data
+file. Inline means that the actual values for the function(s) are included
+in the parameter list of the command (compact solution). This is useful if
+there are only a small number of samples. With a larger number of samples it
+is more practical to use external data files. In this case it is only
+necessary to specify the filename. The files should be in the same directory
+as the script file. Note that the filename string should not contain commas
+or spaces. The structure of the data (either inline or in a file) depends on
+the functions to be defined but are of the following pattern:
+
+%TCIMACRO{
+%\TeXButton{\tiny}{\tiny
+%}}
+%BeginExpansion
+\tiny
+%
+%EndExpansion
+\begin{verbatim}
+[Number of samples for function 1], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn][Yn]
+[Number of samples for function 2], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn][Yn]
+[Number of samples for function 3], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn][Yn]
+\end{verbatim}
+
+%TCIMACRO{\TeXButton{\normalsize}{\normalsize}}
+%BeginExpansion
+\normalsize%
+%EndExpansion
+
+First the number of samples is given, then the $x$- and $y$-coordinates for
+all the samples are given, then it starts again with the next function (if
+there is one). For example specifying the path of a platform needs $3$
+functions, one for each coordinate versus time. An example of an ``INLINE''
+user-defined trajectory function is given below (the comments are not
+necessary):
+
+%TCIMACRO{
+%\TeXButton{\tiny}{\tiny
+%}}
+%BeginExpansion
+\tiny
+%
+%EndExpansion
+\begin{verbatim}
+INLINE
+2 ! Number of samples for Position X (m) vs Time (s)
+-1, -100 1, 100
+1 ! Number of samples for Position Y (m) vs Time (s)
+0, 10000
+1 ! Number of samples for Position Z (m) vs Time (s)
+0, 2000
+\end{verbatim}
+
+%TCIMACRO{\TeXButton{\normalsize}{\normalsize}}
+%BeginExpansion
+\normalsize%
+%EndExpansion
+
+The equivalent in a ``FILE'' would look identical (ignoring the comments):
+
+%TCIMACRO{
+%\TeXButton{\tiny}{\tiny
+%}}
+%BeginExpansion
+\tiny
+%
+%EndExpansion
+\begin{verbatim}
+! Data file for : Position X (m) vs Time (s), Position Y (m) vs Time (s), Position Z (m) vs Time (s)
+! Structure : [No. Samples] [Time (s) 1] [Position X (m) 1] [Time (s) 2] [Position X (m) 2] ...
+! [No. Samples] [Time (s) 1] [Position Y (m) 1] [Time (s) 2] [Position Y (m) 2] ...
+! [No. Samples] [Time (s) 1] [Position Z (m) 1] [Time (s) 2] [Position Z (m) 2] ...
+2
+-1 -100, 1 100
+1
+0 10000
+1
+0 2000
+\end{verbatim}
+
+%TCIMACRO{\TeXButton{\normalsize}{\normalsize}}
+%BeginExpansion
+\normalsize%
+%EndExpansion
+
+From the given samples the program will interpolate the requested values as
+shown in Figure~\ref{interpolation}.
+
+\section{The \$TARGET command}
+
+A flowchart of the ``\$TARGET'' command is shown in Figure~\ref{target}.
+
+\FRAME{fhFU}{6.557in}{7.0301in}{0pt}{\Qcb{Flow diagram of the \$TARGET
+command}}{\Qlb{target}}{target.wmf}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+6.557in;height 7.0301in;depth 0pt;original-width 472.125pt;original-height
+506.3125pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Target.wmf';file-properties "XNPEU";}}
+
+\section{The \$PLATFORM command}
+
+A flowchart of the ``\$PLATFORM'' command is shown in Figure~\ref{platform}.
+
+\FRAME{fhFU}{4.8179in}{7.4677in}{0pt}{\Qcb{Flow diagram of the \$PLATFORM
+command}}{\Qlb{platform}}{platform.wmf}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 4.8179in;height 7.4677in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Platform.wmf';file-properties
+"XNPEU";}}
+
+\section{The \$RADAR command}
+
+The flowcharts of the ``\$RADAR'' command are shown in Figure~\ref{radar1}
+and in Figure~\ref{radar2} (Split up due to size considerations).
+
+\FRAME{fhFU}{4.1269in}{8.6697in}{0pt}{\Qcb{Flow diagram of the \$RADAR
+command (1st part)}}{\Qlb{radar1}}{radar1.wmf}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 4.1269in;height 8.6697in;depth 0pt;original-width
+329.4375pt;original-height 694.1875pt;cropleft "0";croptop "1";cropright
+"1";cropbottom "0";filename
+'J:/SARSIM2/DOC/TEX/GRAPHICS/Radar1.wmf';file-properties "XNPEU";}}
+
+\FRAME{fhFU}{5.4872in}{8.6135in}{0pt}{\Qcb{Flow diagram of the \$RADAR
+command (2nd part)}}{\Qlb{radar2}}{radar2.wmf}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 5.4872in;height 8.6135in;depth 0pt;original-width
+394.8125pt;original-height 620.75pt;cropleft "0";croptop "1";cropright
+"1";cropbottom "0";filename
+'J:/SARSIM2/DOC/TEX/GRAPHICS/Radar2.wmf';file-properties "XNPEU";}}
+
+\section{The \$SIMULATION command}
+
+A flowchart of the ``\$SIMULATION'' command is shown in Figure \ref{simulat}.
+
+\FRAME{fhFU}{5.0047in}{6.0563in}{0pt}{\Qcb{Flow diagram of the \$SIMULATION
+command}}{\Qlb{simulat}}{simulat.wmf}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 5.0047in;height 6.0563in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Simulat.wmf';file-properties
+"XNPEU";}}

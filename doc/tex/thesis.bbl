@@ -1,0 +1,224 @@
+\begin{thebibliography}{10}
+
+\bibitem{Axelsson}
+S.~R.~J. Axelsson.
+\newblock {Frequency and Azimuthal Variations of Radar Cross Section and Their
+  Influence Upon Low-Frequency SAR Imaging}.
+\newblock {\em IEEE Transactions on Geoscience and Remote Sensing},
+  33(5):1258--1265, September 1995.
+
+\bibitem{Clarke}
+R.~H. Clarke and J.~Brown.
+\newblock {\em {Diffraction Theory and Antennas}}.
+\newblock Ellis Horwood Limited, Chichester, 1980.
+
+\bibitem{Crespo}
+J.~C. Crespo.
+\newblock {The Extended Chirp Scaling Processor for the Experimental SAR System
+  of DLR, E-SAR}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 353--356, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Cumming}
+I.~Cumming, F.~Wong, and K.~Raney.
+\newblock {A SAR Processing Algorithm with no Interpolation}.
+\newblock In {\em {Proc.\ IEEE Geosci.\ Remote Sensing Symp., IGARSS'92}},
+  pages 376--379, Clear Lake, TX, May 1992.
+
+\bibitem{Curlander}
+J.~C. Curlander and R.~N. McDonough.
+\newblock {\em {Synthetic Aperture Radar Systems and Signal Processing}}.
+\newblock John Wiley and Sons, New York, Chichester, Brisbane, Toronto,
+  Singapore, 1991.
+
+\bibitem{Davidson:96}
+G.~W. Davidson, F.~Wong, and I.~Cumming.
+\newblock {The Effect of Pulse Phase Errors on the Chirp Scaling SAR Processing
+  Algorithm}.
+\newblock {\em IEEE Transactions on Geoscience and Remote Sensing},
+  34(2):471--478, March 1996.
+
+\bibitem{Elachi}
+C.~Elachi.
+\newblock {\em {Spaceborne Radar Remote Sensing: Applications and Techniques}}.
+\newblock The Institute of Electrical and Electronics Engineers, Inc., New
+  York, 1988.
+
+\bibitem{Fitch}
+J.~P. Fitch.
+\newblock {\em {Synthetic Aperture Radar}}.
+\newblock Springer-Verlag, New York, 1988.
+
+\bibitem{Gill}
+G.~S. Gill.
+\newblock {Step Frequency Waveform Design and Processing for Detection of
+  Moving Targets in Clutter}.
+\newblock In {\em {Proceedings of the IEEE 1995 International Radar Conference,
+  RADAR'95}}, pages 573--578, Alexandria, Virginia, May 1995.
+
+\bibitem{Hovanessian}
+S.~A. Hovanessian.
+\newblock {\em {Radar System Design and Analysis}}.
+\newblock Artech House, Norwood, MA~02062, 1984.
+
+\bibitem{Huang:96}
+Y.~Huang, Z.~Ma, and S.~Mao.
+\newblock {Stepped-frequency SAR System Design and Signal Processing}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 565--568, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Hughes}
+W.~Hughes, K.~Gault, and G.~J. Princz.
+\newblock {A Comparison of the Range-Doppler and Chirp Scaling Algorithms with
+  reference to RADARSAT}.
+\newblock In {\em {Proc.\ IEEE Geosci.\ Remote Sensing Symp., IGARSS'96}},
+  volume~2, pages 1221--1223, Lincoln, Nebraska, June 1996.
+
+\bibitem{Inggs:96}
+M.~R. Inggs.
+\newblock {The SASAR VHF Sensor}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 317--320, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Inggs:93}
+M.~R. Inggs, J.~Hurwitz, and A.~Langman.
+\newblock {Synthetic Range Profile Measurements of Aircraft}.
+\newblock In {\em {IEEE Proceedings of the 1993 South African Communications
+  and Signal Processing Symposium, COMSIG'93}}, pages 204--209, September 1993.
+
+\bibitem{Inggs:92b}
+M.~R. Inggs, A.~Knight, and P.~Smit.
+\newblock {Synthetic Range Profile Measurements with a Pulse Compression
+  Radar}.
+\newblock In {\em {IEEE Proceedings of the 1992 South African Communications
+  and Signal Processing Symposium, COMSIG'92}}, pages 7--10, Cape Town, South
+  Africa, September 1992.
+
+\bibitem{Richard4}
+M.~R. Inggs and R.~T. Lord.
+\newblock {SRP Phase VI Status Report}.
+\newblock Technical report, {University of Cape Town, Radar Remote Sensing
+  Group}, February 1996.
+
+\bibitem{Inggs:92a}
+M.~R. Inggs, M.~W. van Zyl, and A.~Knight.
+\newblock {A Simulation of Synthetic Range Profile Radar}.
+\newblock In {\em {IEEE Proceedings of the 1992 South African Communications
+  and Signal Processing Symposium, COMSIG'92}}, pages 1--6, Cape Town, South
+  Africa, September 1992.
+
+\bibitem{Legg}
+J.~A. Legg, A.~G. Bolton, and D.~A. Gray.
+\newblock {SAR Moving Target Detection using a Nonuniform PRI}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 423--426, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Richard6}
+R.~T. Lord and M.~R. Inggs.
+\newblock {High Resolution VHF SAR Processing Using Synthetic Range Profiling}.
+\newblock In {\em {Proc.\ IEEE Geosci.\ Remote Sensing Symp., IGARSS'96}},
+  volume~1, pages 454--456, Lincoln, Nebraska, June 1996.
+
+\bibitem{Richard:97b}
+R.~T. Lord and M.~R. Inggs.
+\newblock {High Range Resolution Radar using Narrowband Linear Chirps offset in
+  Frequency}.
+\newblock In {\em {IEEE Proc.\ of the South African Symp.\ on Communications
+  and Signal Processing, COMSIG'97}}, pages 9--12, Grahamstown, South Africa,
+  September 1997.
+
+\bibitem{Richard:97a}
+R.~T. Lord and M.~R. Inggs.
+\newblock {High Resolution SAR Processing Using Stepped-Frequencies}.
+\newblock In {\em {Proc.\ IEEE Geosci.\ Remote Sensing Symp., IGARSS'97}},
+  volume~1, pages 490--492, Singapore, August 1997.
+
+\bibitem{Mittermayer}
+J.~Mittermayer, R.~Scheiber, and A.~Moreira.
+\newblock {The Extended Chirp Scaling Algorithm for ScanSAR Data Processing}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 517--520, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Mobley}
+S.~Mobley and M.~Maier.
+\newblock {Synthetic Aperture Radar-Systems Processing with a Non-Uniform Pulse
+  Repetition Interval}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 407--410, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Moreira:98}
+A.~Moreira, J.~Mittermayer, and R.~Scheiber.
+\newblock {Processing of SAR and ScanSAR Imaging Modes using the Extended Chirp
+  Scaling Algorithm}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'98}}, pages 557--560, {Friedrichshafen, Germany}, May 1998. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Oppenheim}
+A.~V. Oppenheim.
+\newblock {\em {Applications of Digital Signal Processing}}.
+\newblock Prentice-Hall, Englewood Cliffs, NJ, 1978.
+
+\bibitem{Robinson}
+A.~D. Robinson and M.~R. Inggs.
+\newblock {Correlation Filters Applied to Synthetic Range Profiles of Aircraft
+  Targets}.
+\newblock In {\em {IEEE Proc.\ of the South African Symp.\ on Communications
+  and Signal Processing, COMSIG'94}}, October 1994.
+
+\bibitem{Runge}
+H.~Runge and R.~Bamler.
+\newblock {A novel high precision SAR focussing algorithm based on chirp
+  scaling}.
+\newblock In {\em {Proc.\ IEEE Geosci.\ Remote Sensing Symp., IGARSS'92}},
+  pages 372--375, Clear Lake, TX, May 1992.
+
+\bibitem{Seger:98}
+O.~Seger, M.~Herberthson, and H.~Hellsten.
+\newblock {Real Time SAR Processing of Low Frequency Ultra Wide Band Radar
+  Data}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'98}}, pages 489--492, {Friedrichshafen, Germany}, May 1998. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Shteinshleiger}
+V.~Shteinshleiger, A.~Dzenkevich, G.~Misezhnikov, and L.~Mel'nikov.
+\newblock {On the Possibility of Designing a High-Resolution Space-Borne
+  VHF-Band SAR for Remote Sensing of the Earth}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'96}}, pages 321--324, {K\"onigswinter, Germany}, March 1996. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Stimson}
+G.~W. Stimson.
+\newblock {\em {Introduction to Airborne Radar}}.
+\newblock Hughes Aircraft Company, El Segundo, California, 1983.
+
+\bibitem{Suess:98}
+M.~Suess, M.~{V\"olker}, J.~J.~W. Wilson, and C.~H. Buck.
+\newblock {Superresolution: Range Resolution Improvement by Coherent
+  Combination of Repeat Pass SAR Images}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'98}}, pages 565--569, {Friedrichshafen, Germany}, May 1998. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Ulander:98}
+L.~M.~H. Ulander.
+\newblock {Performance of Stepped-Frequency Waveform for Ultra-Wideband VHF
+  SAR}.
+\newblock In {\em {Proc.\ European Conference on Synthetic Aperture Radar,
+  EUSAR'98}}, pages 323--326, {Friedrichshafen, Germany}, May 1998. VDE-Verlag
+  GMBH, Berlin and Offenbach.
+
+\bibitem{Wehner}
+D.~R. Wehner.
+\newblock {\em {High Resolution Radar}}.
+\newblock Artech House, Norwood, MA~02062, 1987.
+
+\end{thebibliography}

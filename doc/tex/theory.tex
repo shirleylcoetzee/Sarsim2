@@ -1,0 +1,89 @@
+%TCIDATA{LaTeXparent=0,0,thesis.tex}
+                      
+
+\chapter{Radar Theory applied to Simulator\label{chap:theory}}
+
+This chapter gives a very brief overview of radar theory and how it is
+implemented in the simulator.
+
+Radars are electromagnetic devices used for detection of targets by
+radiating electromagnetic energy and examining the reflected energy. A
+target can be described as an object which interferes with the transmitted
+wave and reflects part of its energy. For this simulator, targets occupy an
+infinitesimally small space, therefore they are called point targets
+(PTs).Most radars work in pulsed mode, i.e. they send out short burst of
+energy, with relatively long delays in-between. The period between these
+pulses is called the \textit{pulse repetition interval} (PRI), but usually
+the reciprocal, namely the \textit{pulse repetition frequency }(PRF), is
+specified.
+
+\FRAME{fhFU}{3.4134in}{1.5108in}{0pt}{\Qcb{A simple radar setup}}{\Qlb{%
+antennapt}}{antennapt.eps}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.4134in;height 1.5108in;depth 0pt;original-width 361.375pt;original-height
+157.625pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/ANTENNAPT.EPS';file-properties "XNPEU";}}
+
+Consider the setup shown in Figure~\ref{antennapt} with a single point
+target. A pulse is sent out at time $t_{0}$ and the return is received after 
+$\Delta t$ seconds: 
+\begin{equation}
+\Delta t=\frac{2\cdot d}{c}  \label{equ:delta_t}
+\end{equation}
+where $c$ is the speed of light and $d$ is the distance to the target. For
+this simulator the received signal will be a replica of the transmitted
+signal, although the power will be a fraction of the original pulse. The
+received power $P_{rx}$ of the reflected signal at the radar will be 
+\begin{equation}
+P_{rx}=\frac{P_{tx}\,G_{t}\,G_{r}\,\lambda ^{2}\,\sigma }{\left( 4\pi
+\right) ^{3}\,d^{4}}
+\end{equation}
+where $P_{tx}$ is the transmitted power, $G_{t}$ and $G_{r}$ the transmit
+and receive antenna gain, $\lambda $ the wavelength, $\sigma $ the cross
+section area of the point target and $d$ the distance between radar and
+target.
+
+Normally many pulses are transmitted as shown in Figure~\ref{radarpulses}.
+
+\FRAME{fhFU}{5.4552in}{1.3993in}{0pt}{\Qcb{Pulsed operation}}{\Qlb{%
+radarpulses}}{radarpulse.eps}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+5.4552in;height 1.3993in;depth 0pt;original-width 361.375pt;original-height
+90.0625pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/RADARPULSE.EPS';file-properties "XNPEU";}}The
+point target will return an echo after some time $\Delta t$ which depends on
+the distance of the target from the radar according to Equation~\ref
+{equ:delta_t}. Usually one is not interested in the complete range between
+two pulses, but only a small fraction of it, which is set by a range gate.
+Obviously the range delay and returned power can be calculated by hand for
+simple stationary targets, but it will get very tedious for moving targets,
+especially with the addition of noise and motion jitter.
+
+This simulator is capable of generating an array of complex values which
+correspond to the output of the radar at a certain timespan. For this
+simulator the nomenclature of SAR literature has been used, so the interval
+for which data will be sampled (range gate) is called slant range. The time
+range for which pulses are sent out and the return is sampled is called
+azimuth range. An example of a single point target which moves with constant
+velocity past a radar is shown in Figure~\ref{windowex}.
+
+\FRAME{fhFU}{4.0214in}{3.141in}{0pt}{\Qcb{An example of a simulation output
+of a moving point target}}{\Qlb{windowex}}{windowex.gif}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 4.0214in;height 3.141in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Windowex.gif';file-properties
+"XNPEU";}}A target moves past the radar, being closest at time $t=0$. The $x$%
+-axis represents distance from the radar, and the $y$-axis represents time.
+In this case chirp modulation has been used with a very low (unrealistic)
+chirp bandwidth. The simulation shows the raw return (no range compression
+applied). Note that the signal magnitude decreases as the distance to the
+radar increases.
+
+This radar simulator therefore creates 2-dimensional arrays of complex
+numbers corresponding to the output of range versus time for a specific
+radar. It calculates the relative distances between the radar(s) and point
+targets for the specified time period. Depending on these distances, scaled
+copies of the defined pulse are inserted into the output array. The raw
+return can be range compressed, i.e.~every pulse is convolved with its
+replica.

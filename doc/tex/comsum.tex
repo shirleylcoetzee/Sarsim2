@@ -1,0 +1,919 @@
+%TCIDATA{LaTeXparent=0,0,THESIS.TEX}
+                      
+
+\chapter{Command Summary\label{chapter:commands}}
+
+This chapter explains all available commands.
+
+\section{Main Window}
+
+\subsection{Overview}
+
+After starting Sarsim you will see a screen similar to the one shown in
+Figure~\ref{mainscreen}. In this specific example a file has been loaded for
+demonstration purposes. On the left side of the window, the current
+simulation time, the current look-angle and a list of all objects is given.
+The simulation time is useful in order to see how objects move with respect
+to time. It can be changed by pressing the \textbf{Earlier} or \textbf{Later}
+buttons, or by entering a specific time into the edit box. The look angle is
+given by an azimuth and elevation angle, where the azimuth angle is measured
+clockwise from the $y$-axis, and the elevation angle from the $x$-$y$ plane.
+The object list shows all current objects, namely point targets (PTs),
+platforms and radars. They are sorted with respect to platforms, and below
+each platform an indented list of all objects relative to this platform is
+given. Objects can be altered by clicking or double-clicking the respective
+list item. On top of the screen a few speed buttons are placed. Clicking on
+them will create a new object of the selected type.
+
+\FRAME{fhFU}{4.9199in}{3.7369in}{0pt}{\Qcb{Main window}}{\Qlb{mainscreen}}{%
+mainscre.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.9199in;height 3.7369in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Mainscre.gif';file-properties "XNPEU";}}
+
+\subsection{Mouse Commands}
+
+The mouse is used to rotate the coordinate system and to zoom in and out. It
+is also used to modify or delete objects.
+
+\begin{itemize}
+\item  \textbf{ROTATION}: To rotate the axes, push and hold the left mouse
+button and move the mouse in the required direction. Moving it up and down
+will change the elevation angle, moving it left and right changes the
+azimuth angle.
+
+\item  \textbf{ZOOM}: To zoom in or out, push and hold the right mouse
+button and move it up or down. The distance marks on the axes should start
+moving.
+
+\item  \textbf{MODIFY / DELETE}: Point targets, platforms and radars can be
+modified by either selecting the required object on the list or
+right-clicking the required object in the coordinate system. A menu
+containing options to modify or delete the object will appear.
+\end{itemize}
+
+\subsection{Menu Commands}
+
+\subsubsection{File}
+
+\begin{itemize}
+\item  \textbf{New:} Creates a new simulation. If the current simulation has
+not been saved, the user will be asked if the current file should be saved.
+
+\item  \textbf{Open:} Loads a script file from disk (default extension =
+``.scr''). The structure of the script files will be explained in detail in
+Chapter~\ref{chapter:script}.
+
+\item  \textbf{Save:} Saves the current simulation file to disk. If no name
+has been given yet, the user will be asked to enter a name.
+
+\item  \textbf{SaveAs:} Saves the current file with a new name.
+
+\item  \textbf{Exit:} Exits the program.
+\end{itemize}
+
+\subsubsection{Geometry}
+
+\begin{itemize}
+\item  \textbf{New Target:} Creates a new point target. A detailed
+description is given in Section~\ref{newtarget}.
+
+\item  \textbf{New Platform:} Creates a new platform. A detailed description
+is given in Section~\ref{newplatform}.
+
+\item  \textbf{New Radar:} Creates a new radar. A detailed description is
+given in Section~\ref{newradar}.
+\end{itemize}
+
+\subsubsection{Simulation}
+
+\begin{itemize}
+\item  \textbf{Raw Return:} This option shows the received return signal
+mixed down to baseband. A detailed description is given in Section~\ref
+{simulationwindow}.
+
+\item  \textbf{Range Compressed:} This options shows the range compressed
+return, also mixed down to baseband. A detailed description is given in
+Section~\ref{simulationwindow}.
+
+\item  \textbf{Previously Stored:} The parameters of a simulation can be
+stored so that they can be recalled quickly. This includes the window range,
+sampling frequency, radar used, output file name and some more parameters. A
+list of all stored simulations will be given. An option to delete a
+simulation setup is also given.
+\end{itemize}
+
+\section{New Target Window}
+
+\label{newtarget}Creating a new target brings up a dialog window shown in
+Figure~\ref{newtargetdialog}.
+
+\FRAME{fhFU}{4.395in}{3.154in}{0pt}{\Qcb{New target dialog}}{\Qlb{%
+newtargetdialog}}{newtarge.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.395in;height 3.154in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Newtarge.gif';file-properties "XNPEU";}}The
+following parameters can be configured:
+
+\begin{itemize}
+\item  \textbf{Platform name (up to 15 characters):} The platform to which
+the current point target belongs. The coordinates entered will be relative
+to the origin of this given platform.
+
+\item  \textbf{Position }$x$\textbf{, }$y$\textbf{\ and }$z$: The
+coordinates of the point target in meters.
+
+\item  \textbf{Standard deviation of }$x$\textbf{, }$y$\textbf{\ and }$z$%
+\textbf{\ position}: Introduce Gaussian distributed random jitter.
+
+\item  \textbf{Radar Cross Section}: The radar cross section in square
+meters.
+
+\item  \textbf{Radar Cross Section deviation}: If the target scintillates,
+the standard deviation of the RCS can be specified. The distribution is
+Gaussian.
+
+\item  \textbf{Isotropic reflectivity:} The incidence angle of the ray from
+the radar is irrelevant, i.e.~the radar cross section will always be
+constant.
+
+\item  \textbf{Directional reflectivity}: This imitates a surface for which
+the reflected energy is given as a function of the incidence angle (azimuth
+and elevation angle). If the gain is set to ``Cos'', the radar cross section
+changes exactly like the projected surface of a disc seen from a specific
+angle, i.e.~effective RCS $=$ RCS $\cdot $ $\cos ($incidence angle$)$. No
+reflection takes place on the backside. It is possible to define a specific
+gain pattern by clicking on the ``Definition'' button. This is explained in
+detail in Section~\ref{userfunc}.
+\end{itemize}
+
+\section{New Platform Window}
+
+\label{newplatform}Creating a new platform brings up the dialog window shown
+in Figure~\ref{newplatdialog}.
+
+\FRAME{fhFU}{4.062in}{3.5034in}{0pt}{\Qcb{New platform dialog}}{\Qlb{%
+newplatdialog}}{newplatf.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.062in;height 3.5034in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Newplatf.gif';file-properties "XNPEU";}}The
+following parameters can be configured:
+
+\begin{itemize}
+\item  \textbf{Platform name}: The name of this platform (up to 15
+characters) for future referencing.
+
+\item  \textbf{Position, ``Stationary'' or ``Trajectory''}: If the position
+of the platform is stationary, the $x$, $y$ and $z$ coordinates need to be
+entered. This will place the platform at the given coordinate on the
+``Earth'' platform. If the position of the platform is defined as a
+trajectory, the position for every time instance can be defined. The given
+points will be interpolated (parabolic, linear or low-pass filtered). This
+will be explained in Section~\ref{userfunc}.
+
+\item  $x$\textbf{, }$y$\textbf{\ and }$z$\textbf{-rotation}: This describes
+the rotation angles of the platform around the $x$, $y$ and $z$ axes seen
+relative to the ``Earth'' platform. Note that the platform can be
+``aligned''.
+
+\item  \textbf{Align }$x$\textbf{-axis to path}: If this box is provided
+with a check mark, the coordinate system will be rotated in such a way that
+the $x$-axis will coincide with the path at any given time instance. To
+express it differently, the azimuth and elevation angle of any point on the
+path will be parallel to the $x$-axis of the platform. The $y$-axis will
+however still be parallel to the ``Earth'' platform. An example where this
+is useful is if a platform is used to describe the motion of an aircraft,
+then the nose of the aircraft will always point in the direction it is
+flying. An example is give in Chapter~\ref{chapter:examples}.
+
+\item  The parameters in the box ``Motion errors'' describe any deviations
+from the ideal position or rotation. The distribution is Gaussian. There is
+the option to define motion errors by giving an integration envelope which
+will be convolved with Gaussian distributed noise, but this option is still
+in development.
+\end{itemize}
+
+\section{New Radar Window}
+
+\label{newradar}Creating a new radar brings up a dialog window shown in
+Figure~\ref{newradardialog1}.
+
+\FRAME{fhFU}{3.9946in}{3.9799in}{0pt}{\Qcb{New radar dialog - Page 1}}{\Qlb{%
+newradardialog1}}{newradar1.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.9946in;height 3.9799in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Newradar1.gif';file-properties "XNPEU";}}
+
+The following parameters can be configured on this page:
+
+\begin{itemize}
+\item  \textbf{Radar name}: For convenience there can be more than one radar
+in the simulation. The radar name has to be specified for future reference.
+
+\item  \textbf{Platform name}: The name of the platform onto which the radar
+will be positioned. The radar is always positioned at the origin of the
+platform.
+
+\item  \textbf{Pulse type}: Choose either monochrome, chirp pulse or
+user-defined pulses. If a chirp pulse is chosen, the chirp bandwidth needs
+to be specified.
+
+\item  \textbf{Pulsewidth}: The pulsewidth in nanoseconds.
+
+\item  \textbf{Envelope}: The pulse can be multiplied by an envelope
+function to model more realistic pulses as shown in Figure~\ref{pulse}.%
+\FRAME{fhFU}{2.4578in}{1.3353in}{0pt}{\Qcb{Pulse envelope}}{\Qlb{pulse}}{%
+pulse.eps}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.4578in;height 1.3353in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Pulse.eps';file-properties "XNPEU";}}
+
+\item  \textbf{Pulse Repetition Frequency}: The PRF can be defined either as
+a constant or it can vary from pulse to pulse as shown in Figure~\ref{prf}.
+The data wraps around, such that PRI$[x]=$PRIArray$[$modulus$(x,n)]$. Note
+that all times are given in seconds.\FRAME{fhFU}{4.8023in}{1.2687in}{0pt}{%
+\Qcb{User-defined PRFs}}{\Qlb{prf}}{prf.eps}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 4.8023in;height 1.2687in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Prf.eps';file-properties "XNPEU";}}
+
+\item  \textbf{Centre frequency}: Specify the centre frequency of each
+pulse. It can be constant, stepped or completely arbitrary.
+
+\item  \textbf{Power output}: Total power output of radar in kW.
+
+\item  \textbf{System losses}: Total system losses in dB.
+
+\item  \textbf{Noise temperature}: Noise temperature of system in Kelvin.
+\end{itemize}
+
+Noise is modelled in a simple way by specifying noise temperature of the
+receiver. The following example will show how to convert between the noise
+temperature and a required S/N ratio at a certain distance:
+
+The noise power can be calculated by:
+
+\begin{equation}
+N=k\cdot T\cdot B
+\end{equation}
+
+where $k$ is Boltzmann's constant $(=1.38\cdot 10^{-23}$ Joules/degree$)$, $%
+T $ is the equivalent receiver noise temperature in Kelvin and $B$ is the
+bandwidth of the pulse (for chirp pulses $=$ Chirp bandwidth, for monochrome
+pulses $=\frac{1}{\text{Pulsewidth}})$. Assuming we want to add the noise to
+a given complex sample $S=I+j\cdot Q$, the values representing complex
+voltage. The resulting vector (signal + noise) $SN=IN+j\cdot QN$ is then
+calculate as follows: 
+\begin{eqnarray}
+IN &=&I+\func{GaussianNoise}\left( \sqrt{N}\right) \\
+QN &=&Q+\func{GaussianNoise}\left( \sqrt{N}\right)
+\end{eqnarray}
+where $\func{GaussianNoise}()$ returns a random value with mean = 0 and
+given standard deviation.
+
+Consider a simple simulation with a point target (RCS = 1\thinspace m$^{2}$)
+at a distance of $1$\thinspace km, and a radar with a power output of $1$%
+\thinspace kW. The pulse should have monochrome modulation and have a width
+of $1000$\thinspace ns. The noise temperature is set to $100$~Kelvin, the
+centre frequency is $1$\thinspace GHz. The signal power received would be:
+
+\begin{eqnarray}
+P_{rx} &=&\frac{P_{tx}\cdot \lambda ^{2}\cdot \sigma }{(4\cdot \pi
+)^{3}\cdot d^{4}} \\
+&=&\frac{1000\cdot 0.3^{2}\cdot 1}{(4\cdot \pi )^{3}\cdot 1000^{4}} \\
+&=&4.53\cdot 10^{-14}\,\text{W}
+\end{eqnarray}
+
+The noise power would be:
+
+\begin{eqnarray}
+N &=&k\cdot T\cdot B \\
+&=&1.38\cdot 10^{-23}\cdot 100\cdot \frac{1}{10^{-6}} \\
+&=&1.38\cdot 10^{-15}\,\text{W}
+\end{eqnarray}
+
+which gives a power S/N ratio of:
+
+\begin{eqnarray}
+\frac{S}{N} &=&\frac{4.53\cdot 10^{-14}\,\text{W}}{1.38\cdot 10^{-15}\,\text{%
+W}} \\
+&=&32.8 \\
+&=&15.2\,\text{dB}
+\end{eqnarray}
+
+Converting to amplitudes (assuming a 1$\Omega $ resistor):
+
+\begin{eqnarray}
+V_{\text{received}} &=&\sqrt{P_{rx}} \\
+&=&2.13\cdot 10^{-7}\,\text{V}
+\end{eqnarray}
+
+and
+
+\begin{equation}
+\text{Noise Voltage}=3.715\cdot 10^{-8}\,\text{V}
+\end{equation}
+
+The signal to noise ratio with respect to amplitudes would be $5.73$.
+
+A second page of configurable parameters can be selected. It is shown in
+Figure~\ref{newradardialog2}.
+
+\FRAME{fhFU}{3.9799in}{3.9799in}{0pt}{\Qcb{New radar dialog - Page 2}}{\Qlb{%
+newradardialog2}}{newradar2.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.9799in;height 3.9799in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Newradar2.gif';file-properties "XNPEU";}}The
+following parameters can be configured on this page:
+
+\begin{itemize}
+\item  \textbf{Transmitter and receiver antenna gain}: Either isotropic, a
+typical $\sin (x)/x$ pattern, or user-defined.
+
+\item  \textbf{Antenna Direction}
+
+\item  \textbf{Matched Filter Window}
+
+\item  \textbf{Sensitivity Time Control}
+\end{itemize}
+
+The radar is positioned at the origin of the given platform.
+
+\section{Simulation Window}
+
+\subsection{\label{simulationwindow}Overview}
+
+There are two processing options available:
+
+\begin{itemize}
+\item  \textbf{A raw return simulation}: In this case the transmitted signal
+is not range-compressed (i.e.~convolved with a replica). The sampling rate
+is automatically set such that all detail is shown at the current screen
+resolution.
+
+\item  \textbf{A range-compressed simulation}: The return gets
+range-compressed. Because range-compression is computationally intensive,
+the sampling rate can be set. Note that setting low sampling rates (less
+than three times Nyquist rate) may result in unfamiliar looking graphs.
+\end{itemize}
+
+A typical simulation window is shown in Figure~\ref{simulationwin}.
+
+\FRAME{fhFU}{4.478in}{3.6288in}{0pt}{\Qcb{A typical simulation window}}{\Qlb{%
+simulationwin}}{rawretur.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.478in;height 3.6288in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Rawretur.gif';file-properties "XNPEU";}}
+
+The simulation window shows the received return signal mixed down to
+baseband. On the right hand side a window with slant range (in meters)
+versus azimuth (in seconds) is shown. The maximum amplitude (in mV) is shown
+at the bottom. This is only an approximation based on the current window. In
+the top left corner the name of the selected radar is shown. The returned
+signals have been calculated for this specific radar. Select a different
+radar to display returns for a different radar.
+
+To change the simulation window, edit the range and azimuth values in the
+window box. It is possible to zoom in interactively by left-clicking and
+dragging on the simulation window. If the simulation window is
+right-clicked, it will zoom out by a factor of two in the slant range and
+azimuth directions.
+
+The ``Display'' box selects whether the real, imaginary part or the phase or
+magnitude is displayed. The display of the pulses is colour-coded, where
+blue represents positive, black zero and red negative values. In case of a
+graphics card supporting $256$ or more colours, the colours will change
+smoothly according to the amplitude. The contrast can be changed by moving
+the slider. If one zooms in such that successive pulses are separated by
+more than $10$ screen pixels in the azimuth direction, the pulses will not
+be colour-coded anymore, but shown as proper graphs.
+
+There is a important point which needs to be clarified: The simulation
+window shows slant range in the $x$-direction and azimuth in the $y$%
+-direction. However what is displayed in reality is what the A/D converter
+will see, i.e.~the scale in slant range is measured as range delay. The
+difference between distance and range delay is a factor of two, because the
+pulse has to travel twice the distance. So the simulation window actually
+uses range delay $=\frac{c}{2d}$ (in seconds) as the $x$-axis, but shows a
+scale which corresponds to the actual distance to the target. An example: a
+pulse of length $1\,u$s is $300$\thinspace m long. If the A/D frequency is $%
+500$\thinspace MHz, the returning pulse will cover over $500$ samples. One
+sample corresponds to $0.3$\thinspace m $\left( \frac{c}{2\cdot f_{ad}}%
+\right) $ in distance and therefore the pulse will have a length of $%
+500\cdot 0.3\,$m $=150\,$m on the display (and not the actual $300$%
+\thinspace m). This might sound confusing, but the factor of $2$ simply
+originates from the fact that the beam has to travel twice the actual
+distance (to the target and back). If the return is converted into range by
+multiplying by the speed of light, the target will appear at twice the
+distance where it actually is, and therefore the range (and the pulse
+length) is divided by a factor of $2$ to overcome this problem.
+
+\subsection{Saving Data}
+
+\label{savedata}After choosing the required window in range and azimuth, the
+data can be saved in either text or binary format. The dialog shown in
+Figure~\ref{savedata} will come up.
+
+\FRAME{fhFU}{3.3529in}{4.0153in}{0pt}{\Qcb{``Save Data'' dialog}}{\Qlb{%
+savedata}}{savedata.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+3.3529in;height 4.0153in;depth 0pt;original-width 550.3125pt;original-height
+660.1875pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/TEX/GRAPHICS/Savedata.gif';file-properties "XNPEU";}}
+
+The dialog is divided into three sections:
+
+\subsubsection{Simulation Window}
+
+The simulation window determines the range in time (azimuth) and distance
+(slant range) which will be saved to disk. The actual values were set in the
+previous window (simulation window) and cannot be changed in this dialog.
+The slant range is given in meters and represents the distance from the
+radar. It can be converted into time (range delay) by using the simple
+relationship $t=\frac{2d}{c}$. The azimuth range is measured in seconds and
+corresponds to the time span for which the data will be recorded. If the PRF
+is constant, the number of pulses can be determined by using the following
+equation: 
+\begin{equation}
+\text{number of pulses }=(\text{EndTime}-\text{StartTime})\cdot \text{PRF}+1
+\end{equation}
+
+In non-SAR applications the term azimuth range is equivalent to the time
+window (slow time) for which the radar is capturing data.
+
+The sampling frequency determines the sampling rate of the received signal.
+By default the sample frequency is set to the Nyquist frequency which is
+calculated from either the pulse length or the chirp bandwidth for
+monochrome and chirp pulses respectively. The sampling frequency can be
+altered by changing the multiplication factor. Undersampling, i.e.~inserting
+values below unity, is accepted.
+
+Below that, the size of the file is estimated. In this case (see Figure~\ref
+{savedata}), there are $512$ sample points in slant range $(1279$\thinspace
+m in range $\triangleq $ $\frac{2\cdot 1279}{c}=8.5352\,us$, $%
+8.5352\,us\cdot 120\,$MHz $=1024)$ and $512$ pulses in azimuth ($1.279$
+seconds at $400$\thinspace Hz PRF (inclusive)). For ASCII files, the program
+can only estimate the actual space needed for each I/Q pair, as trailing
+zeroes are not saved. However if the file is saved in binary format, the
+size given will be precise.
+
+\subsubsection{A/D Converter}
+
+The next box requires two inputs, namely the A/D sampling accuracy in bits
+and the value of the least significant bit (LSB) in millivolt. If the value
+is not divisible by $8$, the remaining bits will be zero-padded. The LSB
+value is estimated from the maximum magnitude occurring in the simulation
+window. It will not be absolutely accurate since the sampling frequency of
+the screen window might be less than the sampling frequency used for saving
+the file. It is possible to change the LSB value by selecting the ``Set by
+user'' check box. After the file has been saved, the program will show how
+much dynamic range has actually been used.
+
+\subsubsection{File}
+
+The last box contains the file name and the format in which the data should
+be saved in. If the file is saved in binary format, each I and Q value is
+represented by an integer number of bytes with zero-padding applied if
+necessary. For example $12$ bit A/D accuracy will require $2$ bytes for each
+I and Q value, with the four least-significant bits set to $0$. The offset
+is $\left( 2^{x-1}-1\right) $ with $x$ being the number of A/D bits (for
+example $8$ bits correspond to an offset of $127$, i.e. $0$ Volts = $127$).
+If the file is saved in text (ASCII) format the number (as calculated
+before) will be written as a proper number.
+
+An example is given now:
+
+In the example above the maximum value in the simulation window was $%
+6.39369\cdot 10^{-5}$\thinspace mV. Using $8$ bits per value, this means the
+least significant value will be $\frac{6.39369\cdot 10^{-5}}{2^{8-1}-1}=%
+\frac{6.39369\cdot 10^{-5}}{127}=5.0344\cdot 10^{-7}$\thinspace mV as is
+also shown in Figure~\ref{savedata}. If for example the I-value at some
+point is $1.2\cdot 10^{-5}$\thinspace mV, then the value written to disk
+will be $(2^{8-1}-1)+\func{round}\left( \frac{1.2\cdot 10^{-5}}{5.0344\cdot
+10^{-7}}\right) =127+37=164$, where the first part of the formula represents
+the offset value. In binary mode the character corresponding to $164$ will
+be written to file, while in ASCII mode the three separate digits ``1'',
+``6'' and ``4'' will be saved.
+
+There is the option to save the current simulation window (i.e.~the window
+range, sampling frequency, etc.) in the script file so that it can be
+recalled quickly at a later stage. This is done by setting the ``Save to
+script only'' or the ``Save to both'' check box. If it is set to ``Save to
+script only'' it means the file will be not written to disk, however the
+simulation parameters will be added to the script file. This will be
+explained in more detail in Chapter~\ref{chapter:script}. If it is set to
+``Save simulation output to disk only'', no simulation entry will be added
+to the script file. ``Save to both'' adds the simulation to the script file
+and also saves the actual data to disk.
+
+After selecting the ``Save'' option, the file will be saved, showing a
+progress bar. The saving process can always be interrupted by pressing the
+cancel button.
+
+\subsection{Data file structure}
+
+The data is saved in a complex format where each sample point is represented
+by an inphase component (I) and a quadrature component (Q). The structure is
+shown in Figure~\ref{filestruc}.
+
+\FRAME{fhFU}{7.8507cm}{5.2258cm}{0pt}{\Qcb{Data file structure}}{\Qlb{%
+filestruc}}{data save structure.eps}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 7.8507cm;height 5.2258cm;depth 0pt;original-width
+277.0625pt;original-height 183.6875pt;cropleft "0";croptop "1";cropright
+"1";cropbottom "0";filename 'J:/SARSIM2/DOC/TEX/GRAPHICS/DATA SAVE
+STRUCTURE.EPS';file-properties "XNPEU";}}
+
+The I and Q values are written in turns. Each line in the file corresponds
+to the return of one pulse, with the ``earliest'' pulse written first.
+Within each line the sampled values are written as IQ pairs, the ``earlier''
+(closer to the radar) samples written first. These pairs are separated by
+commas if the file is saved as text, but have no separation character if the
+file is saved in binary format. In text mode after each pulse a ``new line''
+character is inserted. For the parameters shown in Figure~\ref{savedata}
+there would be $1024$ IQ pairs ($2048$ numbers) for each line and a total of 
+$512$ lines.
+
+\section{User-defined Functions}
+
+\label{userfunc}The radar simulator is highly configurable. There are $12$
+functions which can be defined completely arbitrarily, for example the pulse
+shape, the centre frequency of every pulse, the PRI (pulse repetition
+interval) between any $2$ pulses, the trajectory of moving platforms, the
+antenna gain patterns, matched filter windows and some more. These functions
+can either be defined by entering the sample points straight into the
+simulator, or by specifying an external data file.
+
+\subsection{ The data entry window}
+
+A standardised input screen is used for all of them, which is shown in
+Figure~\ref{userdef}.
+
+\FRAME{fhFU}{4.19in}{3.3278in}{0pt}{\Qcb{A user-defined function}}{\Qlb{%
+userdef}}{userdef.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.19in;height 3.3278in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Userdef.gif';file-properties "XNPEU";}}
+
+In this case the window for defining a trajectory of a platform is shown.
+There are three variables to be defined for the trajectory, i.e.~the $x$, $y$
+and $z$ coordinates vs time. To define a function, at least one point
+(coordinate vs time) has to be specified for each of the three variables.
+The program will interpolate between the given points. If only one point is
+specified (for example $500$\thinspace m at $t=0$ seconds), the coordinate
+will stay constant ($500$\thinspace m) and for all given times the graph
+will be a (horizontal) straight line passing through $(0,500)$. If two
+points are given, the graph will also be a straight line passing through
+both points, but will not necessarily be horizontal. For more than $2$
+points, the program will use the selected interpolation method. Note that
+the points do not have to be defined with constant intervals for the $x$%
+-coordinate, for example $(1,3)$, $(2,5)$ and $(20,10)$ is perfectly
+acceptable.
+
+There are currently $3$ interpolation methods implemented:
+
+\begin{enumerate}
+\item  \textbf{Cubic splines: }This will use cubic splines to interpolate
+between points. This interpolation is computationally intensive and should
+be used only for less than $1000$ points or so.
+
+\item  \textbf{Low pass filter: }In this case the defined points can be
+considered as impulses to a low-pass filter with a highest frequency
+response given by the inverse of the average distance between $2$ successive
+points. Note that the function might not touch all given points if their $x$%
+-interval is not constant.
+
+\item  \textbf{Linear: }A straight line interpolation between $2$ successive
+points is implemented, as shown in Figure~\ref{userdef}.
+\end{enumerate}
+
+A comparison between the different methods is given in Figure~\ref
+{interpolation}.
+
+\FRAME{fhFU}{5.7968in}{2.4898in}{0pt}{\Qcb{The different interpolation
+methods}}{\Qlb{interpolation}}{interpolation.emf}{\special{language
+"Scientific Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display
+"ICON";valid_file "F";width 5.7968in;height 2.4898in;depth
+0pt;original-width 417.1875pt;original-height 178.1875pt;cropleft
+"0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/INTERPOLATION.EMF';file-properties "XNPEU";}}
+
+For the example in Figure~\ref{userdef}, $3$ samples are given. To create a
+platform moving with constant velocity it would be sufficient to specify two
+samples.
+
+A detailed description of every part of the window is given below:
+
+\begin{itemize}
+\item  \textbf{Source: }The data can be either stored in a separate file or
+inline (within the script file). For large data sets it might be more
+practical to use external data files. However for simple simulations the
+``inline'' option is more compact. The structure is described in Chapter~\ref
+{chapter:script}.
+
+\item  \textbf{Display:} Depending on the data type, there are up to three
+variables which can be defined simultaneously. For the above example three
+coordinates need to be defined. If there is more than one variable, one can
+switch between them by clicking on the specific radio button.
+
+\item  \textbf{Edit:} The data can be entered or modified in this box. The 
+\textbf{Number of samples} edit box defines the total number of samples
+specified for the given variable (they might be different for another
+variable, for example you might want to specify $5$ points for the $x$%
+-coordinate, but only $1$ for the $y$ and $z$ coordinate). Below that a list
+of $x$ and $y$ coordinates is given for the number of specified points.
+After entering the values press \textbf{Update} to update the graph on the
+right. When entering more than $20$ values or so it is more practical to
+read external text files. Points can be deleted or added at the current
+cursor position.
+
+\item  \textbf{Window: }Here the current range of the graph shown can be
+set. Some data types are limited in range.
+
+\item  It is possible to \textbf{zoom in} by selecting an area on the graph
+with the left mouse button. This is done by pushing and holding the left
+mouse button on the desired corner and releasing it on the opposite corner.
+
+\item  \textbf{Zooming out} by a factor of two in either direction is
+achieved by right-clicking anywhere on the graph.
+
+\item  Points can be \textbf{dragged} to a new location on the graph by
+pushing and holding the left mouse button on the desired point and moving it
+to a new position.
+\end{itemize}
+
+All of the data types for which the ordinate increases in fixed steps of $1$%
+, the ordinate will be ignored. The graph will not be a continuous line but
+a bar graph. One example is the definition of the centre frequency for each
+pulse. In this case the ordinate just represents the pulse number and will
+be identical to the current sample number.
+
+\subsection{External data files}
+
+If the data is specified to be an external file, the structure of the data
+depends on the functions to be defined, but is of the following general
+format:
+
+%TCIMACRO{
+%\TeXButton{\tiny}{\tiny
+%}}
+%BeginExpansion
+\tiny
+%
+%EndExpansion
+\begin{verbatim}
+[Number of samples for function 1], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn],[Yn]
+[Number of samples for function 2], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn],[Yn]
+[Number of samples for function 3], [X1], [Y1], [X2], [Y2], [X3], [Y3] ....[Xn],[Yn]
+\end{verbatim}
+
+%TCIMACRO{\TeXButton{\normalsize}{\normalsize}}
+%BeginExpansion
+\normalsize%
+%EndExpansion
+
+First the number of samples is given, then the $x$ and $y$ coordinates for
+all the samples are given. This is repeated up to $3$ times depending on the
+specific data type (for example position requires $3$ coordinates, others
+only require $1$ or $2$). Comments can be inserted by using an exclamation
+mark after which all text until the next line break is ignored. Commas or
+spaces can be used as separators. As an example the data file for the points
+given in Figure~\ref{interpolation} is given:
+
+%TCIMACRO{
+%\TeXButton{\tiny}{\tiny
+%}}
+%BeginExpansion
+\tiny
+%
+%EndExpansion
+\begin{verbatim}
+! Data file for : Position X (m) vs Time (s), Position Y (m) vs Time (s), Position Z (m) vs Time (s)
+! Structure : [No. Samples] [Time (s) 1] [Position X (m) 1] [Time (s) 2] [Position X (m) 2] ...
+! [No. Samples] [Time (s) 1] [Position Y (m) 1] [Time (s) 2] [Position Y (m) 2] ...
+! [No. Samples] [Time (s) 1] [Position Z (m) 1] [Time (s) 2] [Position Z (m) 2] ...
+5
+0 0, 1 1.5, 2 0, 3 -5, 4 -3.5
+1
+0 0
+1
+0 0
+\end{verbatim}
+
+%TCIMACRO{\TeXButton{\normalsize}{\normalsize}}
+%BeginExpansion
+\normalsize%
+%EndExpansion
+
+$5$ points have been define for the $x$ coordinate, and $1$ for the $y$ and $%
+z$ coordinate. Data files can also be edited as described above and the
+changes can be written to disk by clicking the \textbf{Save} button.
+
+\section{Viewing Simulation Files}
+
+A powerful image viewer has been integrated into Sarsim. It can be found
+under \textbf{Display} / \textbf{Simulation Output}. The features of this
+viewer include:
+
+\begin{itemize}
+\item  No limit in the file size of the image to be viewed. The file is
+loaded ``on-the-fly'' and only the displayed portion is kept in memory.
+
+\item  Import of Sun-Raster Files, Sarsim simulation files and user-defined
+files.
+
+\item  Thumbnail overview image shown.
+
+\item  Slices in range or azimuth.
+
+\item  Several colour palettes available with slider controls for
+brightness, contrast and saturation.
+
+\item  Automatic display of I,Q, phase and magnitude for selected sample.
+
+\item  Usual zooming and panning controls.
+\end{itemize}
+
+The dialog displayed in Figure~\ref{loadsim} appears after selecting the
+menu option \textbf{File} / \textbf{Open}.
+
+\FRAME{fhFU}{2.6662in}{2.4405in}{0pt}{\Qcb{Load file dialog}}{\Qlb{loadsim}}{%
+loadsim.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+2.6662in;height 2.4405in;depth 0pt;original-width 0pt;original-height
+0pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'D:/SARSIM2/DOC/TEX/GRAPHICS/Loadsim.gif';file-properties "XNPEU";}}
+
+\begin{itemize}
+\item  \textbf{Filename}: The filename of the image file. Use the \textbf{%
+Find} button to browse for a file.
+
+\item  \textbf{Format}: Several formats are supported:
+
+\begin{enumerate}
+\item  Sun-Raster-File format: These files have a header defining their size
+and other parameters.
+
+\item  Sarsim simulation: If there is a \textbf{\$SIMULATION} entry in the
+script file with the given image filename as output name, it will use the
+specified parameters.
+
+\item  Custom: A number of parameters have to be specified for custom files:
+
+\begin{itemize}
+\item  Header: Header size in bytes, data in header will be ignored.
+
+\item  Width: Width of image in pixel (corresponds to slant range)
+
+\item  Height: Height of image in pixel (corresponds to azimuth range)
+
+\item  Bytes per Value: Number of bytes for each pixel. Note: If samples are
+complex this will be the number of bytes for both I and Q values together.
+
+\item  Offset: The offset which will be subtracted from each sample (to get
+negative numbers). For example single byte values have a range of 0 to 255.
+An offset of 127 will map this to $-127$ to $+128$.
+
+\item  Data Type: Either magnitude (single values) or complex. Complex
+numbers need to have the I value first, i.e.~IQIQ.
+
+\item  Byte Order: Specify if least-significant byte comes first or not.
+\end{itemize}
+\end{enumerate}
+\end{itemize}
+
+After successfully loading the file, the window will look similar to the one
+shown in Figure~\ref{viewer}.
+
+\FRAME{fhFU}{3.6409in}{4.0153in}{0pt}{\Qcb{The image viewer window (showing
+slices in azimuth)}}{\Qlb{viewer}}{viewer.gif}{\special{language "Scientific
+Word";type "GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file
+"F";width 3.6409in;height 4.0153in;depth 0pt;original-width
+0pt;original-height 0pt;cropleft "0";croptop "1";cropright "1";cropbottom
+"0";filename 'D:/SARSIM2/DOC/TEX/GRAPHICS/Viewer.gif';file-properties
+"XNPEU";}}On the left, bottom side the complete image is shown. A white
+rectangle marks the zoomed section, shown on the right. The data can be
+displayed as:
+
+\begin{itemize}
+\item  Colour pixels: Each value corresponds to a certain colour (see colour
+palette)
+
+\item  Slices in $x$: This will show the data as graphs, ranging from top to
+bottom.
+
+\item  Slices in $y$: This will show the data as graphs, ranging from left
+to right.
+\end{itemize}
+
+\section{Looking at Script Files}
+
+Script files are used to describe the complete geometry of the simulation
+and they also store the parameters of files written to disk. Sometimes it is
+useful to quickly take a look at this script file. It can be displayed by
+selecting \textbf{Display} / \textbf{Script File}. The file displayed will
+be identical to the file which will be stored on disk after selecting 
+\textbf{File} / \textbf{Save} on the main window. An example is shown in
+Figure~\ref{scriptv}.
+
+\FRAME{fhFU}{4.209in}{3.096in}{0pt}{\Qcb{The script file viewer}}{\Qlb{%
+scriptv}}{scriptv.gif}{\special{language "Scientific Word";type
+"GRAPHIC";maintain-aspect-ratio TRUE;display "ICON";valid_file "F";width
+4.209in;height 3.096in;depth 0pt;original-width 1008pt;original-height
+740pt;cropleft "0";croptop "1";cropright "1";cropbottom "0";filename
+'J:/SARSIM2/DOC/TEX/GRAPHICS/Scriptv.gif';file-properties "XNPEU";}}
+
+\section{Changing Focus}
+
+\label{focuspoint}It is possible to change the focus point of the main
+screen from the origin of the ``Earth'' coordinate system to somewhere else.
+Either a point other than the origin can be selected or the focus can follow
+a different platform. This is useful if one needs to see how an object moves
+seen relative to some platform.
+
+\section{Investigating the Geometry for every Pulse}
+
+By selecting \textbf{Geometry} on the main menu it is possible to have a
+look at the internal variables used for each simulation. This data can also
+be saved in text format, so that it can be imported into other data analysis
+programs. It is also a very useful ``debugging'' tool.
+
+The purpose of this command is to show the relative locations and distances
+between the radar and all given point targets for each pulse for the given
+simulation period. An example will clarify this. Suppose you want to model
+your own (very complicated) pulse shape and want to use Sarsim only to do
+the geometry calculations, i.e.~distance and radial velocity for each point
+target seen by the radar, this is the tool to use. The output format will be
+a table of the general form shown in Table~\ref{tab:two}
+
+%TCIMACRO{\TeXButton{B}{\begin{table}[tbp] \centering}}
+%BeginExpansion
+\begin{table}[tbp] \centering%
+%EndExpansion
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+{\tiny Pulse No.} & {\tiny Pulse transmittion} & {\tiny PT1 Distance} & 
+{\tiny PT1 Radial} & {\tiny PT2 Distance} & {\tiny PT2 Radial} & {\tiny PT3
+etc} \\ 
+& {\tiny time (s)} & {\tiny (m)} & {\tiny Velocity (m/s)} & {\tiny (m)} & 
+{\tiny Velocity (m/s)} &  \\ \hline
+{\tiny 0} & {\tiny 1.200} & {\tiny 32.323} & {\tiny 2.312} & {\tiny 34.411}
+& {\tiny 1.212} & {\tiny etc.} \\ \hline
+{\tiny 1} & {\tiny 1.202} & {\tiny 32.343} & {\tiny 2.323} & {\tiny 34.422}
+& {\tiny 1.222} & {\tiny etc.} \\ \hline
+{\tiny 2} & {\tiny 1.202} & {\tiny 32.363} & {\tiny 2.334} & {\tiny 34.433}
+& {\tiny 1.232} & {\tiny etc.} \\ \hline
+\end{tabular}
+\caption{Distance and radial velocity for each point target\label{tab:two}}%
+%TCIMACRO{\TeXButton{E}{\end{table}}}
+%BeginExpansion
+\end{table}%
+%EndExpansion
+
+Note that in Table~\ref{tab:two} only a small subset of the variables have
+been shown. A detailed list of all variables is given below.
+
+\begin{itemize}
+\item  Pulse No.: This gives each transmitted pulse a unique number. Pulse $0
+$ (zero) will always be sent at simulation time $t=0$, the next pulse will
+be $1$ etc. If a simulation extends over negative time, the pulse numbers
+will be negative.
+
+\item  Pulse transmitting time (seconds): Displays the exact time when the
+pulse is transmitted (for example pulse $0$ will be transmitted at time $t=0$%
+, pulse $1$ at time $t=$ PRI, $2$ at $t=2\cdot $ PRI, and so on, assuming
+constant PRIs).
+
+\item  Pulse frequency (GHz): Displays the exact frequency for each pulse
+given in Gigahertz.
+
+\item  Platform position $x,y,z$ (m): Displays the exact position in meters
+for each defined platform at the instance of time where the pulse was sent.
+The coordinates are relative to the world coordinate system. Note that a
+radar will always reside on the origin of the platform, so the given
+position will be identical to the position of a radar (if any) situated on
+this specific platform.
+
+\item  Platform velocity $x,y,z$ (m/s): Displays the exact velocity in
+meters per second for each defined platform at the instance of time where
+the pulse was sent. The velocity vector is relative to the world coordinate
+system.
+
+\item  Platform rotation $x,y,z$ (degrees): Displays the exact rotation of
+the platform around the $3$ axes at the instance of time when the pulse was
+sent.
+\end{itemize}
+
+\section{Help}
+
+A slightly modified version of this entire dissertation is available under 
+\textbf{Help} / \textbf{Contents}.
