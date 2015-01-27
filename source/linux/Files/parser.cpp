@@ -5,9 +5,9 @@
   #include <vcl\vcl.h>
   #pragma hdrstop
   #include "main.h"
-  #include "loadsavedata.h"
 #endif
 //---------------------------------------------------------------------------
+#include "loadsavedata.h"
 #include "parser.h"
 #include "objectstructdef.h"
 #include "general.h"
@@ -859,17 +859,17 @@ bool RunStateMachine(struct SStateM *StateM,
 
              for (k=0;(k<DF->DataTypes && (CP < ParameterCount));k++)
                {
-                 if (CompStrNI(ParameterList[CP],"CUB",3) == 0)
+                 if (CompStrNI((char *)ParameterList[CP],(char *)"CUB",3) == 0)
 				   {
 				     DF->IntMethod[k] = CUBIC;
 				     CP++;
 				   }
-                 else if (CompStrNI(ParameterList[CP],"MFI",3) == 0)
+                 else if (CompStrNI((char *)ParameterList[CP],(char *)"MFI",3) == 0)
 				   {
 				     DF->IntMethod[k] = FILTER;
 				     CP++;
 				   }
-                 else if (CompStrNI(ParameterList[CP],"LIN",3) == 0)
+                 else if (CompStrNI((char *)ParameterList[CP],(char *)"LIN",3) == 0)
 				   {
 				     DF->IntMethod[k] = LINEAR;
 				     CP++;
@@ -877,24 +877,23 @@ bool RunStateMachine(struct SStateM *StateM,
                  else
 				   {
 				     // error - not CUBIC, MFILTER or LINEAR
-				     ErrorM(E_INTERPOLATION_EXP, LineCount+1, 0, "");
+				     ErrorM(E_INTERPOLATION_EXP, LineCount+1, 0, (char *)"");
 				     Error = TRUE;
                      break;
 				   }
 
                }
              if (Error) break;
-			 if (CompStrNI(ParameterList[CP],"FIL",3) == 0)
+			 if (CompStrNI((char *)ParameterList[CP],(char *)"FIL",3) == 0)
 				{
 				  DF->Source = ID_FILE;
 				  CP++;
 				  strcpy( DF->FileName, ParameterList[CP]);
 				  CS = StateM[CS].NextState[0];
 				  CP++;
-				  Error = LoadDataFile(DF->FileName,DF);
-				  // read file
+				  Error = LoadDataFile(DF->FileName,DF); // Load Data File
 				}
-			 else if (CompStrNI(ParameterList[CP],"INL",3) == 0)
+			 else if (CompStrNI((char *)ParameterList[CP],(char *)"INL",3) == 0)
 				{
 				  DF->Source = ID_INLINE;
 				  CP++;
@@ -904,7 +903,7 @@ bool RunStateMachine(struct SStateM *StateM,
 						if (DF->NoP[j] >= MAX_SAMPLES)
 						  {
 							 Error = TRUE;
-							 ErrorM(E_TOO_MANY_POINTS, LineCount+1,MAX_SAMPLES, "");
+							 ErrorM(E_TOO_MANY_POINTS, LineCount+1,MAX_SAMPLES, (char *)"");
 							 break;
 						  }
 						CP++;
@@ -922,14 +921,14 @@ bool RunStateMachine(struct SStateM *StateM,
 							 if (CP >= ParameterCount)
 								{
 								  Error = TRUE;
-								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], "");
+								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
 								  break;
 								}
 							 DF->YAxis[j].DataArray[i] = atof(ParameterList[CP++]);
 							 if ((CP >= ParameterCount) && (i != (DF->NoP[j]-1)))
 								{
 								  Error = TRUE;
-								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], "");
+								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
 								  break;
 								}
 						  }
@@ -945,7 +944,7 @@ bool RunStateMachine(struct SStateM *StateM,
 			 else
 				{
 				  // error - not in-line or file
-				  ErrorM(E_NO_LINE_FILE, LineCount+1, 0, "");
+				  ErrorM(E_NO_LINE_FILE, LineCount+1, 0, (char *)"");
 				  Error = TRUE;
 				}
 		  }
@@ -955,7 +954,7 @@ bool RunStateMachine(struct SStateM *StateM,
 			 for (branch = 0; branch < (StateM[CS].Type - 10); branch++)
 				{
 				  // check which branch to take
-				  if (CompStrNI(StateM[CS].Name[branch],ParameterList[CP],3) == 0)
+				  if (CompStrNI((char *)StateM[CS].Name[branch],(char *)ParameterList[CP],3) == 0)
 					 {
 						*(int *)(StateM[CS].SP) = branch;
 						CS = StateM[CS].NextState[branch];
@@ -975,7 +974,7 @@ bool RunStateMachine(struct SStateM *StateM,
 
 	if ((CS != -1) && (!Error))
 	 {
-		ErrorM(E_NOT_ENOUGH_PARA, LineCount+1, 0, "");
+		ErrorM(E_NOT_ENOUGH_PARA, LineCount+1, 0, (char *)"");
 		Error = TRUE;
 	 }
 

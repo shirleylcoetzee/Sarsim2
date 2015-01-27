@@ -17,7 +17,7 @@
 #include <cstring>
 
 //---------------------------------------------------------------------------
-bool LoadDataFile(char FileName[],SDataDefinition *DataDef)
+bool LoadDataFile(char FileName[], struct SDataDefinition *DataDef) 
 {
   FILE *OutFilep;
   double *DataArray;
@@ -27,7 +27,7 @@ bool LoadDataFile(char FileName[],SDataDefinition *DataDef)
   int CurrentDataType;
   long i;
   int ItemCode, LineCount = 0;
-  bool Error;
+  bool Error = FALSE;
 
   OutFilep = fopen(FileName, "rt");  // read from file, text
   if (!OutFilep)
@@ -180,8 +180,9 @@ bool LoadDataFile(char FileName[],SDataDefinition *DataDef)
   Free_DVector(DataArray,0);
   return Error;
 }
+
 //---------------------------------------------------------------------------
-void OpenFile(char *FileName, struct LinkedLists *FirstObjectP)
+void OpenScriptFile(char *FileName, struct LinkedLists *FirstObjectP) // Open script file
 {
   char FunctionNames[MAX_FUNCTIONS][12] =
     { "TARGET", "PLATFORM", "RADAR", "SIMULATION", "SURFACE", "GEOMETRY"};
@@ -190,9 +191,9 @@ void OpenFile(char *FileName, struct LinkedLists *FirstObjectP)
   char ParameterList [MAX_PARMS][MAX_LENGTH_OF_PARA_STRING];
   char DataString[MAX_LENGTH_OF_PARA_STRING];
   int  ParameterCount =  0,
-		 LineCount      =  0,
-		 LastFunctionLineCount = 0,
-		 LastFunction   = -1;
+  LineCount      =  0,
+  LastFunctionLineCount = 0,
+  LastFunction   = -1;
 
   char NewFunction = FALSE;
   int ItemCode;
@@ -269,7 +270,7 @@ void OpenFile(char *FileName, struct LinkedLists *FirstObjectP)
 }
 #ifdef COMPILE_FOR_WINDOWS32
 //---------------------------------------------------------------------------
-void SaveFile(char *FileName)
+void SaveScriptFile(char *FileName) // Save script file (for Windows only)
 {
   // save to a memo box
  // TMemo *AMemoBox = new TMemo(MainForm);

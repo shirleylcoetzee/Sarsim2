@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
   LLP.FirstGeometry = NULL;
   printf("\nRadar Simulator (C) 1997,1998 UCT Radar Remote Sensing Group\n"
          "    (Version : %s - written by R.L. with help of J. Horrell and R.T. Lord)\n"
-         "    (Web     : http://rrsg.ee.uct.ac.za)\n", version);
+         "    (Web     : http://rrsg.ee.uct.ac.za)\n", sarsimII_version);
    
   char ScriptFileName[100];
   if (argc <= 1 || argc >2)
@@ -37,12 +37,12 @@ int main(int argc, char *argv[])
   printf("\nInterpreting script file : %s\n",ScriptFileName);
 
   
-  OpenFile(ScriptFileName, &LLP);
+  OpenScriptFile(ScriptFileName, &LLP);
   printf("  %d Point target(s) specified\n",CountTargets(LLP.FirstTarget));
   printf("  %d Platform(s) specified\n",CountPlatforms(LLP.FirstPlatform));
   printf("  %d Radar(s) specified\n",CountRadars(LLP.FirstRadar));
   printf("  %d Surface(s) specified\n",CountSurfaces(LLP.FirstSurface));
-  printf("  %d Simulation file(s) to written\n",CountSimulations(LLP.FirstSimulation));
+  printf("  %d Simulation file(s) to be written\n",CountSimulations(LLP.FirstSimulation));
   printf("  %d Geometry file(s) to be written\n",CountGeometrys(LLP.FirstGeometry)); 
   printf("\n");
   

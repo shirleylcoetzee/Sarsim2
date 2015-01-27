@@ -12,6 +12,14 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
+//----------------------------
+// added by scoetzee for HDF5
+#include "hdf5.h"
+//----------------------------
+//added by abarta for rand()
+#include <stdlib.h>
+#include <time.h>
+//---------------------------
 #include "general.h"
 #include "linkedlist.h"
 #include <vector>
@@ -1167,7 +1175,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                   double SecPerSample,long TargetNo, double *PulseFreq,
                   double **RangeDelay, double **TargetRadialVel,
                   double **ReturnAmp,long PNo, SRadar *r, double PulseCenter,
-                  double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
+				  double DelaySlope, double *MaxMagOfPulse, double ***SurfP,
             long SurfaceNo, double *Template, double OverSampleFactor,
             long Pow2SamplePoints, long UsedSamples, struct SSurface *FirstSurface,
             long ZeroedSamples,double **RadarDir)
@@ -1193,7 +1201,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
   long SNo, CPT, TotalPTs;
   long PTsUsed, LimitPTs;
   double Density, TriArea, **CoordPT;
-  double L10[3], L20[3], NormVec[3], temp[3][3],T;
+  double L10[3], L20[3], NormVec[3], temp[3][3], T;
   struct SSurface *s;                 // general pointer to Surface
   double RCS;
  // double ZeroedSamples;
@@ -1227,7 +1235,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 
   // calculate noise amplitude
   if ((r->PulseType == MONO) || (r->PulseType == BARKER))
-    RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*(1/r->PulseWidth));
+	RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*(1/r->PulseWidth));
   else if (r->PulseType == CHIRP)
     RootOfNoisePower = sqrt(BOLTZMANN_CONSTANT*r->NoiseTemp*r->ChirpBW);
   else if (r->PulseType == OTHER_PULSE)
@@ -1241,7 +1249,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
 
   // for all targets
   for (TNo=0;TNo<TargetNo;TNo++)
-    {
+	{
       AddPhase = fmod(TwoPi * (   // phase shift due to range
                              -(PulseFreq[PNo]*RangeDelay[TNo][PNo])  ),TwoPi);
       SinCalc = sin(AddPhase);
@@ -1274,10 +1282,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
       s = PointToSurface(FirstSurface, SNo+1);
 
       if (GlobalUnderSampleSurf == 0)  // this is only true if we write to disk
-      // sort of indicator - use all PTs
-        {
+	  // sort of indicator - use all PTs
+		{
           Density = s->PTDensity;
-        }
+		}
       else
         {
           if (s->GlobalUnderSample == 1)
@@ -1324,10 +1332,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
             {
           AntennaDirAzi=RadarDir[PNo][0];
           AntennaDirElev=RadarDir[PNo][1];
-          TRayAzi = AziAngle(CoordPT[CPT]);
+		  TRayAzi = AziAngle(CoordPT[CPT]);
           TRayElev = ElevAngle(CoordPT[CPT]);
           OffsetAzi = fabs(AntennaDirAzi - TRayAzi);
-          OffsetElev = fabs(AntennaDirElev - TRayElev);
+		  OffsetElev = fabs(AntennaDirElev - TRayElev);
 
           AntennaGain = FindAntennaGainRT(OffsetAzi, OffsetElev, r);
 /*
@@ -1374,10 +1382,10 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                                 (r->AntennaRDef).XAxis[0].DataArray,
                                 (r->AntennaRDef).YAxis[0].DataArray,
                                 (r->AntennaRDef).Coeff[0], OffsetAzi*RadToDeg,(r->AntennaRDef).IntMethod[0]))*
-                             dBToFac(Interpolate((r->AntennaRDef).NoP[1],
+							 dBToFac(Interpolate((r->AntennaRDef).NoP[1],
                                 (r->AntennaRDef).XAxis[1].DataArray,
                                 (r->AntennaRDef).YAxis[1].DataArray,
-                                (r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
+								(r->AntennaRDef).Coeff[1], OffsetElev*RadToDeg,(r->AntennaRDef).IntMethod[1]));
             }
 
           AntennaGain = sqrt(AntennaGainR * AntennaGainT);
@@ -1424,12 +1432,12 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                             (s->GainDataDef).YAxis[0].DataArray,
                             (s->GainDataDef).Coeff[0], Angle*RadToDeg,
                             (s->GainDataDef).IntMethod[0]));
-                }
+				}
            }
 
 
           AddPhase = fmod(TwoPi * (   // phase shift due to range
-                             -(PulseFreq[PNo]*SurfRangeDelay[CPT])  ),TwoPi);
+							 -(PulseFreq[PNo]*SurfRangeDelay[CPT])  ),TwoPi);
           SinCalc = sin(AddPhase);
           CosCalc = cos(AddPhase);
 
@@ -1453,7 +1461,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
     //      for (CSample=0;CSample<UsedSamples;CSample++)
           for (CSample=ZeroedSamples;CSample<UsedSamples-ZeroedSamples;CSample++)   //
             {
-              RealSample = CSample + PulseInsertStart;
+			  RealSample = CSample + PulseInsertStart;
               if ((RealSample >= 0) && (RealSample < SamplePoints))
                 {
                   OnePulse[RealSample*2] += Amp*
@@ -1463,22 +1471,41 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                  }
 
             }
-        } // end for all surface PTs
+		} // end for all surface PTs
       Free_DMatrix(CoordPT,0,0);
       Free_DVector(SurfRangeDelay,0);
   }  // end for all surf
 
+  //added by abarta
+  //generate a random seed for each pulse
+  srand(time(NULL));
+  r_seed = rand();
+  /*
+	// distance between target and radar
+		  double TargetPosRelativeToRadar[3];
+		  double TargetDist = sqrt( DotProduct(TargetPosRelativeToRadar,
+							TargetPosRelativeToRadar, 3) );
+  */
+  //------------------
   for (CSample=0;CSample<SamplePoints;CSample++)
     {
       // add noise
-      if (RootOfNoisePower != 0)
+	  if (RootOfNoisePower != 0)
         {
-          OnePulse[CSample*2] += Gaussian(0,RootOfNoisePower,false);
-          OnePulse[CSample*2+1] += Gaussian(0,RootOfNoisePower,false);
-        }
-      Amp = OnePulse[CSample*2] * OnePulse[CSample*2] +
-            OnePulse[CSample*2+1] * OnePulse[CSample*2+1];
-      if (Amp > *MaxMagOfPulse)
+		  if (r->ApplyAGC == 1) {
+			   OnePulse[CSample*2] += (Gaussian(0,RootOfNoisePower,false) * 1e8);
+			   OnePulse[CSample*2+1] += (Gaussian(0,RootOfNoisePower,false) * 1e8);
+		  }
+		  else
+		  {
+              OnePulse[CSample*2] += Gaussian(0,RootOfNoisePower,false);
+			  OnePulse[CSample*2+1] += Gaussian(0,RootOfNoisePower,false);
+          }
+		}
+
+	  Amp = OnePulse[CSample*2] * OnePulse[CSample*2] +
+			OnePulse[CSample*2+1] * OnePulse[CSample*2+1];
+	  if (Amp > *MaxMagOfPulse)
         *MaxMagOfPulse = Amp;
     }
   *MaxMagOfPulse = sqrt(*MaxMagOfPulse);
@@ -1997,45 +2024,43 @@ double **RadarDir, long FirstPulse)
 
           // the radar equation : NOTE that ReturnAmp contains the amplitude
           // not the power (which would be the square of that)
-          if (TargetDist > 0)
-         {
-           if (Radar->ApplyAGC)
-             {
+		  if (TargetDist > 0)
+		 {
+		   if (Radar->ApplyAGC)
+		   {
 
+			 /*               if (Radar->AGCType == 0)
+					 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+			   else
+				   ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
+			 }
+		   else
+				 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
+								 (TargetDist * TargetDist);
+  */
 
+  // Edited by RTL on 21/03/2004
+//			double tragetDstTemp = TargetDist * TargetDist;
+			if (Radar->AGCType == 0)
+				ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+									   AntennaGain * sqrt(RCS));
+			else
+				ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+									   AntennaGain * sqrt(RCS));
+			 }
+		   else
+			   ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+			   AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
 
-//               if (Radar->AGCType == 0)
-//                     ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//               else
-// /*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS));
-//             }
-//           else
-//                 ReturnAmp[TNo][PNo] = (GainFactor * AntennaGain * sqrt(RCS)) /
-//                                  (TargetDist * TargetDist);
+			 //ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
+			 //						AntennaGain * sqrt(RCS));
+			 //int stophere=0;
+		 }
+		  else
+			ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
 
-// Edited by RTL on 21/03/2004
-               if (Radar->AGCType == 0)
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS));
-               else
-/*temp*/         ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                        AntennaGain * sqrt(RCS));
-             }
-           else
-		     ReturnAmp[TNo][PNo] = (GainFactor * (LIGHT_SPEED/FindPulseFreq(PNo+FirstPulse, Radar)) *
-                                    AntennaGain * sqrt(RCS)) / (TargetDist * TargetDist);
-
-
-
-
-
-
-         }
-          else
-            ReturnAmp[TNo][PNo] = sqrt(MAX_DOUBLE)/100;
-
-        } // for each pulse end
-    }  // for each target end
+		} // for each pulse end
+	}  // for each target end
 
 
   // free memory allocated
@@ -2376,7 +2401,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
         {
           OverSampledTemplate[CSample*2] *= Mult;
           OverSampledTemplate[CSample*2+1] *= Mult;
-        }
+        }                                             
     }
   // downsample
   //
@@ -2410,6 +2435,7 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
   // as specified in the radar parameters - by a factor of 'OverSampleFactor'
   // real pulse extends over 'PulseExtendInSec' including bandlimited 'ripple'
   PulseExtendInSec = CurrentSim->OverSampleFactor * r->PulseWidth;
+  SecPerSample = 1; // Dummy to avoid warnings
   if (CurrentSim->SimTYPE == RAW_RETURN)
     SecPerSample = (SlantEndTime-SlantStartTime)/double(DataXSize);
   else if (CurrentSim->SimTYPE == MATCHED_FILTER)
@@ -2680,26 +2706,75 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
 //-------------------------------------------------------------------------//
 extern int CalcProgress2;
 //-------------------------------------------------------------------------//
+int WriteHDF5File(int * pData, size_t nx, size_t ny, const char * pszHDF5File)  
+{
+#define DATASETNAME "IntArray"
+#define NX     2792                      /* dataset dimensions */
+#define NY     2
+#define RANK   2
+
+	hid_t       file, dataset;         /* file and dataset handles */
+	hid_t       datatype, dataspace;   /* handles */
+	hsize_t     dimsf[2];              /* dataset dimensions */
+	herr_t      status;
+
+
+	// Create a new file using H5F_ACC_TRUNC access,
+	// default file creation properties, and default file
+	// access properties.
+	file = H5Fcreate(pszHDF5File, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
+
+	// Describe the size of the array and create the data space for fixed
+	// size dataset.
+	dimsf[0] = nx;
+	dimsf[1] = ny;
+	dataspace = H5Screate_simple(RANK, dimsf, NULL);
+
+	// Define datatype for the data in the file.
+	// We will store little endian INT numbers.
+	datatype = H5Tcopy(H5T_NATIVE_INT);
+	status = H5Tset_order(datatype, H5T_ORDER_LE);
+
+	// Create a new dataset within the file using defined dataspace and
+	// datatype and default dataset creation properties.
+	dataset = H5Dcreate2(file, DATASETNAME, datatype, dataspace,
+	H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
+
+	// Write the data to the dataset using default transfer properties.
+	status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, pData);
+
+	// Close/release resources.
+	H5Sclose(dataspace);
+	H5Tclose(datatype);
+	H5Dclose(dataset);
+	H5Fclose(file);
+
+	return 0;
+}
+//-------------------------------------------------------------------------//
 int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   struct LinkedLists *FP, long PointsSlant, double *TotalSampleNo,
   double *ClippedSamples,double *ZeroSamples)
 {
+	#define H5FILE_NAME "SDS.h5"
   #define PulsesPerSession 100
   long FirstPulse, LastPulse,TotalPulseNo,PulseNo,SurfaceNo;
   long SavePulseStart, SavePulseEnd;
   long SamplePoints, TargetNo,PNo,i;
   bool Finished=FALSE;
   double *PulseFreq, **RangeDelay, **TargetRadialVel, **ReturnAmp,
-         **Data,*PulseSendTime,***SurfP;
+         **Data,**DataH5,*PulseSendTime,***SurfP;
   double I,Q,MaxMagnitudeTemp;
   double FracPart,IntPart, Norm, Center;
   int bytes;
   int A2DBytes = (int)ceil((float)ThisSim->A2Dbits*(float)0.125);
-  FILE *OutFilep;
   struct SRadar *CRadar, *R; // current radar
   bool Clipped;
   double OldGlobalUnderSampleSurf;
   double **RadarDir;
+
+  FILE *OutFilep;
+
 
   bool RadarFound = false;
   R =  FP->FirstRadar;
@@ -2741,6 +2816,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   SurfP = DMatrix3(0,SurfaceNo-1,0,PulsesPerSession-1,0,8);
   PulseSendTime = DVector(0,PulsesPerSession-1);
   Data = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
+  DataH5 = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
 
   // now write the pulses in session for memory reasons (e.g. 0-99,100-199 etc.)
   SavePulseEnd = -1;
@@ -2825,7 +2901,12 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
              if (Q<-Center) {Q = -Center; Clipped=true;}
              if (Clipped) (*ClippedSamples)++;
              if ((I == 0) && (Q == 0)) (*ZeroSamples)++;
-             // now write data in either ascii or binary
+
+						// save data for HDF5 file 
+						DataH5[PNo][2*i] = I;
+						DataH5[PNo][2*i+1] = Q;
+
+             // now write data in either ascii or binary ---------------------------------------------------------- VI !
               if (ThisSim->FileType == ASCII) //ASCII
                  {
                       fprintf(OutFilep,"%1.0f %1.0f\n",I,Q);
@@ -2855,6 +2936,8 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
                             Q = IntPart;
                          }
                     }  // end else binary
+
+
            } // for all samplepoints
           // add separator between succesive pulses
 // comment next line out for no lf between pulses
@@ -2866,6 +2949,9 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
      printf("\n");
    #endif
 
+	// write HDF5 file
+	WriteHDF5File((int*)&DataH5, NX, NY, H5FILE_NAME);
+
   // and free arrays again
   Free_DVector(PulseFreq,0);
   Free_DMatrix(RangeDelay,0,0);
@@ -2873,6 +2959,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   Free_DMatrix(ReturnAmp,0,0);
   Free_DVector(PulseSendTime,0);
   Free_DMatrix(Data,0,0);
+	Free_DMatrix(DataH5,0,0);
   Free_DMatrix3(SurfP,0,0,0);
   Free_DMatrix(RadarDir,0,0);
 

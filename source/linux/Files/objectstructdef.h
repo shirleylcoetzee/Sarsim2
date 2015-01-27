@@ -3,17 +3,16 @@
 //---------------------------------------------------------------------------
 #ifndef ObjectStructDefH
 #define ObjectStructDefH
-#include <values.h>
 
-// RTL - added definition of PI for linux compilation
-#define PI 3.141592653589793238462643383279
+#include <values.h>
 
 #ifndef COMPILE_FOR_WINDOWS32
   #define MAXPATH 255   // longest path
 #endif
 
+#define PI 3.141592653589793238462643383279
+
 #ifdef COMPILE_FOR_WINDOWS32
-  #define PI 3.141592653589793238462643383279
   #include <dir.h>
 #endif
 
