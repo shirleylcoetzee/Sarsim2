@@ -1,0 +1,160 @@
+.MCAD 303010000 1 74 47 0
+.CMD FORMAT  rd=d ct=10 im=i et=3 zt=15 pr=3 mass length time charge temperature tr=0 vm=0
+.CMD SET ORIGIN 0
+.CMD SET TOL 0.001000000000000
+.CMD SET PRNCOLWIDTH 8
+.CMD SET PRNPRECISION 4
+.CMD PRINT_SETUP 1.200000 0.989583 1.200000 1.200000 0
+.CMD HEADER_FOOTER 1 1 *empty* *empty* *empty* 0 1 *empty* *empty* *empty*
+.CMD HEADER_FOOTER_FONT fontID=14 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD HEADER_FOOTER_FONT fontID=15 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE_NAME fontID=0 name=Variables
+.CMD DEFINE_FONTSTYLE_NAME fontID=1 name=Constants
+.CMD DEFINE_FONTSTYLE_NAME fontID=2 name=Text
+.CMD DEFINE_FONTSTYLE_NAME fontID=4 name=User^1
+.CMD DEFINE_FONTSTYLE_NAME fontID=5 name=User^2
+.CMD DEFINE_FONTSTYLE_NAME fontID=6 name=User^3
+.CMD DEFINE_FONTSTYLE_NAME fontID=7 name=User^4
+.CMD DEFINE_FONTSTYLE_NAME fontID=8 name=User^5
+.CMD DEFINE_FONTSTYLE_NAME fontID=9 name=User^6
+.CMD DEFINE_FONTSTYLE_NAME fontID=10 name=User^7
+.CMD DEFINE_FONTSTYLE fontID=0 family=Times^New^Roman points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=1 family=Times^New^Roman points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=2 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=4 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=5 family=Courier^New points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=6 family=System points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=7 family=Script points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=8 family=Roman points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=9 family=Modern points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=10 family=Times^New^Roman points=10 bold=0 italic=0 underline=0
+.CMD UNITS U=1
+.CMD DIMENSIONS_ANALYSIS 0 0
+.EQN 5 8 1 0
+{0:cos}NAME({0:\wt}NAME+{0:\f}NAME)+{0:sin}NAME({0:\wt}NAME-{0:\f}NAME)
+.TXT 6 -7 5 0
+Cg a20.125000,73.000000,31
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain To create a literal subscript:}
+}
+.TXT 4 1 8 0
+Cg a14.375000,72.000000,24
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain Let initial velocity = }
+}
+.EQN 0 15 12 0
+{0:vel.init}NAME
+.TXT 2 -15 13 0
+Cg a14.000000,72.000000,25
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain \par Let final velocity =  }
+}
+.EQN 2 15 15 0
+{0:vel.fin}NAME
+.TXT 4 -15 16 0
+Cg a17.000000,72.000000,25
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain To create a 3 * 3 matrix}
+}
+.TXT 3 0 17 0
+Cg a29.375000,72.000000,166
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain First, define the state transition
+ \par matrix A. Type A, press the colon\par 
+key (:), and create a 3 * 3 matrix.\par 
+To create a matrix, choose MATRICES\par 
+from the MATH menu.}
+}
+.EQN 0 34 19 0
+{0:A}NAME:({3,3}ö.7ö.1ö.2ö.1ö.9ö0ö.25ö.25ö.5)
+.EQN 12 1 22 0
+({0:Y}NAME){52}(0)
+.TXT 1 -35 20 0
+Cg a34.500000,72.000000,114
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain Click to the right of the matrix
+ and type Y.\par Then press [CTRL]^. Type
+ 0 in the placeholder\par for the superscript.}
+}
+.TXT 9 0 23 0
+Cg a40.625000,72.000000,232
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain Now complete the definition of the
+ initial vector.\par First press the colon
+ (:). Then choose MATRICES\par from the 
+MATH menu. Specify that you want to create
+ \par a matrix with three rows and one column.
+ Then fill in \par the matrix entries.\par 
+}
+}
+.EQN 3 43 24 0
+({0:Y}NAME){52}(0):({3,1}ö15ö25ö10)
+.TXT 9 -43 27 0
+Cg a42.250000,72.000000,73
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain Type K:1;8. This defines a range
+ variable k to count eight\par iterations.\par 
+}
+}
+.EQN 0 44 28 0
+{0:k}NAME:1;8
+.TXT 6 -44 29 0
+Cg a44.875000,72.000000,211
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain To define the Kth vector in terms
+ of  the k-1st, type V[ctrl]^k.\par Then
+ type a colon (;) for the definition symbol.
+ Complete the \par equation by typing this
+ expression after the definition \par symbol:A*V[ctrl]^(k-1)}
+}
+.EQN 2 46 30 0
+({0:Y}NAME){52}({0:k}NAME):{0:A}NAME*({0:Y}NAME){52}({0:k}NAME-1)
+.EQN 8 0 36 0
+({0:Y}NAME){52}(8)={0}?_n_u_l_l_
+.TXT 1 -46 32 0
+Cg a43.000000,72.000000,63
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain To see the eight (last) column of
+ the matrix, type Y[ctrl]^8=.}
+}
+.EQN 8 22 47 0
+{0:Y}NAME={0}?_n_u_l_l_
+.TXT 1 -22 37 0
+Cg a17.125000,72.000000,60
+{\rtf1\ansi \deff0
+{\fonttbl
+{\f0\fnil Arial;}
+}
+{\plain To see all the vectors \par as columns
+ of\par  a matrix, type Y=.}
+}

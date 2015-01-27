@@ -1,0 +1,853 @@
+.MCAD 303010000 1 0 181 0
+.CMD PLOTFORMAT
+0 0 1 1 0 0 1 
+0 0 1 1 0 0 1 
+0 1 0 0 NO-TRACE-STRING
+0 2 1 0 NO-TRACE-STRING
+0 3 2 0 NO-TRACE-STRING
+0 4 3 0 NO-TRACE-STRING
+0 1 4 0 NO-TRACE-STRING
+0 2 5 0 NO-TRACE-STRING
+0 3 6 0 NO-TRACE-STRING
+0 4 0 0 NO-TRACE-STRING
+0 1 1 0 NO-TRACE-STRING
+0 2 2 0 NO-TRACE-STRING
+0 3 3 0 NO-TRACE-STRING
+0 4 4 0 NO-TRACE-STRING
+0 1 5 0 NO-TRACE-STRING
+0 2 6 0 NO-TRACE-STRING
+0 3 0 0 NO-TRACE-STRING
+0 4 1 0 NO-TRACE-STRING
+0 1 21 15 0 3 
+.CMD FORMAT  rd=d ct=10 im=i et=3 zt=15 pr=3 mass length time charge temperature tr=0 vm=0
+.CMD SET ORIGIN 0
+.CMD SET TOL 0.001000000000000
+.CMD SET PRNCOLWIDTH 8
+.CMD SET PRNPRECISION 4
+.CMD PRINT_SETUP 1.200000 0.000000 0.000000 0.000000 0
+.CMD HEADER_FOOTER 1 1 *empty* *empty* *empty* 0 1 *empty* *empty* *empty*
+.CMD HEADER_FOOTER_FONT fontID=14 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD HEADER_FOOTER_FONT fontID=15 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE_NAME fontID=0 name=Variables
+.CMD DEFINE_FONTSTYLE_NAME fontID=1 name=Constants
+.CMD DEFINE_FONTSTYLE_NAME fontID=2 name=Text
+.CMD DEFINE_FONTSTYLE_NAME fontID=4 name=User^1
+.CMD DEFINE_FONTSTYLE_NAME fontID=5 name=User^2
+.CMD DEFINE_FONTSTYLE_NAME fontID=6 name=User^3
+.CMD DEFINE_FONTSTYLE_NAME fontID=7 name=User^4
+.CMD DEFINE_FONTSTYLE_NAME fontID=8 name=User^5
+.CMD DEFINE_FONTSTYLE_NAME fontID=9 name=User^6
+.CMD DEFINE_FONTSTYLE_NAME fontID=10 name=User^7
+.CMD DEFINE_FONTSTYLE fontID=0 family=Times^New^Roman points=12 bold=1 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=1 family=Times^New^Roman points=12 bold=1 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=2 family=Times^New^Roman points=12 bold=1 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=4 family=Arial points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=5 family=Courier^New points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=6 family=System points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=7 family=Script points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=8 family=Roman points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=9 family=Modern points=10 bold=0 italic=0 underline=0
+.CMD DEFINE_FONTSTYLE fontID=10 family=Times^New^Roman points=10 bold=0 italic=0 underline=0
+.CMD UNITS U=1
+.CMD DIMENSIONS_ANALYSIS 0 0
+.TXT 2 1 1 0
+Cg a26.125000,31.750000,95
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {EEE548  RADAR SYSTEMS\par \par 
+Tutorial 2.2  Solutions\par             
+\par 5)  Target illumination time}}
+}
+.TXT 13 0 2 0
+Cg a19.375000,35.125000,34
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {-------------------------------}}
+}
+.EQN 3 0 3 0
+{0:BW}NAME:1.5*{0:deg}NAME
+.EQN 1 21 4 0
+{0:\G}NAME:10*({0:deg}NAME)/({0:sec}NAME)
+.EQN 0 18 5 0
+{0:T.i}NAME:({0:BW}NAME)/({0:\G}NAME)
+.EQN 10 -39 6 0
+{0:T.i}NAME={0}?{0:sec}NAME
+.EQN 6 0 7 0
+{0:f.r}NAME:({2,1}ö200000*{0:Hz}NAMEö1000*{0:Hz}NAME)
+.EQN 8 0 8 0
+{0:n.pulses}NAME:(({0:f.r}NAME*{0:T.i}NAME)){49}
+.EQN 2 29 9 0
+{0:n.pulses}NAME={0}?_n_u_l_l_
+.TXT 10 -29 10 0
+Cg a30.625000,44.125000,41
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {6)  Blind speeds of raster scan
+ radar }}
+}
+.EQN 5 0 11 0
+{0:f.r}NAME:200000*{0:Hz}NAME
+.EQN 0 24 12 0
+{0:R.target}NAME:100*{0:km}NAME
+.EQN 8 -24 13 0
+{0:T.frame}NAME:4*{0:sec}NAME
+.EQN 8 0 14 0
+{0:R.blind}NAME:({0:c}NAME)/(2*{0:f.r}NAME)
+.EQN 2 25 15 0
+{0:v.blind}NAME:({0:R.blind}NAME)/({0:T.frame}NAME)
+.EQN 8 -25 16 0
+{0:v.blind}NAME={0}?({0:m}NAME)/({0:sec}NAME)
+.TXT 2 25 17 0
+Cg a9.750000,13.750000,15
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {or multiples}}
+}
+.TXT 5 -25 181 0
+Cg a71.875000,72.250000,183
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Target is between two bars: assume
+ it is seen during bar 1 scan as well as
+ during bar 2 scan (1 sec apart) followed
+ by no sighting for 3 secs, when bar one
+ will be scanned again.}}
+}
+.EQN 10 0 19 0
+{0:v.1}NAME:({0:R.blind}NAME)/(1*{0:sec}NAME)
+.EQN 0 28 20 0
+{0:v.2}NAME:({0:R.blind}NAME)/(3*{0:sec}NAME)
+.EQN 12 -28 21 0
+{0:v.1}NAME={0}?({0:m}NAME)/({0:sec}NAME)
+.EQN 0 31 22 0
+{0:v.2}NAME={0}?({0:m}NAME)/({0:sec}NAME)
+.TXT 7 -31 23 0
+C x1,1,0,0
+.TXT 5 0 24 0
+Cg a53.750000,72.250000,68
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {11) Power levels of 1st and second
+ sidelobles uniform aperture.\par }}
+}
+.TXT 6 0 25 0
+Cg a51.375000,73.375000,68
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {For uniform aperture, far field
+ radiation pattern is of the form:}}
+}
+.EQN 4 0 26 0
+{0:x}NAME:.1,.2;5*{0:\p}NAME
+.EQN 6 0 27 0
+{0:E}NAME({0:x}NAME):({0:sin}NAME({0:x}NAME))/({0:x}NAME)
+.EQN 2 37 28 0
+&&(_n_u_l_l_&_n_u_l_l_)&|({0:E}NAME({0:x}NAME))@&&(_n_u_l_l_&_n_u_l_l_)&{0:x}NAME
+0 0 0 0 0 0 1 
+0 0 0 0 0 0 1 
+0 1 0 5 NO-TRACE-STRING
+0 2 1 0 NO-TRACE-STRING
+0 3 2 0 NO-TRACE-STRING
+0 4 3 0 NO-TRACE-STRING
+0 1 4 0 NO-TRACE-STRING
+0 2 5 0 NO-TRACE-STRING
+0 3 6 0 NO-TRACE-STRING
+0 4 0 0 NO-TRACE-STRING
+0 1 1 0 NO-TRACE-STRING
+0 2 2 0 NO-TRACE-STRING
+0 3 3 0 NO-TRACE-STRING
+0 4 4 0 NO-TRACE-STRING
+0 1 5 0 NO-TRACE-STRING
+0 2 6 0 NO-TRACE-STRING
+0 3 0 0 NO-TRACE-STRING
+0 4 1 0 NO-TRACE-STRING
+0 1 15 11 0 3 
+.TXT 17 -37 29 0
+Cg a31.625000,43.000000,41
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Peaks occur when derivative is 
+zero ie}}
+}
+.EQN 4 0 30 0
+{0:f}NAME({0:x}NAME):{0:x}NAME"{0:E}NAME({0:x}NAME)
+.EQN 2 46 31 0
+_n_u_l_l_&_n_u_l_l_&(_n_u_l_l_&_n_u_l_l_)&{0:f}NAME({0:x}NAME)@_n_u_l_l_&_n_u_l_l_&(_n_u_l_l_&_n_u_l_l_)&{0:x}NAME
+0 0 0 0 0 0 1 
+0 0 0 0 0 0 1 
+0 1 0 5 NO-TRACE-STRING
+0 2 1 0 NO-TRACE-STRING
+0 3 2 0 NO-TRACE-STRING
+0 4 3 0 NO-TRACE-STRING
+0 1 4 0 NO-TRACE-STRING
+0 2 5 0 NO-TRACE-STRING
+0 3 6 0 NO-TRACE-STRING
+0 4 0 0 NO-TRACE-STRING
+0 1 1 0 NO-TRACE-STRING
+0 2 2 0 NO-TRACE-STRING
+0 3 3 0 NO-TRACE-STRING
+0 4 4 0 NO-TRACE-STRING
+0 1 5 0 NO-TRACE-STRING
+0 2 6 0 NO-TRACE-STRING
+0 3 0 0 NO-TRACE-STRING
+0 4 1 0 NO-TRACE-STRING
+0 1 15 11 0 3 
+.TXT 14 -46 32 0
+Cg a18.625000,25.000000,25
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {First peak occurs near}}
+}
+.EQN 4 0 33 0
+{0:x}NAME:3*({0:\p}NAME)/(2)
+.EQN 2 16 34 0
+{0:x}NAME:{0:root}NAME({0:f}NAME({0:x}NAME),{0:x}NAME)
+.EQN 6 -16 35 0
+{0:dB}NAME({0:x}NAME):20*{0:log}NAME({0:x}NAME)
+.EQN 0 24 36 0
+{0:E}NAME({0:x}NAME)={0}?_n_u_l_l_
+.EQN 6 -24 37 0
+{0:dB}NAME(|({0:E}NAME({0:x}NAME)))={0}?_n_u_l_l_
+.TXT 4 0 38 0
+Cg a20.125000,26.125000,26
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Second lobe occurs near}}
+}
+.EQN 4 0 39 0
+{0:x}NAME:5*({0:\p}NAME)/(2)
+.EQN 2 18 40 0
+{0:x}NAME:{0:root}NAME({0:f}NAME({0:x}NAME),{0:x}NAME)
+.EQN 4 -18 41 0
+{0:dB}NAME(|({0:E}NAME({0:x}NAME)))={0}?_n_u_l_l_
+.TXT 6 0 42 0
+Cg a34.000000,46.375000,45
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {12)  Power at third and fourth 
+sidelobes\par }}
+}
+.TXT 5 0 43 0
+Cg a19.625000,26.125000,26
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Fourth lobe occurs near}}
+}
+.EQN 4 0 44 0
+{0:x}NAME:7*({0:\p}NAME)/(2)
+.EQN 2 18 45 0
+{0:x}NAME:{0:root}NAME({0:f}NAME({0:x}NAME),{0:x}NAME)
+.EQN 4 -18 46 0
+{0:dB}NAME(|({0:E}NAME({0:x}NAME)))={0}?_n_u_l_l_
+.TXT 4 0 47 0
+Cg a18.000000,25.000000,25
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Fifth lobe occurs near}}
+}
+.EQN 4 0 48 0
+{0:x}NAME:9*({0:\p}NAME)/(2)
+.EQN 2 18 49 0
+{0:x}NAME:{0:root}NAME({0:f}NAME({0:x}NAME),{0:x}NAME)
+.EQN 4 -18 50 0
+{0:dB}NAME(|({0:E}NAME({0:x}NAME)))={0}?_n_u_l_l_
+.TXT 3 0 51 0
+C x1,1,0,0
+.TXT 3 0 52 0
+Cg a18.750000,25.000000,26
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {17) Gain of an array.\par }}
+}
+.EQN 7 0 53 0
+{0:\h}NAME:({2,1}ö1*{0:deg}NAMEö0*{0:deg}NAME)
+.EQN 0 23 54 0
+{0:N}NAME:5
+.EQN 0 15 55 0
+{0:\l}NAME:1
+.EQN 4 -15 56 0
+{0:n}NAME:-{0:N}NAME;{0:N}NAME
+.EQN 2 -23 57 0
+{0:d}NAME:({0:\l}NAME)/(2)
+.EQN 3 16 58 0
+{0:E}NAME({0:\h}NAME):{0:n}NAME${0:cos}NAME(2*({0:\p}NAME)/({0:\l}NAME)*{0:n}NAME*{0:d}NAME*{0:sin}NAME({0:\h}NAME))
+.EQN 10 -16 59 0
+({0:E}NAME({0:\h}NAME)){49}={0}?_n_u_l_l_
+.TXT 8 0 60 0
+Cg a31.125000,41.875000,41
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {18) Gain of array and sidelobe 
+level\par }}
+}
+.EQN 7 0 61 0
+{0:\h}NAME:({2,1}ö15*{0:deg}NAMEö0*{0:deg}NAME)
+.EQN 0 23 62 0
+{0:N}NAME:5
+.EQN 0 15 63 0
+{0:\l}NAME:1
+.EQN 4 -15 64 0
+{0:n}NAME:-{0:N}NAME;{0:N}NAME
+.EQN 2 -23 65 0
+{0:d}NAME:({0:\l}NAME)/(2)
+.EQN 3 16 66 0
+{0:E}NAME({0:\h}NAME):{0:n}NAME${0:cos}NAME(2*({0:\p}NAME)/({0:\l}NAME)*{0:n}NAME*{0:d}NAME*{0:sin}NAME({0:\h}NAME))
+.EQN 10 -16 67 0
+({0:E}NAME({0:\h}NAME)){49}={0}?_n_u_l_l_
+.EQN 6 0 68 0
+{0:dB}NAME((|({0:E}NAME(15*{0:deg}NAME)))/(|({0:E}NAME(0*{0:deg}NAME))))={0}?_n_u_l_l_
+.TXT 6 0 69 0
+C x1,1,0,0
+.TXT 4 0 70 0
+Cg a38.750000,52.000000,50
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {19) Array gain for different element
+ spacings\par }}
+}
+.EQN 7 0 71 0
+{0:\h}NAME:({2,1}ö90*{0:deg}NAMEö0*{0:deg}NAME)
+.EQN 0 23 72 0
+{0:N}NAME:5
+.EQN 0 15 73 0
+{0:\l}NAME:1
+.EQN 4 -15 74 0
+{0:n}NAME:-{0:N}NAME;{0:N}NAME
+.EQN 2 -23 75 0
+{0:d}NAME:({0:\l}NAME)/(2)
+.EQN 3 16 76 0
+{0:E}NAME({0:\h}NAME):{0:n}NAME${0:cos}NAME(2*({0:\p}NAME)/({0:\l}NAME)*{0:n}NAME*{0:d}NAME*{0:sin}NAME({0:\h}NAME))
+.EQN 10 -16 77 0
+({0:E}NAME({0:\h}NAME)){49}={0}?_n_u_l_l_
+.TXT 6 0 78 0
+Cg a25.125000,32.875000,40
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {Now for element spacing of }{\f3 
+l}{:}}
+}
+.EQN 5 0 79 0
+{0:\h}NAME:({2,1}ö90*{0:deg}NAMEö0*{0:deg}NAME)
+.EQN 0 23 80 0
+{0:N}NAME:5
+.EQN 0 15 81 0
+{0:\l}NAME:1
+.EQN 4 -15 82 0
+{0:n}NAME:-{0:N}NAME;{0:N}NAME
+.EQN 2 -23 83 0
+{0:d}NAME:{0:\l}NAME
+.EQN 3 16 84 0
+{0:E}NAME({0:\h}NAME):{0:n}NAME${0:cos}NAME(2*({0:\p}NAME)/({0:\l}NAME)*{0:n}NAME*{0:d}NAME*{0:sin}NAME({0:\h}NAME))
+.EQN 12 -16 85 0
+({0:E}NAME({0:\h}NAME)){49}={0}?_n_u_l_l_
+.TXT 492 5 86 0
+Cg a13.000000,18.250000,20
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {UNIT DEFINITIONS}}
+}
+.TXT 0 30 87 0
+Cg a18.250000,22.750000,23
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {MKS (SI) unit system}}
+}
+.TXT 6 -30 88 0
+Cg a10.500000,14.875000,16
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {I. Base units}}
+}
+.EQN 3 5 89 0
+{0:m}NAME~1L
+.EQN 0 18 90 0
+{0:kg}NAME~1M
+.EQN 0 18 91 0
+{0:sec}NAME~1T
+.EQN 0 18 92 0
+{0:coul}NAME~1Q
+.EQN 4 -54 93 0
+{0:K}NAME~1
+.TXT 4 -5 94 0
+Cg a16.750000,21.625000,22
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {II. Angular measure}}
+}
+.EQN 3 5 95 0
+{0:rad}NAME~1
+.EQN 5 0 96 0
+{0:deg}NAME~({0:\p}NAME)/(180)*{0:rad}NAME
+.TXT 8 -5 97 0
+Cg a21.500000,29.500000,29
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {III. Derived units: Length}}
+}
+.EQN 3 5 98 0
+{0:cm}NAME~.01*{0:m}NAME
+.EQN 0 18 99 0
+{0:km}NAME~1000*{0:m}NAME
+.EQN 0 18 100 0
+{0:mm}NAME~.001*{0:m}NAME
+.EQN 3 -36 101 0
+{0:ft}NAME~.3048*{0:m}NAME
+.EQN 0 18 102 0
+{0:in}NAME~2.54*{0:cm}NAME
+.EQN 0 18 103 0
+{0:yd}NAME~3*{0:ft}NAME
+.EQN 0 18 104 0
+{0:mi}NAME~5280*{0:ft}NAME
+.EQN 3 -54 105 0
+{0:nmi}NAME~6076.1*{0:ft}NAME
+.TXT 4 -5 106 0
+Cg a20.250000,26.125000,26
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {IV. Derived units: Mass}}
+}
+.EQN 4 5 107 0
+{0:gm}NAME~(10)^(-3)*{0:kg}NAME
+.EQN 2 18 108 0
+{0:tonne}NAME~1000*{0:kg}NAME
+.EQN 0 18 109 0
+{0:lb}NAME~453.59247*{0:gm}NAME
+.TXT 3 -19 110 0
+Cg a9.625000,13.750000,15
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(metric ton)}}
+}
+.TXT 0 18 111 0
+Cg a20.500000,27.250000,51
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(use convention that lb represents
+ pounds mass.}}
+}
+.EQN 2 -35 112 0
+{0:oz}NAME~({0:lb}NAME)/(16)
+.EQN 2 18 113 0
+{0:ton}NAME~2000*{0:lb}NAME
+.TXT 3 -1 114 0
+Cg a10.875000,14.875000,16
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {("short" ton)}}
+}
+.EQN 0 19 115 0
+{0:slug}NAME~32.174*{0:lb}NAME
+.TXT 4 -41 116 0
+Cg a19.000000,25.000000,25
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {V. Derived units: Time}}
+}
+.EQN 3 5 117 0
+{0:min}NAME~60*{0:sec}NAME
+.EQN 0 18 118 0
+{0:hr}NAME~3600*{0:sec}NAME
+.EQN 0 18 119 0
+{0:day}NAME~24*{0:hr}NAME
+.EQN 4 -36 120 0
+{0:yr}NAME~365.2422*{0:day}NAME
+.TXT 0 19 121 0
+Cg a11.750000,17.125000,18
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(tropical year)}}
+}
+.EQN 0 18 122 0
+{0:Hz}NAME~(1)/({0:sec}NAME)
+.EQN 2 11 123 0
+{0:GHz}NAME~(10)^(9)*{0:Hz}NAME
+.EQN 4 -48 124 0
+{0:\ms}NAME~(10)^(-6)*{0:sec}NAME
+.TXT 8 -5 125 0
+Cg a27.000000,35.125000,34
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {VI. Derived units: Area, Volume}}
+}
+.EQN 4 5 126 0
+{0:hectare}NAME~(10)^(4)*({0:m}NAME)^(2)
+.EQN 0 36 127 0
+{0:acre}NAME~4840*({0:yd}NAME)^(2)
+.TXT 6 -37 128 0
+Cg a1.875000,3.625000,6
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {---}}
+}
+.EQN 4 1 129 0
+{0:litre}NAME~((.1*{0:m}NAME))^(3)
+.EQN 0 36 130 0
+{0:ml}NAME~(10)^(-3)*{0:litre}NAME
+.TXT 4 -37 131 0
+Cg a24.750000,27.250000,40
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(Sometimes defined with "L" symbol.)}}
+}
+.EQN 0 37 132 0
+{0:fl_oz}NAME~29.57353*({0:cm}NAME)^(3)
+.EQN 6 0 133 0
+{0:gal}NAME~128*{0:fl_oz}NAME
+.TXT 4 -41 134 0
+Cg a34.625000,47.500000,45
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {VII. Derived units: Velocity, Acceleration}}
+}
+.EQN 4 5 135 0
+{0:mph}NAME~({0:mi}NAME)/({0:hr}NAME)
+.EQN 0 18 136 0
+{0:kph}NAME~({0:km}NAME)/({0:hr}NAME)
+.EQN 2 17 137 0
+{0:c}NAME~2.998*(10)^(8)*({0:m}NAME)/({0:sec}NAME)
+.TXT 6 -36 138 0
+Cg a2.500000,4.750000,7
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {----}}
+}
+.EQN 4 1 139 0
+{0:g}NAME~9.80665*({0:m}NAME)/(({0:sec}NAME)^(2))
+.TXT 2 22 140 0
+Cg a19.875000,28.375000,28
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(acceleration of gravity)}}
+}
+.TXT 8 -27 141 0
+Cg a34.875000,46.375000,44
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {VIII. Derived units: Force, Energy,
+ Power}}
+}
+.EQN 4 5 142 0
+{0:newton}NAME~{0:kg}NAME*({0:m}NAME)/(({0:sec}NAME)^(2))
+.EQN 0 18 143 0
+{0:dyne}NAME~(10)^(-5)*{0:newton}NAME
+.EQN 2 23 144 0
+{0:lbf}NAME~{0:g}NAME*{0:lb}NAME
+.TXT 3 -1 145 0
+Cg a11.000000,14.875000,16
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(pound force)}}
+}
+.EQN 4 1 146 0
+{0:kgf}NAME~{0:g}NAME*{0:kg}NAME
+.TXT 3 -1 147 0
+Cg a13.375000,18.250000,19
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(kilogram force)}}
+}
+.TXT 4 -41 148 0
+Cg a2.500000,4.750000,7
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {----}}
+}
+.EQN 3 1 149 0
+{0:joule}NAME~{0:newton}NAME*{0:m}NAME
+.EQN 0 18 150 0
+{0:erg}NAME~(10)^(-7)*{0:joule}NAME
+.EQN 0 23 151 0
+{0:cal}NAME~4.1868*{0:joule}NAME
+.EQN 3 0 152 0
+{0:kcal}NAME~1000*{0:cal}NAME
+.EQN 2 -41 153 0
+{0:BTU}NAME~1.05505585262*(10)^(3)*{0:joule}NAME
+.EQN 2 41 154 0
+{0:k}NAME~1.38062*(10)^(-23)*({0:joule}NAME)/({0:K}NAME)
+.TXT 4 -42 155 0
+Cg a2.500000,4.750000,7
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {----}}
+}
+.EQN 4 1 156 0
+{0:watt}NAME~({0:joule}NAME)/({0:sec}NAME)
+.EQN 0 41 157 0
+{0:hp}NAME~550*({0:ft}NAME*{0:lbf}NAME)/({0:sec}NAME)
+.EQN 2 -23 158 0
+{0:kW}NAME~1000*{0:watt}NAME
+.TXT 4 22 159 0
+Cg a18.625000,23.875000,24
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {(standard horsepower)}}
+}
+.EQN 2 -40 160 0
+{0:mW}NAME~(10)^(-3)*{0:watt}NAME
+.TXT 6 -5 161 0
+Cg a31.500000,43.000000,41
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {IX. Derived units: Pressure, Viscosity}}
+}
+.EQN 4 5 162 0
+{0:Pa}NAME~({0:newton}NAME)/(({0:m}NAME)^(2))
+.EQN 0 18 163 0
+{0:psi}NAME~({0:lbf}NAME)/(({0:in}NAME)^(2))
+.EQN 0 18 164 0
+{0:atm}NAME~1.01325*(10)^(5)*{0:Pa}NAME
+.EQN 4 0 165 0
+{0:torr}NAME~1.33322*(10)^(2)*{0:Pa}NAME
+.EQN 4 0 166 0
+{0:in_Hg}NAME~3.38638*(10)^(3)*{0:Pa}NAME
+.TXT 6 -37 167 0
+Cg a2.500000,4.750000,7
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {----}}
+}
+.EQN 2 37 168 0
+{0:stokes}NAME~(10)^(-4)*(({0:m}NAME)^(2))/({0:sec}NAME)
+.EQN 2 -36 169 0
+{0:poise}NAME~.1*{0:Pa}NAME*{0:sec}NAME
+.TXT 8 -5 170 0
+Cg a22.625000,31.750000,31
+{\rtf1\ansi \deff2
+{\fonttbl
+{\f0\fnil Courier;}
+{\f1\fnil Arial;}
+{\f2\fnil Times New Roman;}
+{\f3\fnil Symbol;}
+}
+{\plain {X. Derived units: Electrical}}
+}
+.EQN 4 5 171 0
+{0:amp}NAME~({0:coul}NAME)/({0:sec}NAME)
+.EQN 0 18 172 0
+{0:volt}NAME~({0:watt}NAME)/({0:amp}NAME)
+.EQN 0 18 173 0
+{0:ohm}NAME~({0:volt}NAME)/({0:amp}NAME)
+.EQN 2 14 174 0
+{0:weber}NAME~{0:volt}NAME*{0:sec}NAME
+.EQN 4 -50 175 0
+{0:siemens}NAME:(1)/({0:ohm}NAME)
+.EQN 0 18 176 0
+{0:farad}NAME~({0:coul}NAME)/({0:volt}NAME)
+.EQN 0 18 177 0
+{0:oersted}NAME~(1000)/(4*{0:\p}NAME)*({0:amp}NAME)/({0:m}NAME)
+.EQN 6 -36 178 0
+{0:henry}NAME~({0:weber}NAME)/({0:amp}NAME)
+.EQN 0 20 179 0
+{0:tesla}NAME~({0:weber}NAME)/(({0:m}NAME)^(2))
+.EQN 0 16 180 0
+{0:gauss}NAME~(10)^(-4)*{0:tesla}NAME

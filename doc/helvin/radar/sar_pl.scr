@@ -1,0 +1,120 @@
+! Radar Simulator SARSIM II (version WIN32-301097a)
+! (C)1997 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+$PLATFORM  Plane
+TRAJECTORY
+CUBIC                ! Interpolation method for Position X (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Y (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Z (m) vs Time (s)
+INLINE
+2                    ! Number of samples for Position X (m) vs Time (s)
+0, 1000  
+10, 2000
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0, 1000
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0, 816
+NOT_ALIGNED
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+
+$TARGET Plane  ! Platform
+0, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+$RADAR
+Radar3               ! Name of radar
+Earth                ! Platform name of radar
+MONO
+5000                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+1000                 ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+1                    ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+30                   ! (deg) Elevation beam width
+1                    ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+ROTATING             ! Rotating antenna
+30                   ! (deg) Beam-direction - Elevation
+24                   ! (deg/s) Rotation rate
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+Radar3               ! Name of radar
+1000                 ! (m) Slant range start
+3000                 ! (m) Slant range end
+0                    ! (s) Azimuth range start
+5                    ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.002                ! (GHz) Sample frequency
+5.30466929E-07       ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+J:\SARSIM2\sim1.bin  ! File Name of output file
+                     ! Size : 5001 (Azimuth) x 27 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+
+
+$SIMULATION
+Radar3               ! Name of radar
+1000                 ! (m) Slant range start
+3000                 ! (m) Slant range end
+0                    ! (s) Azimuth range start
+3                    ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.002                ! (GHz) Sample frequency
+5.3063699E-07        ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+sim1.bin             ! File Name of output file
+                     ! Size : 3001 (Azimuth) x 27 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+
+

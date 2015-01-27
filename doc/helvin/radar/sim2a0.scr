@@ -1,0 +1,95 @@
+! Radar Simulator SARSIM II version A01 (c) 1997 R.L.
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+0                    ! (deg) X-axis Rotation
+0                    ! (deg) Y-axis Rotation
+0                    ! (deg) Z-axis Rotation
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+$PLATFORM  Boeing
+TRAJECTORY
+CUBIC                ! Interpolation method for Position X (m) vs Time (s)
+LINEAR               ! Interpolation method for Position Y (m) vs Time (s)
+CUBIC                ! Interpolation method for Position Z (m) vs Time (s)
+INLINE
+2                    ! Number of samples for Position X (m) vs Time (s)
+0, 0  1, 246
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0, 0
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0, 10000
+NOT_ALIGNED
+0                    ! (deg) X-axis Rotation
+0                    ! (deg) Y-axis Rotation
+0                    ! (deg) Z-axis Rotation
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$TARGET Earth  ! Platform
+0, 28284.3, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+1, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+
+$RADAR
+VHF_Radar            ! Name of radar
+Boeing               ! Platform name of radar
+CHIRP
+0.015                ! (GHz) Chirp bandwidth
+10000                ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+492                  ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+0.141                ! (GHz)  Center frequency
+1                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+60                   ! (deg) Elevation beam width
+45                   ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+-19.471              ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+HAMMING              ! Hamming MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+VHF_Radar            ! Name of radar
+27002.1              ! (m) Slant range start
+33023                ! (m) Slant range end
+0                    ! (s) Azimuth range start
+5                    ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.015                ! (GHz) Sample frequency
+1.86191115E-09       ! (mV) Least Significant Bit value
+BINARY               ! Save file format
+RAW                  ! Processing
+sim1.bin             ! File Name of output file
+                     ! Size : 2461 (Azimuth) x 603 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+
+

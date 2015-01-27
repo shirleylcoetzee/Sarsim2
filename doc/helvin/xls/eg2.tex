@@ -1,0 +1,253 @@
+
+\documentclass{sebase}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{SEART}
+
+%TCIDATA{TCIstyle=article/art4.lat,SEART,SEART}
+
+%TCIDATA{Created=Wed Oct 15 12:20:00 1997}
+%TCIDATA{LastRevised=Tue Oct 28 11:08:54 1997}
+%TCIDATA{Language=American English}
+
+\input{tcilatex}
+\begin{document}
+
+\SetTitle{Tutorial Manual for SARSIM II}
+\SetAuthor{H. R. Gunputh}
+\Setdate{October 20, 1997}
+
+\section{\protect\smallskip }
+
+\subsection{Example 2}
+
+The next example consists of a radar sitting at the origin of the 'Earth'
+coordinate system and a point target moving at a speed of $200ms^{-1}$on the
+x axis.
+
+\smallskip
+
+The simulation parameters for the radar are the same as example 1 except for
+the Pulse Repetition Frequency which has been changed to 1Hz
+
+\smallskip
+
+\smallskip The simulation parameters for the target are as follows:
+
+\smallskip
+
+Position:
+
+\smallskip
+
+X = 1000 m and moving along the X-axis at a speed of $200$ $ms^{-1}.$
+
+\smallskip 
+
+Y = 0 m,
+
+\smallskip
+
+Z = 0 m.
+
+\smallskip
+
+Figure 2a
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip 
+
+\subsubsection{Raw Return Results}
+
+\smallskip
+
+\smallskip The pulse repetition frequency (PRF) is 1 Hz, i.e. the radar is
+sending a square pulse every 1 Second. The shape of the return pulse is also
+square but this time, the slant range will be different for each since the
+target is moving away from the radar. In this example. The sampling rate is
+still twenty (20) times the Nyquist Frequency.
+
+\smallskip
+
+The figure below displays the I, Q values obtained from the simulation, the
+Magnitude of the pulse in mV against Slant Range.
+
+\smallskip
+
+\smallskip Figure 2b
+
+\smallskip
+
+Graph for Raw Return
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\paragraph{\protect\smallskip Range Calculation}
+
+\smallskip
+
+The range from the radar to the target can be read off from the slant range
+axis, and in this case it is 1000m which corresponds to the value used for
+the X coordinate.\smallskip
+
+\smallskip The range can be calculated from the simulation values as follows:
+
+$R_{win}=\frac{c}{2f_{s}}\cdot N$
+
+where R$_{\text{win}}$ is the size of the slant range window,
+
+\ \ \ \ \ \ \ \ \ c is the velocity of light,
+
+\ \ \ \ \ \ \ \ \ f$_{\text{s}}$ is the sampling frequency.
+
+\ \ \ \ \ \ \ \ \ N is the number of simulation values.
+
+In this case, using the values
+
+$N$ $=53$, $c=$ $299792500$ $ms^{-1}$, $f_{s}=2\cdot 20\cdot 0.0002$ $GHz$
+
+\smallskip
+
+$R_{win}=$ $\frac{299792500}{2\cdot 4\cdot 10^{6}}$ $\cdot 53$
+
+\ \ \ \ \ \ $\ =$ $1986.125\ m$
+
+\smallskip
+
+\paragraph{Power Loss Calculation}
+
+\smallskip
+
+Although the return pulse is of the same shape as the radiated one, the
+magnitude is significantly less than the radiated pulse.
+
+\smallskip Some of the electromagnetic energy intercepted by the target is
+absorbed as heat and the rest is scattered. Portions of energy scattered in
+the direction of the receiving antenna are gathered by the antenna and
+subsequently processed by target detection circuitry. Hence the amount of
+energy received by the antenna is dependent on the \textit{radar target
+cross section (}$\sigma $).
+
+\smallskip
+
+The transmitted power is 1 kW and the received power is calculated from the
+following equation:
+
+$\smallskip $
+
+$P_{received}=\frac{P_{transmitted}\cdot G^{2}\cdot \lambda ^{2}\cdot \sigma 
+}{(4\cdot \pi )^{3}\cdot R^{4}}=\frac{1000\cdot 1\cdot 0.2998^{2}\cdot 1}{%
+(4\cdot \pi )^{3}\cdot 1000^{4}}=45.293269\cdot 10^{-15}W$
+
+\smallskip
+
+\smallskip and the amplitude as shown:
+
+$\smallskip $
+
+$Magnitude=\sqrt{P_{received}}=2.1282\cdot 10^{-4}mV$
+
+\smallskip
+
+\paragraph{\protect\smallskip Phase Calculation}
+
+The figure below shows the Phase in Degrees against Slant Range. The phase
+of the return pulse is calculated as follows:
+
+\smallskip
+
+$Phase=2\cdot \pi \cdot (-2\cdot d\cdot \frac{f}{c})$
+
+\ \ \ \ \ \ \ \ \ \ $=2\cdot \pi \cdot (-2\cdot d\cdot \frac{1}{\lambda })$\ 
+
+\smallskip where c is the velocity of light,
+
+\ \ \ \ \ \ \ \ \ d is the radar-target distance.
+
+For this example, the value read from the graph is -78.78 degrees and the
+calculated value is
+
+\smallskip
+
+\subsubsection{Range Compression Results}
+
+\smallskip
+
+In range compression the return pulse from the raw return gets
+compressed.\smallskip This is achieved by using a matched filter. The return
+pulse is convolved with a conjugate replica of itself. Since the pulse is
+rectangular in shape, a convolution with itself will give a triangular pulse.
+
+As can be seen from figure \#3 below the resultant pulse is triangular in
+shape. Since range-compression is computational intensive the sampling rate
+can be set. Using low values for the sampling rate (less than three times
+the Nyquist frequency) can result in unfamiliar graphs. In this example, the
+sampling rate used is fifty (50) times the Nyquist frequency.
+
+\smallskip
+
+\smallskip
+
+Figure \#3
+
+\smallskip
+
+\smallskip Graph for Range Compression.
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\smallskip
+
+\end{document}
