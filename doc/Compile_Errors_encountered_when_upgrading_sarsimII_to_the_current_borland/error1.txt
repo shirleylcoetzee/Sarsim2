@@ -1,0 +1,2 @@
+[C++ Error] main.cpp(936): E2034 Cannot convert 'tagPOINT *' to 'const TPoint *'
+[C++ Error] main.cpp(936): E2342 Type mismatch in parameter 'Points' (wanted 'const TPoint *', got 'tagPOINT *')

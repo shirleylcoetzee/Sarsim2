@@ -1,0 +1,6 @@
+[C++ Error] import.cpp(66): E2451 Undefined symbol 'FILE'
+[C++ Error] import.cpp(66): E2451 Undefined symbol 'infile'
+[C++ Error] import.cpp(68): E2268 Call to undefined function 'fopen'
+[C++ Error] import.cpp(72): E2268 Call to undefined function 'feof'
+[C++ Error] import.cpp(74): E2268 Call to undefined function 'fscanf'
+[C++ Error] import.cpp(82): E2268 Call to undefined function 'fclose'

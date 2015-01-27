@@ -1,0 +1,7 @@
+[C++ Error] surfaceform.cpp(71): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(230): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(232): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(234): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(250): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(252): E2268 Call to undefined function 'sprintf'
+[C++ Error] surfaceform.cpp(254): E2268 Call to undefined function 'sprintf'

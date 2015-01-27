@@ -1,0 +1,6 @@
+[C++ Error] vector.cpp(53): E2451 Undefined symbol 'cout'
+[C++ Error] vector.cpp(61): E2268 Call to undefined function 'min'
+[C++ Error] vector.cpp(70): E2268 Call to undefined function 'min'
+[C++ Error] vector.cpp(80): E2268 Call to undefined function 'min'
+[C++ Error] vector.cpp(89): E2268 Call to undefined function 'min'
+[C++ Error] vector.cpp(116): E2268 Call to undefined function 'min'

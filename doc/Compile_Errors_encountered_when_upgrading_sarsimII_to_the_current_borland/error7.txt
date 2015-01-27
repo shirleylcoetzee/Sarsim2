@@ -1,0 +1,15 @@
+[C++ Error] quickload.h(16): E2303 Type name expected
+[C++ Error] quickload.h(16): E2139 Declaration missing ;
+[C++ Error] mainquikview.cpp(109): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(595): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(598): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(601): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(603): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(605): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(837): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(876): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(929): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(931): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(933): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(935): E2268 Call to undefined function 'sprintf'
+[C++ Error] mainquikview.cpp(1320): E2268 Call to undefined function 'sprintf'
