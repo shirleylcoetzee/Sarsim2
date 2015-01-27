@@ -1,0 +1,77 @@
+! Radar Simulator SARSIM II (version WIN32-xx1105)
+! (C)1997,1998 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+
+$TARGET Earth  ! Platform
+10000, 0, 0  ! Position X,Y,Z (m)
+0, 0, 0  ! Position standard deviation X,Y,Z (m)
+60, 0  ! Radar cross section (m*m), RCS std. dev. (m*m)
+ISOTROPIC
+
+
+$RADAR
+Radar1               ! Name of radar
+Earth                ! Platform name of radar
+CHIRP
+0.1                  ! (GHz) Chirp bandwidth
+5000                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+1000                 ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+9                    ! (GHz)  Center frequency
+3                    ! (kW)  Power output
+0                    ! (dB)  Total system losses
+8E-05                ! (K)   Noise temperature
+SINX                 ! Simple sin(x)/x transmitter antenna
+25                   ! (deg) Elevation beam width
+10                   ! (deg) Azimuth beam width
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+0                    ! (deg) Beam-direction - Elevation
+90                   ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+$SIMULATION
+Radar1               ! Name of radar
+7548.99              ! (m) Slant range start
+12815.6              ! (m) Slant range end
+0.00233184           ! (s) Azimuth range start
+0.00394619           ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+0.1                  ! (GHz) Sample frequency
+3.02900385E-08       ! (mV) Least Significant Bit value
+ASCII                ! Save file format
+RAW                  ! Processing
+sim1.asc             ! File Name of output file
+                     ! Size : 1 (Azimuth) x 3514 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+5                    ! (1-100) Oversampling of pulse (for bandwith limiting)
+2                    ! (1-100) Pulse width used (1=nominal Pulsewidth)
+
+
