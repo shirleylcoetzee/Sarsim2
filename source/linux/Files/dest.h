@@ -11,8 +11,8 @@
 //2005 new updates and bug fixes - Adam Barta adambarta@gmail.com
 //#define version "WIN32-300106\0"
 
-//2014 Shirley Coetzee
-#define sarsimII_version "LINUX-071114\0" 
+//2014/15 Shirley Coetzee
+#define sarsimII_version "LINUX-060115\0" 
 
 // destination (operating system)
 //#define COMPILE_FOR_WINDOWS32  // we want to compile it for windows

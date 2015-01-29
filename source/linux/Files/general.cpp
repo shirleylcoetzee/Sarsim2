@@ -12,6 +12,7 @@
 #include "general.h"
 #include "objectstructdef.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 #include <values.h>
 #include <ctype.h>
@@ -1078,3 +1079,19 @@ void DrawLabels(double Range, int MinTicks, double *Unit, int *Ticks)
 }
 */
 //---------------------------------------------------------------------------
+
+
+
+
+void PrintMatrix (double ** pMatrix, size_t rows, size_t cols)
+{
+	for (size_t row = 0; row < rows; ++row)
+	{
+		for (size_t col = 0; col < cols;++col)
+		{
+			printf("%lf ", pMatrix[row][col]);
+		}
+		printf("\n");
+	}
+
+}

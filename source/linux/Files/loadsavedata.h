@@ -1,4 +1,4 @@
-#include "dest.h"
+#include "hdf5.h"
 //---------------------------------------------------------------------------
 #ifndef loadsavedataH
 #define loadsavedataH
@@ -10,8 +10,17 @@ bool LoadDataFile(char FileName[], struct SDataDefinition *DataDef);
 #ifdef COMPILE_FOR_WINDOWS32
 void SaveScriptFile(char *FileName);
 #endif
-void OpenScriptFile(char *FileName, struct LinkedLists *FirstObjectP);
+
+int AddAttribute(hid_t file_id, char *path, char *attrname, char *attrvalue);
+int CreateDataset(hid_t file_id, hid_t group_id, char *path);
+
+int OpenScriptFile(char *FileName, struct LinkedLists *FirstObjectP);
 
 //void WriteDataDef(FILE *OutFilep, struct SDataDefinition *DataDef);
 
 #endif
+
+bool WriteHDF5File(double * pData, int nx, int ny, const char * pszHDF5Filename);
+
+
+

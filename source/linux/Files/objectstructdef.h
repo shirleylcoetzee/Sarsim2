@@ -104,7 +104,8 @@
 
 #define ASCII 0
 #define BINARY 1
-#define ASCIIwithBrackets 2
+#define HDF5 2
+#define ASCIIwithBrackets 3
 
 #define RAW_RETURN 0
 #define MATCHED_FILTER 1
@@ -280,6 +281,7 @@ struct SRadar
 	 char   PlatformName[MAX_NAME_LENGTH]; // Name of Radar Platform
 	 char   RadarName[MAX_NAME_LENGTH]; // Name of Radar itself
 	 int    PulseType;                  // Mono = 0, Chirp = 1, Barker = 3,Other = 2
+
 	 SDataDefinition PulseDef;          // definition of 'other' pulse
 	 double ChirpBW;                    // Chirp Bandwith (GHz)
    int BarkerCode;                    // which Code 0 - 6
@@ -288,9 +290,11 @@ struct SRadar
 	 int    Envelope;                   // 0 = rect, 1 = linear 2 = other
 	 double RiseTime;                   // 0 - max rise time (ns)
 	 double FallTime;                   // max - 0 fall time (ns)
+
 	 SDataDefinition EnvelopeDef;       // definition of 'other' envelope
 	 int    PRFType;                    // 0 = constant, 1 = other
 	 double PRF;                        // PRF (Hz)
+
 	 SDataDefinition PRFDef;            // definition of 'other' PRF
 	 int    FreqType;                   // 0 = single, 1 = stepped, 2 = other
 	 double SingleFreq;                 // frequency (GHz)
@@ -298,8 +302,11 @@ struct SRadar
 	 double StepSize;                   // Frequency step size (GHz)
 	 int FreqSteps;                     // No. of frequency steps
 	 int PulsesPerFreq;                 // Pulses / frequency
+
 	 SDataDefinition FreqDef;           // definition of 'other' frequency
 	 double PowerOutput;                // Power emitted by antenna (kW)
+   double TxGain;                     // Transmitter gain (dB)
+   double RxGain;                     // Receiver gain (dB)
 	 double Losses;                     // All system losses (dB)
 	 double NoiseTemp;                  // Noise temperature (K)
 	 int AntennaGainTypeT;              // transmitter, 0 = iso, 1 = sinx/x
@@ -345,7 +352,7 @@ struct SSimulation
 	 int A2Dbits;
 	 double SampleFreq;                     // Hz
 	 double LSBvalue;                       // V
-	 int FileType;                          // 0 = ASCII, 1 = BINARY
+	 int FileType;                          // 0 = ASCII, 1 = BINARY, 2 = HDF5
 	 int SimTYPE;                   // 0 = raw, 1 = MatchedFilter, 2 = SRP etc.
      int PTPos;                     // 0 = begin, 1 = center
      double OverSampleFactor;               // Bandlimited oversampled pulse (1=

@@ -24,7 +24,10 @@ int main(int argc, char *argv[])
   LLP.FirstSurface = NULL;
   LLP.FirstGeometry = NULL;
   printf("\nRadar Simulator (C) 1997,1998 UCT Radar Remote Sensing Group\n"
-         "    (Version : %s - written by R.L. with help of J. Horrell and R.T. Lord)\n"
+         "    (Version : %s)\n"
+         "    (written by Rolf Lengenfelder with help of Jasper Horrell and Richard T. Lord)\n"
+         "    (with updates and bug fixes in 2006 by Adam Barta)\n"
+         "    (and HDF5 and bug fix in 2014 by Shirley Coetzee)\n"
          "    (Web     : http://rrsg.ee.uct.ac.za)\n", sarsimII_version);
    
   char ScriptFileName[100];
@@ -36,16 +39,20 @@ int main(int argc, char *argv[])
   strcpy(ScriptFileName, (char *) *++argv);
   printf("\nInterpreting script file : %s\n",ScriptFileName);
 
-  
-  OpenScriptFile(ScriptFileName, &LLP);
-  printf("  %d Point target(s) specified\n",CountTargets(LLP.FirstTarget));
-  printf("  %d Platform(s) specified\n",CountPlatforms(LLP.FirstPlatform));
-  printf("  %d Radar(s) specified\n",CountRadars(LLP.FirstRadar));
-  printf("  %d Surface(s) specified\n",CountSurfaces(LLP.FirstSurface));
-  printf("  %d Simulation file(s) to be written\n",CountSimulations(LLP.FirstSimulation));
-  printf("  %d Geometry file(s) to be written\n",CountGeometrys(LLP.FirstGeometry)); 
-  printf("\n");
-  
+	if (0 == OpenScriptFile(ScriptFileName, &LLP))
+		{
+			printf("\n\n");
+			printf("  %d Point target(s) specified\n",CountTargets(LLP.FirstTarget));
+			printf("  %d Platform(s) specified\n",CountPlatforms(LLP.FirstPlatform));
+			printf("  %d Radar(s) specified\n",CountRadars(LLP.FirstRadar));
+			printf("  %d Surface(s) specified\n",CountSurfaces(LLP.FirstSurface));
+			printf("  %d Simulation file(s) to be written\n",CountSimulations(LLP.FirstSimulation));
+			printf("  %d Geometry file(s) to be written\n",CountGeometrys(LLP.FirstGeometry)); 
+			printf("\n");
+		}
+		else
+			return -1;
+
   if (CountSimulations(LLP.FirstSimulation) == 0)
     {
       printf("No simulation to be done...\n\n");
@@ -102,7 +109,7 @@ int main(int argc, char *argv[])
       CurrentSim = CurrentSim->next;  
     }
  
-printf("\n\n");
+	printf("\n\n");
 
  struct SGeometry *CurrentGeo = LLP.FirstGeometry; 
  // perform all geometries simulations

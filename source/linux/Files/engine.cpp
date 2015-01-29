@@ -12,9 +12,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <string.h>
-//----------------------------
-// added by scoetzee for HDF5
-#include "hdf5.h"
+
 //----------------------------
 //added by abarta for rand()
 #include <stdlib.h>
@@ -516,7 +514,8 @@ void FillMemo(TMemo *ThisMemo)
                  ThisMemo->Lines->Add(str);
               if (sim->FileType == 0) sprintf(s,"ASCII");
               else if (sim->FileType == 1) sprintf(s,"BINARY");
-              else if (sim->FileType == 2) sprintf(s,"BRACKET");
+              else if (sim->FileType == 2) sprintf(s,"HDF5");
+							else sprintf(s,"BRACKET");
               sprintf(str,"%-20s ! Save file format", s);
                  ThisMemo->Lines->Add(str);
               if (sim->SimTYPE == 0) sprintf(s,"RAW");
@@ -1213,22 +1212,20 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
   double AntennaGain;
 
 
-
   // compute return gain factor independent of time
-//  GainFactor = ((LIGHT_SPEED/r->StartFreq)*sqrt(r->PowerOutput)) /
-//         ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
-
+	//  GainFactor = ((LIGHT_SPEED/r->StartFreq)*sqrt(r->PowerOutput)) /
+	//         ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
   // Edited by RTL on 21/03/2004
   // see also line 1446
-  GainFactor = sqrt(r->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
+  // GainFactor = sqrt(r->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
-
-
+	// Added gain by SLC on 12/01/2015
+	GainFactor = sqrt(r->PowerOutput*r->TxGain*r->RxGain) / ((4*PI)*sqrt(4*PI)*sqrt(r->Losses));
 
   // samples which are set to 0 and do not to be added
-//  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
- //      CurrentSim->PWidth))*double(0.5);
+	//  ZeroedSamples = (double(UsedSamples)-((double(UsedSamples)/CurrentSim->OverSampleFactor)*
+	//      CurrentSim->PWidth))*double(0.5);
   if (ZeroedSamples < 0) ZeroedSamples = 0;
   if (ZeroedSamples >= UsedSamples) ZeroedSamples = UsedSamples;
 
@@ -1411,7 +1408,7 @@ void CalcOnePulse(double *OnePulse, long SamplePoints, double SlantStartTime,
                     RCS = 0;
                 }
             }
-          else if (s->Reflec == 1) // directional, not isotrpic
+          else if (s->Reflec == 1) // directional, not isotropic
             {
               if (s->Gain == 0)  // cos
                 {
@@ -1796,18 +1793,19 @@ double **RadarDir, long FirstPulse)
   FindPlatform(Radar->PlatformName, &RadarPF, &RadarPFNo, FirstPlatform);
 
 
-
   // compute return gain factor independent of time
-//  GainFactor = ((LIGHT_SPEED/Radar->StartFreq)*sqrt(Radar->PowerOutput)) /
-//         ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
+	//  GainFactor = ((LIGHT_SPEED/Radar->StartFreq)*sqrt(Radar->PowerOutput)) /
+	//         ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
 
   // Edited by RTL on 21/03/2004
-  // see also line 2015
-  GainFactor = sqrt(Radar->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
+  // see also line 2022
+	//  GainFactor = sqrt(Radar->PowerOutput) / ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
+
+	// Added gain by SLC on 12/01/2015
+	GainFactor = sqrt(Radar->PowerOutput*Radar->TxGain*Radar->RxGain) / ((4*PI)*sqrt(4*PI)*sqrt(Radar->Losses));
 
 
-
-// start surface
+	// start surface
   // IMPORTANT - also change ShowSurfaces function in main.cpp if
   // changes are made here
   for (SNo=0;SNo<SurfaceNo;SNo++)       // for each Surface do
@@ -2703,99 +2701,55 @@ void CalcArray2(struct SRadar *r, struct SSimulation *CurrentSim,
   Free_DVector(OverSampledTemplate,0);
 
 }
+
 //-------------------------------------------------------------------------//
 extern int CalcProgress2;
-//-------------------------------------------------------------------------//
-int WriteHDF5File(int * pData, size_t nx, size_t ny, const char * pszHDF5File)  
-{
-#define DATASETNAME "IntArray"
-#define NX     2792                      /* dataset dimensions */
-#define NY     2
-#define RANK   2
-
-	hid_t       file, dataset;         /* file and dataset handles */
-	hid_t       datatype, dataspace;   /* handles */
-	hsize_t     dimsf[2];              /* dataset dimensions */
-	herr_t      status;
-
-
-	// Create a new file using H5F_ACC_TRUNC access,
-	// default file creation properties, and default file
-	// access properties.
-	file = H5Fcreate(pszHDF5File, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
-
-	// Describe the size of the array and create the data space for fixed
-	// size dataset.
-	dimsf[0] = nx;
-	dimsf[1] = ny;
-	dataspace = H5Screate_simple(RANK, dimsf, NULL);
-
-	// Define datatype for the data in the file.
-	// We will store little endian INT numbers.
-	datatype = H5Tcopy(H5T_NATIVE_INT);
-	status = H5Tset_order(datatype, H5T_ORDER_LE);
-
-	// Create a new dataset within the file using defined dataspace and
-	// datatype and default dataset creation properties.
-	dataset = H5Dcreate2(file, DATASETNAME, datatype, dataspace,
-	H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
-
-	// Write the data to the dataset using default transfer properties.
-	status = H5Dwrite(dataset, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, pData);
-
-	// Close/release resources.
-	H5Sclose(dataspace);
-	H5Tclose(datatype);
-	H5Dclose(dataset);
-	H5Fclose(file);
-
-	return 0;
-}
 //-------------------------------------------------------------------------//
 int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   struct LinkedLists *FP, long PointsSlant, double *TotalSampleNo,
   double *ClippedSamples,double *ZeroSamples)
 {
-	#define H5FILE_NAME "SDS.h5"
+#define H5TEMPFILE_NAME "temp.h5"
+
   #define PulsesPerSession 100
   long FirstPulse, LastPulse,TotalPulseNo,PulseNo,SurfaceNo;
   long SavePulseStart, SavePulseEnd;
   long SamplePoints, TargetNo,PNo,i;
   bool Finished=FALSE;
   double *PulseFreq, **RangeDelay, **TargetRadialVel, **ReturnAmp,
-         **Data,**DataH5,*PulseSendTime,***SurfP;
+         **Data,**H5Data,*PulseSendTime,***SurfP;
   double I,Q,MaxMagnitudeTemp;
   double FracPart,IntPart, Norm, Center;
   int bytes;
   int A2DBytes = (int)ceil((float)ThisSim->A2Dbits*(float)0.125);
+  FILE *OutFilep;
   struct SRadar *CRadar, *R; // current radar
   bool Clipped;
   double OldGlobalUnderSampleSurf;
   double **RadarDir;
-
-  FILE *OutFilep;
-
+	bool err = false;
+	int result;
 
   bool RadarFound = false;
   R =  FP->FirstRadar;
   CRadar = R;
   while (R != NULL)
-   {
-     if (CompStrNI(R->RadarName, ThisSim->RadarName, strlen(R->RadarName)) == 0)
-       {
-        CRadar = R;
-        RadarFound = true;
-        break;
-      }
-     R = R->next;
-   }
+	{
+		if (CompStrNI(R->RadarName, ThisSim->RadarName, strlen(R->RadarName)) == 0)
+		{
+			CRadar = R;
+			RadarFound = true;
+			break;
+		}
+		R = R->next;
+	}
   if (!RadarFound) return 2;
 
   OutFilep = fopen(ThisSim->FileName, "wb");  // append to file, if not exists, create it
   if (!OutFilep)
-    {
-      return 3;
-    }
+	{
+		return 3;
+	}
 
   // figure out how many pulses to write
   FindPulsesInRange(ThisSim->AzimuthStart,ThisSim->AzimuthEnd,
@@ -2808,6 +2762,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   SurfaceNo = CountSurfaces(FP->FirstSurface);
    // number of sample points in slant range
   SamplePoints = PointsSlant;
+
   // create arrays...
   PulseFreq = DVector(0,PulsesPerSession-1);
   RangeDelay = DMatrix(0,TargetNo-1,0,PulsesPerSession-1);
@@ -2816,7 +2771,7 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   SurfP = DMatrix3(0,SurfaceNo-1,0,PulsesPerSession-1,0,8);
   PulseSendTime = DVector(0,PulsesPerSession-1);
   Data = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
-  DataH5 = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
+  H5Data = DMatrix(0,PulsesPerSession-1,0,SamplePoints*2-1);
 
   // now write the pulses in session for memory reasons (e.g. 0-99,100-199 etc.)
   SavePulseEnd = -1;
@@ -2832,125 +2787,143 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   *ClippedSamples = 0;
   *ZeroSamples = 0;
   do
-     {
-       SavePulseStart = SavePulseEnd+1;
-       SavePulseEnd = SavePulseStart+PulsesPerSession-1;
-       if (SavePulseEnd >= (TotalPulseNo-1))
-          {
-             SavePulseEnd = TotalPulseNo-1;
-             Finished = TRUE;
-          }
-      PulseNo = SavePulseEnd - SavePulseStart + 1;
+	{
+		SavePulseStart = SavePulseEnd+1;
+		SavePulseEnd = SavePulseStart+PulsesPerSession-1;
+		if (SavePulseEnd >= (TotalPulseNo-1))
+		{
+			SavePulseEnd = TotalPulseNo-1;
+			Finished = TRUE;
+		}
+		PulseNo = SavePulseEnd - SavePulseStart + 1;
 
-      #ifdef COMPILE_FOR_WINDOWS32
-        CalcProgress2 = (int)(((float)SavePulseStart/(float)TotalPulseNo)*100);
-      #else
-        printf("*");
-      #endif
+		#ifdef COMPILE_FOR_WINDOWS32
+			CalcProgress2 = (int)(((float)SavePulseStart/(float)TotalPulseNo)*100);
+		#else
+			printf("*");
+		#endif
 
-       // calculate time when each pulse is sent and the corresponding freq
-       for (PNo=0;PNo<PulseNo;PNo++)
-          {
-             PulseSendTime[PNo] = FindPulseSendTime(PNo+FirstPulse+SavePulseStart,
-                            CRadar);
-             PulseFreq[PNo] = FindPulseFreq(PNo+FirstPulse+SavePulseStart,
-                           CRadar);
-          }
+		// calculate time when each pulse is sent and the corresponding freq
+		for (PNo=0;PNo<PulseNo;PNo++)
+		{
+			PulseSendTime[PNo] = FindPulseSendTime(PNo+FirstPulse+SavePulseStart,
+			CRadar);
+			PulseFreq[PNo] = FindPulseFreq(PNo+FirstPulse+SavePulseStart,
+			CRadar);
+		}
 
-      RadarDir = DMatrix(0,PulseNo-1,0,1);
-      // calculate range-delay, return amp etc. for each pulse
-      CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar, PulseSendTime,
-                  PulseNo, FP->FirstTarget, FP->FirstPlatform,
-                  FP->FirstSurface, SurfP, RadarDir, FirstPulse+SavePulseStart);
+		RadarDir = DMatrix(0,PulseNo-1,0,1);
+		// calculate range-delay, return amp etc. for each pulse
+		CalcGeometry(RangeDelay, ReturnAmp, TargetRadialVel, CRadar, PulseSendTime,
+				        PulseNo, FP->FirstTarget, FP->FirstPlatform,
+				        FP->FirstSurface, SurfP, RadarDir, FirstPulse+SavePulseStart);
 
-      // we do the full number of PTs now (surfaces) - let's indicate that
-      // see surfaces for more info
-      OldGlobalUnderSampleSurf = GlobalUnderSampleSurf;
-      GlobalUnderSampleSurf = 0;
+		// we do the full number of PTs now (surfaces) - let's indicate that
+		// see surfaces for more info
+		OldGlobalUnderSampleSurf = GlobalUnderSampleSurf;
+		GlobalUnderSampleSurf = 0;
 
-      // Calculate Data array of size (PulseNo x SamplePoints)
-      CalcArray2(CRadar, ThisSim, Data, PulseNo, SamplePoints, PulseFreq,
-                 RangeDelay, TargetRadialVel, ReturnAmp, &MaxMagnitudeTemp,
-                 FP->FirstTarget, FP->FirstPlatform,
-                 FP->FirstSurface, SurfP, RadarDir);
+		// Calculate Data array of size (PulseNo x SamplePoints)
+		CalcArray2(CRadar, ThisSim, Data, PulseNo, SamplePoints, PulseFreq,
+				       RangeDelay, TargetRadialVel, ReturnAmp, &MaxMagnitudeTemp,
+				       FP->FirstTarget, FP->FirstPlatform,
+				       FP->FirstSurface, SurfP, RadarDir);
 
-      // change back to old value
-      GlobalUnderSampleSurf = OldGlobalUnderSampleSurf;
+		// change back to old value
+		GlobalUnderSampleSurf = OldGlobalUnderSampleSurf;
 
-      if (MaxMagnitudeTemp > *MaxMagnitude) *MaxMagnitude = MaxMagnitudeTemp;
-      if (UserAbort) break;
-       // calculate the offset
-      if (ThisSim->A2Dbits == 1)
-        Center = 1;
-      else
-         Center = pow(2,ThisSim->A2Dbits-1)-1;
-       // write array to file
-        for (PNo=0;PNo<PulseNo;PNo++)
-         {
-          if (UserAbort) break;
-           for (i=0;i<SamplePoints;i++)
-                {
-             (*TotalSampleNo)++;
-             Clipped = false;
-                I = round(Norm*Data[PNo][2*i]);
-                Q = round(Norm*Data[PNo][2*i+1]);
-             // check limits
-             if (I>Center+1) {I = Center+1; Clipped=true;}
-             if (I<-Center) {I = -Center; Clipped=true;}
-             if (Q>Center+1) {Q = Center+1; Clipped=true;}
-             if (Q<-Center) {Q = -Center; Clipped=true;}
-             if (Clipped) (*ClippedSamples)++;
-             if ((I == 0) && (Q == 0)) (*ZeroSamples)++;
+		if (MaxMagnitudeTemp > *MaxMagnitude) *MaxMagnitude = MaxMagnitudeTemp;
+		if (UserAbort) break;
+			// calculate the offset
+		if (ThisSim->A2Dbits == 1)
+			Center = 1;
+		else
+			 Center = pow(2,ThisSim->A2Dbits-1)-1;
+		// write array to file
+		for (PNo=0;PNo<PulseNo;PNo++)
+		{
+			if (UserAbort) break;
+			for (i=0;i<SamplePoints;i++)
+			{
+				(*TotalSampleNo)++;
+				Clipped = false;
+				I = round(Norm*Data[PNo][2*i]);
+				Q = round(Norm*Data[PNo][2*i+1]);
 
-						// save data for HDF5 file 
-						DataH5[PNo][2*i] = I;
-						DataH5[PNo][2*i+1] = Q;
+				// check limits
+				if (I>Center+1) {I = Center+1; Clipped=true;}
+				if (I<-Center) {I = -Center; Clipped=true;}
+				if (Q>Center+1) {Q = Center+1; Clipped=true;}
+				if (Q<-Center) {Q = -Center; Clipped=true;}
+				if (Clipped) (*ClippedSamples)++;
+				if ((I == 0) && (Q == 0)) (*ZeroSamples)++;
 
-             // now write data in either ascii or binary ---------------------------------------------------------- VI !
-              if (ThisSim->FileType == ASCII) //ASCII
-                 {
-                      fprintf(OutFilep,"%1.0f %1.0f\n",I,Q);
-// special case for for automatic rotation
-//                 fprintf(OutFilep,"%4.0f %4.0f  ",I,Q);
-               }
-             else if (ThisSim->FileType == ASCIIwithBrackets) //ASCII but (I,Q)
-                 {
-                      fprintf(OutFilep,"(%1.0f,%1.0f) ",I,Q);
-               }
-             else // BINARY
-               {
-                      I += Center;
-                      Q += Center; // add offset such that range is from 0 to (2^x)-1
-                      for (bytes = 0;bytes < A2DBytes; bytes++)
-                         {
-                            I = I/256;
-                            FracPart = modf(I,&IntPart);
-                            fprintf(OutFilep,"%c",(char)(FracPart*256));
-                            I = IntPart;
-                         }
-                      for (bytes = 0;bytes < A2DBytes; bytes++)
-                         {
-                            Q = Q/256;
-                            FracPart = modf(Q,&IntPart);
-                            fprintf(OutFilep,"%c",(char)(FracPart*256));
-                            Q = IntPart;
-                         }
-                    }  // end else binary
+				// now write data in either ascii, binary or hdf5
+				if (ThisSim->FileType == ASCII) //ASCII
+				{
+					fprintf(OutFilep,"%1.0f %1.0f\n",I,Q);
+					// special case for for automatic rotation
+					//  fprintf(OutFilep,"%4.0f %4.0f  ",I,Q);
+				}
+				else if (ThisSim->FileType == ASCIIwithBrackets) //ASCII but (I,Q)
+				{
+					fprintf(OutFilep,"(%1.0f,%1.0f) ",I,Q);
+				}
+				else if (ThisSim->FileType == BINARY) // BINARY
+				{
+					I += Center;
+					Q += Center; // add offset such that range is from 0 to (2^x)-1
+					for (bytes = 0;bytes < A2DBytes; bytes++)
+					{
+						I = I/256;
+						FracPart = modf(I,&IntPart);
+						fprintf(OutFilep,"%c",(char)(FracPart*256));
+						I = IntPart;
+					}
+					for (bytes = 0;bytes < A2DBytes; bytes++)
+					{
+						Q = Q/256;
+						FracPart = modf(Q,&IntPart);
+						fprintf(OutFilep,"%c",(char)(FracPart*256));
+						Q = IntPart;
+					}
+				}  
+				else if (ThisSim->FileType == HDF5) // HDF5
+				{
+					H5Data[PNo][2*i] = I;
+					H5Data[PNo][2*i+1] = Q;
+				}
+			} // for all samplepoints
 
+			// add separator between successive pulses
+			// comment next line out for no lf between pulses
+			if (ThisSim->FileType == ASCII) fprintf(OutFilep,"\n");
+			if (ThisSim->FileType == ASCIIwithBrackets) fprintf(OutFilep,"\n");
 
-           } // for all samplepoints
-          // add separator between succesive pulses
-// comment next line out for no lf between pulses
-             if (ThisSim->FileType == ASCII) fprintf(OutFilep,"\n");
-             if (ThisSim->FileType == ASCIIwithBrackets) fprintf(OutFilep,"\n");
-        } // PNo
-     } while (!Finished);
-   #ifndef COMPILE_FOR_WINDOWS32
-     printf("\n");
-   #endif
+		} // PNo
+	} while (!Finished);
+	#ifndef COMPILE_FOR_WINDOWS32
+		printf("\n");
+	#endif
 
-	// write HDF5 file
-	WriteHDF5File((int*)&DataH5, NX, NY, H5FILE_NAME);
+	if (ThisSim->FileType == HDF5) // HDF5
+	{
+		// Rename temp HDF5 filename with details to filename in specified in script file
+		result = rename( (char *)H5TEMPFILE_NAME , ThisSim->FileName );
+		if ( result == 0 )
+		{
+			// Write data to HDF5 file
+			if (!WriteHDF5File(H5Data[0], (int)PulseNo, (int)SamplePoints*2, ThisSim->FileName))
+			{ 
+				err = true;
+			}
+		}
+		else
+		{
+			printf( "\nError renaming file\n" );
+			err = true;
+		}
+	}
 
   // and free arrays again
   Free_DVector(PulseFreq,0);
@@ -2959,16 +2932,19 @@ int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
   Free_DMatrix(ReturnAmp,0,0);
   Free_DVector(PulseSendTime,0);
   Free_DMatrix(Data,0,0);
-	Free_DMatrix(DataH5,0,0);
+  Free_DMatrix(H5Data,0,0);
   Free_DMatrix3(SurfP,0,0,0);
   Free_DMatrix(RadarDir,0,0);
 
 // special case for rotation
 // fprintf(OutFilep,"\n");
 
-
   fclose(OutFilep);
-  return true;
+
+	if (err == true)
+		return 3;
+
+  return 0;
 }
 //-------------------------------------------------------------------------//
 int SaveGeometryData(struct SGeometry *ThisGeo,

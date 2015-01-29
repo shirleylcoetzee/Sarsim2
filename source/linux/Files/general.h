@@ -57,7 +57,7 @@ void DivVec(double a[3], double fac, double Result[3]);
 void AddVec(double a[3], double b[3], double Result[3]);
 void MultVec(double a[3], double fac, double Result[3]);
 
-
+void PrintMatrix (double ** pMatrix, size_t rows, size_t cols);
 
 #ifdef WITH_SURFACE_ALGORITHM
 // add surf

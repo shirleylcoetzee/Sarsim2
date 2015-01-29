@@ -162,7 +162,7 @@ SRadar    DefaultRadarValues = {"Earth","Radar1",0,
 											  {"",1,NONE,-1,NULL,0,0,0,0}
 										  }
 										},
-									1E3,1,0,0,
+									1E3,0,0,1,0,0,
 										{ ID_INLINE,{LINEAR,LINEAR,LINEAR},"",2,   //AntennaTDef
 										  {0,0,0},{0,0,0},{0,0,0},{NULL,NULL,NULL},
 										  {  {"Angle (°)",1,DEGREES,-1,NULL,0,360,0,360},
@@ -222,9 +222,10 @@ SRadar    DefaultRadarValues = {"Earth","Radar1",0,
 											  {"",1,NONE,-1,NULL,0,0,0,0},
 											  {"",1,NONE,-1,NULL,0,0,0,0}
 										  }
-										}, NULL,NULL
+										}, NULL,NULL,
 								  };
-struct SSimulation DefaultSimulationValues = {"","sim1.bin",0,0,0,0.01,REAL,8,0,0,BINARY,
+
+struct SSimulation DefaultSimulationValues = {"","sim1.bin",0,0,0,0.01,REAL,8,0,0,HDF5,
 											RAW_RETURN,0,5,2,NULL,NULL};
 
 struct SGeometry DefaultGeometryValues = {"","geo1.txt",0,100000,0,0.1,0,227,NULL,NULL};

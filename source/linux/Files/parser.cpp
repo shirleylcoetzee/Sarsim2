@@ -113,7 +113,7 @@ struct SStateM StateMS[14] = {
 				  },
 				// state 8
 				  { 13, 0, 0,1,             // Type, min, max
-					 {"ASC","BIN","BRA","",""},    // names
+					 {"ASC","BIN","HDF","BRA",""},    // names
 					 {9,9,9,0,0},NULL     // next states
 				  },
 				// state 9
@@ -143,7 +143,7 @@ struct SStateM StateMS[14] = {
 				  },
 		};
 // radar parser
-struct SStateM StateMR[47] = {
+struct SStateM StateMR[49] = {
 				// state 0
 				  { 2, 0, 0, 1,            // Type, min, max
 					 {"","","","",""},    // names
@@ -244,122 +244,132 @@ struct SStateM StateMR[47] = {
 					 {"","","","",""},              // names
 					 {20,0,0,0,0},NULL               // next states
 				  },
-				// state 20
+				// state 20  // Power output
 				  { 1, 0, MAX_DOUBLE,1E3,     // Type, min, max
 					 {"","","","",""},              // names
 					 {21,0,0,0,0},NULL               // next states
 				  },
-				// state 21
+				// state 21  // Transmitter gain
+				  { 1, 0, MAX_DOUBLE,1,     // Type, min, max
+					 {"","","","",""},              // names
+					 {22,0,0,0,0},NULL               // next states
+				  },
+				// state 22  // Receiver gain
+				  { 1, 0, MAX_DOUBLE,1,     // Type, min, max
+					 {"","","","",""},              // names
+					 {23,0,0,0,0},NULL               // next states
+				  },
+				// state 23 // Total system losses
 				  { 1, 0,MAX_DOUBLE,1,     // Type, min, max
 					 {"","","","",""},              // names
-					 {22,7,9,0,0},NULL               // next states
+					 {24,7,9,0,0},NULL               // next states
 				  },
-				// state 22
+				// state 24 // Noise temperature
 				  { 1, 0, MAX_DOUBLE,1,             // Type, min, max
 					 {"","","","",""},    // names
-					 {23,0,0,0,0},NULL     // next states
+					 {25,0,0,0,0},NULL     // next states
 				  },
-				// state 23
+				// state 25 // Isotropic transmitter antenna
 				  { 13, 0, 0,1,             // Type, min, max
 					 {"ISO","SIN","OTH","",""},    // names
-					 {27,24,26,0,0},NULL     // next states
-				  },
-				// state 24
-				  { 1, 0, 360,DegToRad,     // Type, min, max
-					 {"","","","",""},              // names
-					 {25,0,0,0,0},NULL               // next states
-				  },
-				// state 25
-				  { 1, 0, 360,DegToRad,        // Type, min, max
-					 {"","","","",""},    // names
-					 {27,0,0,0,0},NULL           // next states
+					 {29,26,28,0,0},NULL     // next states
 				  },
 				// state 26
-				  { 3, 0, 0,1,     // Type, min, max
+				  { 1, 0, 360,DegToRad,     // Type, min, max
 					 {"","","","",""},              // names
 					 {27,0,0,0,0},NULL               // next states
 				  },
 				// state 27
-				  { 14, 0, 0,1,     // Type, min, max
-					 {"ISO","SIN","SAM","OTH",""},              // names
-					 {31,28,31,30,0},NULL               // next states
+				  { 1, 0, 360,DegToRad,        // Type, min, max
+					 {"","","","",""},    // names
+					 {28,0,0,0,0},NULL           // next states
 				  },
 				// state 28
-				  { 1, 0,360,DegToRad,     // Type, min, max
+				  { 3, 0, 0,1,     // Type, min, max
 					 {"","","","",""},              // names
 					 {29,0,0,0,0},NULL               // next states
 				  },
 				// state 29
-				  { 1, 0, 360 ,DegToRad,     // Type, min, max
-					 {"","","","",""},              // names
-					 {31,0,0,0,0},NULL               // next states
+				  { 14, 0, 0,1,     // Type, min, max
+					 {"ISO","SIN","SAM","OTH",""},              // names
+					 {33,30,33,32,0},NULL               // next states
 				  },
 				// state 30
-				  { 3, 0, 0, 1,     // Type, min, max
+				  { 1, 0,360,DegToRad,     // Type, min, max
 					 {"","","","",""},              // names
 					 {31,0,0,0,0},NULL               // next states
 				  },
 				// state 31
-				  { 14, 0, 0,1,     // Type, min, max
-					 {"FIX","ROT","SPO","OTH",""},              // names
-					 {32,34,36,39,0},NULL               // next states
+				  { 1, 0, 360 ,DegToRad,     // Type, min, max
+					 {"","","","",""},              // names
+					 {33,0,0,0,0},NULL               // next states
 				  },
 				// state 32
-				  { 1, -90, 90, DegToRad,     // Type, min, max
+				  { 3, 0, 0, 1,     // Type, min, max
 					 {"","","","",""},              // names
-					 {33,0,0,0,0},NULL              // next states
+					 {33,0,0,0,0},NULL               // next states
 				  },
 				// state 33
-				  { 1, -360, 360,DegToRad,     // Type, min, max
-					 {"","","","",""},              // names
-					 {40,0,0,0,0},NULL               // next states
+				  { 14, 0, 0,1,     // Type, min, max
+					 {"FIX","ROT","SPO","OTH",""},              // names
+					 {34,36,38,41,0},NULL               // next states
 				  },
 				// state 34
-				  { 1, -90,90,DegToRad,     // Type, min, max
+				  { 1, -90, 90, DegToRad,     // Type, min, max
 					 {"","","","",""},              // names
-					 {35,0,0,0,0},NULL               // next states
+					 {35,0,0,0,0},NULL              // next states
 				  },
 				// state 35
-				  { 1, 0, MAX_DOUBLE,DegToRad,             // Type, min, max
-					 {"","","","",""},    // names
-					 {40,0,0,0,0},NULL     // next states
+				  { 1, -360, 360,DegToRad,     // Type, min, max
+					 {"","","","",""},              // names
+					 {42,0,0,0,0},NULL               // next states
 				  },
 				// state 36
-				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,             // Type, min, max
-					 {"","","","",""},    // names
-					 {37,0,0,0,0},NULL     // next states
+				  { 1, -90,90,DegToRad,     // Type, min, max
+					 {"","","","",""},              // names
+					 {37,0,0,0,0},NULL               // next states
 				  },
 				// state 37
-				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,     // Type, min, max
-					 {"","","","",""},              // names
-					 {38,0,0,0,0},NULL               // next states
+				  { 1, 0, MAX_DOUBLE,DegToRad,             // Type, min, max
+					 {"","","","",""},    // names
+					 {42,0,0,0,0},NULL     // next states
 				  },
 				// state 38
-				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,        // Type, min, max
+				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,             // Type, min, max
 					 {"","","","",""},    // names
-					 {40,0,0,0,0},NULL           // next states
+					 {39,0,0,0,0},NULL     // next states
 				  },
 				// state 39
-				  { 3, 0,0,1,     // Type, min, max
+				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,     // Type, min, max
 					 {"","","","",""},              // names
 					 {40,0,0,0,0},NULL               // next states
 				  },
 				// state 40
-				  { 15, 0, 0,1,     // Type, min, max
-					 {"REC","HAN","BAR","HAM","OTH"},              // names
-					 {43,41,43,43,42},NULL               // next states
+				  { 1, MIN_DOUBLE, MAX_DOUBLE,1,        // Type, min, max
+					 {"","","","",""},    // names
+					 {42,0,0,0,0},NULL           // next states
 				  },
 				// state 41
-				  { 1, 0, 1,1,     // Type, min, max
+				  { 3, 0,0,1,     // Type, min, max
 					 {"","","","",""},              // names
-					 {43,0,0,0,0},NULL               // next states
+					 {42,0,0,0,0},NULL               // next states
 				  },
 				// state 42
-				  { 3, 0, 0 ,1,     // Type, min, max
-					 {"","","","",""},              // names
-					 {43,0,0,0,0},NULL               // next states
+				  { 15, 0, 0,1,     // Type, min, max
+					 {"REC","HAN","BAR","HAM","OTH"},              // names
+					 {45,43,41,45,44},NULL               // next states
 				  },
 				// state 43
+				  { 1, 0, 1,1,     // Type, min, max
+					 {"","","","",""},              // names
+					 {45,0,0,0,0},NULL               // next states
+				  },
+				// state 44
+				  { 3, 0, 0 ,1,     // Type, min, max
+					 {"","","","",""},              // names
+					 {45,0,0,0,0},NULL               // next states
+				  },
+				// state 45
 				  { 12, 0, 0, 1,     // Type, min, max
 					 {"NO_","APP","","",""},              // names
 					 {-1,44,0,0,0},NULL               // next states
@@ -367,14 +377,14 @@ struct SStateM StateMR[47] = {
 				// state 44
 				  { 12, 0, 0,1,     // Type, min, max
 					 {"1OV","OTH","","",""},              // names
-					 {-1,45,0,0,0},NULL               // next states
+					 {-1,47,0,0,0},NULL               // next states
 				  },
-				// state 45
+				// state 47
 				  { 3, 0, 0, 1,     // Type, min, max
 					 {"","","","",""},              // names
 					 {-1,0,0,0,0},NULL              // next states
 				  },
-				// state 46
+				// state 48
 				  { 0, 0, 6, 1,     // Type, min, max
 					 {"","","","",""},              // names
 					 {5,0,0,0,0},NULL              // next states
@@ -621,7 +631,7 @@ struct SStateM StateMPF[25] = {
 					 {"","","","",""},    // names
 					 {208,0,0,0,0},NULL     // next states
 				  },
-                // state 20
+         // state 20
 				  { 12, 0, 0,1,                    // Type, min, max
 					 {"STD","OTH","","",""},    // names
 					 {21,24,0,0,0},NULL           // next states
@@ -654,50 +664,87 @@ struct SStateM StateMPF[25] = {
 //                                                                         //
 // Read one item of specified file.                                        //
 //-------------------------------------------------------------------------//
-int ParseOneItem(FILE *ScriptFile, char *DataString, int LineCount)
+int ParseOneItem(FILE *ScriptFile, char *AttrString, char *DataString, int LineCount, bool SubjectLine)
 {
   char CurrentChar;
   int  DataStringIndex = 0;
+	int  AttrStringIndex = 0;
   char ReturnCode      = _ITEM_NONE,
-		 ExitLoop        = FALSE;
+		 ExitLoop          = FALSE;
 
   do
 	 {
 		CurrentChar = (char)getc(ScriptFile);
 		switch (CurrentChar)
 		  {
-			 // ! character indicates a comment, so ignore entire line
-			 // until end-of-line or end-of-file is reached
+			 // Comment found
 			 case '!' :
-				do
-				  CurrentChar = (char) getc( ScriptFile );
-				while ( (CurrentChar!='\n') && (CurrentChar!=EOF) );
-				ungetc( CurrentChar, ScriptFile );
+				if (SubjectLine) // if subject line, ignore line
+				{
+					do
+						CurrentChar = (char) getc( ScriptFile );
+					while ( (CurrentChar!='\n') && (CurrentChar!=EOF) );
+					ungetc( CurrentChar, ScriptFile );
+					break;
+				}
+				else // else read it into AttrString
+				{
+					ReturnCode = _ITEM_ATTRIBUTE;
+
+					CurrentChar = (char)getc(ScriptFile);
+					if (CurrentChar == ' ')
+						CurrentChar = (char)getc(ScriptFile);
+
+					do
+					 {
+							AttrString[AttrStringIndex++] = CurrentChar;
+							CurrentChar = (char)getc(ScriptFile);
+							if (CurrentChar == ' ')
+								CurrentChar = '_';
+							if (( AttrStringIndex >= MAX_LENGTH_OF_PARA_STRING - 1 ) && (DataStringIndex != 0))
+					 		{
+								ErrorM(ERROR_TOO_LONG_PARM, LineCount,
+									(long)(MAX_LENGTH_OF_PARA_STRING-1), NULL );
+								break;
+					 		 }
+					 	}
+						while ( CurrentChar!=EOF && CurrentChar!='\n' &&
+					 	 CurrentChar!='\t' );
+
+						ungetc( CurrentChar, ScriptFile );
+						AttrString[AttrStringIndex] = '\0';
+					  ExitLoop = TRUE;
+				}
 				break;
+
 			 // Ignore spaces, tabs, and commas
 			 case ' ' :
        case 13 :  // carriage return character
 			 case '\t':
 			 case ',' : break;
+
 			 // End-Of-Line, End-Of-File or function call found
 			 case '\n': ReturnCode    = _ITEM_EOL;
 				DataString[0] = '\0';
 				ExitLoop      = TRUE;
 				break;
+
 			 case EOF : ReturnCode    = _ITEM_EOF;
 				DataString[0] = '\0';
 				ExitLoop      = TRUE;
 				break;
+
 			 case '$' : ReturnCode    = _ITEM_FUNCTION;
 				break;
-			 // Actual data found, so read it into DataString and
-			 // return to calling function
+
+			 // Actual data found, so read it into DataString
 			 default  : if ( ReturnCode == _ITEM_NONE )
 				 ReturnCode = _ITEM_PARAMETER;
 
 			  do
 				 {
 					DataString[DataStringIndex++] = CurrentChar;
+					SubjectLine = false; //temp setting
 					CurrentChar = (char)getc(ScriptFile);
 					if ( DataStringIndex >= MAX_LENGTH_OF_PARA_STRING - 1 )
 					  {
@@ -715,10 +762,10 @@ int ParseOneItem(FILE *ScriptFile, char *DataString, int LineCount)
 			  //ConvertToUpperCase(DataString);
 			  //UpperCase(DataString);
 			  ExitLoop = TRUE;
+
 		  }  // end switch
 	 }  // end do
-
-  while ( ExitLoop == FALSE );
+  while (ExitLoop == FALSE );
 
   return ReturnCode;
 }
@@ -770,7 +817,7 @@ void ErrorM(const unsigned int Error,int LineCount, long Multi, char* String)
   case ERROR_RADAR_NOT_FOUND :
 	 sprintf(s,"Radar '%s' not defined in line %d.\nMake sure the radar is defined before it is referenced to.", String,LineCount);
 	 break;
-// new stuff
+// Adam's new stuff
   case E_NOT_ENOUGH_PARA :
 	 sprintf(s,"Not enough parameters given for object defined in line %d.",LineCount);
 	 break;
@@ -793,14 +840,35 @@ void ErrorM(const unsigned int Error,int LineCount, long Multi, char* String)
 	 sprintf(s,"Parameter %d (%s) not within limits for object defined in line %d.",
      (int)Multi,String,LineCount);
 	 break;
-
+// Shirley's HDF stuff 
+	case E_CANT_OPEN_TEXT_FILE :
+	 sprintf(s,"Can't open the text file %s.",String);
+	 break;
+  case E_HDF_ATTRIBUTE_ISSUE :
+	 sprintf(s,"Error with an attribute in an HDF5 file in line %d.",LineCount);
+	 break;
+	case E_HDF_DATASET_ISSUE :
+	 sprintf(s,"Error with a dataset in an HDF5 file in line %d.",LineCount);
+	 break;
+	case E_HDF_DATASPACE_ISSUE :
+	 sprintf(s,"Error with a dataspace in an HDF5 file in line %d.",LineCount);
+	 break;
+	case E_HDF_DATATYPE_ISSUE :
+	 sprintf(s,"Error with a datatype in an HDF5 file in line %d.",LineCount);
+	 break;
+	case E_HDF_FILE_ISSUE :
+	 sprintf(s,"Error with an HDF5 file %s.",String);
+	 break;
+	case E_HDF_GROUP_ISSUE :
+	 sprintf(s,"Error with group %s in an HDF5 file.",String);
+	 break;
   default :
 	 sprintf(s,"Unknown error encountered !");
   }
 #ifdef COMPILE_FOR_WINDOWS32
  Application->MessageBox(s, "Parsing error...", MB_OK);
 #else
- printf("Parsing Error : %s\n",s);
+ printf("\nParsing Error : %s\n",s);
 #endif
 
 
@@ -819,164 +887,163 @@ bool RunStateMachine(struct SStateM *StateM,
   double tempd;
   int tempi;
 
-  CS = 0;
+  CS = 0; 
   CP = 0;
   do
-	 {
+	{
 		if (StateM[CS].Type == 0)  // int
-		  {
-        tempi = atoi(ParameterList[CP++]);
-			 *(int *)(StateM[CS].SP) = tempi;
-       if ((tempi < StateM[CS].Min) || (tempi > StateM[CS].Max))
-         {
-     			 Error = TRUE;
-					 ErrorM(E_OUT_OF_LIMITS, LineCount+1, CS, ParameterList[CP-1]);
-					 break;
-         }
- 			  CS = StateM[CS].NextState[0];
-		  }
+		{
+			tempi = atoi(ParameterList[CP++]);
+			*(int *)(StateM[CS].SP) = tempi;
+			if ((tempi < StateM[CS].Min) || (tempi > StateM[CS].Max))
+			{
+				Error = TRUE;
+				ErrorM(E_OUT_OF_LIMITS, LineCount+1, CS, ParameterList[CP-1]);
+				break;
+			}
+			CS = StateM[CS].NextState[0];
+		}
 		else if (StateM[CS].Type == 1)  // double
-		  {
-       tempd = atof(ParameterList[CP++])*StateM[CS].MultF;
-			 *(double *)(StateM[CS].SP) = tempd;
-       if ((tempd < StateM[CS].Min) || (tempd > StateM[CS].Max))
-         {
-     			 Error = TRUE;
-					 ErrorM(E_OUT_OF_LIMITS, LineCount+1, CS, ParameterList[CP-1]);
-					 break;
-         }
-			 CS = StateM[CS].NextState[0];
-		  }
+		{
+			tempd = atof(ParameterList[CP++])*StateM[CS].MultF;
+			*(double *)(StateM[CS].SP) = tempd;
+			if ((tempd < StateM[CS].Min) || (tempd > StateM[CS].Max))
+			{
+				Error = TRUE;
+				ErrorM(E_OUT_OF_LIMITS, LineCount+1, CS, ParameterList[CP-1]);
+				break;
+			}
+			CS = StateM[CS].NextState[0];
+		}
 		else if (StateM[CS].Type == 2)  // char string
-		  {
-			 strcpy((char *)(StateM[CS].SP),ParameterList[CP++]);
-			 CS = StateM[CS].NextState[0];
-		  }
+		{
+			strcpy((char *)(StateM[CS].SP),ParameterList[CP++]);
+			CS = StateM[CS].NextState[0];
+		}
 		else if (StateM[CS].Type == 3)  // Datadef
-		  {
-			 SDataDefinition *DF;
-			 DF = &((*(SDataDefinition *)(StateM[CS].SP)));
+		{
+			SDataDefinition *DF;
+			DF = &((*(SDataDefinition *)(StateM[CS].SP)));
 
-             for (k=0;(k<DF->DataTypes && (CP < ParameterCount));k++)
-               {
-                 if (CompStrNI((char *)ParameterList[CP],(char *)"CUB",3) == 0)
-				   {
-				     DF->IntMethod[k] = CUBIC;
-				     CP++;
-				   }
-                 else if (CompStrNI((char *)ParameterList[CP],(char *)"MFI",3) == 0)
-				   {
-				     DF->IntMethod[k] = FILTER;
-				     CP++;
-				   }
-                 else if (CompStrNI((char *)ParameterList[CP],(char *)"LIN",3) == 0)
-				   {
-				     DF->IntMethod[k] = LINEAR;
-				     CP++;
-				   }
-                 else
-				   {
-				     // error - not CUBIC, MFILTER or LINEAR
-				     ErrorM(E_INTERPOLATION_EXP, LineCount+1, 0, (char *)"");
-				     Error = TRUE;
-                     break;
-				   }
-
-               }
-             if (Error) break;
-			 if (CompStrNI((char *)ParameterList[CP],(char *)"FIL",3) == 0)
+			for (k=0;(k<DF->DataTypes && (CP < ParameterCount));k++)
+			{
+				if (CompStrNI((char *)ParameterList[CP],(char *)"CUB",3) == 0)
 				{
-				  DF->Source = ID_FILE;
-				  CP++;
-				  strcpy( DF->FileName, ParameterList[CP]);
-				  CS = StateM[CS].NextState[0];
-				  CP++;
-				  Error = LoadDataFile(DF->FileName,DF); // Load Data File
+					DF->IntMethod[k] = CUBIC;
+					CP++;
 				}
-			 else if (CompStrNI((char *)ParameterList[CP],(char *)"INL",3) == 0)
+				else if (CompStrNI((char *)ParameterList[CP],(char *)"MFI",3) == 0)
 				{
-				  DF->Source = ID_INLINE;
-				  CP++;
-				  for (j=0;j<DF->DataTypes;j++)
-					 {
-						DF->NoP[j] = atoi(ParameterList[CP]);
-						if (DF->NoP[j] >= MAX_SAMPLES)
-						  {
-							 Error = TRUE;
-							 ErrorM(E_TOO_MANY_POINTS, LineCount+1,MAX_SAMPLES, (char *)"");
-							 break;
-						  }
-						CP++;
-						// free old data arrays
-						Free_DVector(DF->XAxis[j].DataArray,0);
-						Free_DVector(DF->YAxis[j].DataArray,0);
-						Free_DMatrix(DF->Coeff[j],0,0);
-						// make space for new data
-						DF->Coeff[j] = DMatrix(0,DF->NoP[j]-1,0,3);
-						DF->XAxis[j].DataArray = DVector(0,DF->NoP[j]-1);
-						DF->YAxis[j].DataArray = DVector(0,DF->NoP[j]-1);
-						for (i = 0; i<DF->NoP[j];i++)
-						  {
-							 DF->XAxis[j].DataArray[i] = atof(ParameterList[CP++]);
-							 if (CP >= ParameterCount)
-								{
-								  Error = TRUE;
-								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
-								  break;
-								}
-							 DF->YAxis[j].DataArray[i] = atof(ParameterList[CP++]);
-							 if ((CP >= ParameterCount) && (i != (DF->NoP[j]-1)))
-								{
-								  Error = TRUE;
-								  ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
-								  break;
-								}
-						  }
-						if (Error) break;
-						// update interpolation coeffs
-						FindPolyCoeff(DF->XAxis[j].DataArray,DF->YAxis[j].DataArray,
-						 DF->NoP[j], (DF->Coeff[j]));
-
-					 }
-				  CS = StateM[CS].NextState[0];
-
+					DF->IntMethod[k] = FILTER;
+					CP++;
 				}
-			 else
+				else if (CompStrNI((char *)ParameterList[CP],(char *)"LIN",3) == 0)
 				{
-				  // error - not in-line or file
-				  ErrorM(E_NO_LINE_FILE, LineCount+1, 0, (char *)"");
-				  Error = TRUE;
+					DF->IntMethod[k] = LINEAR;
+					CP++;
 				}
-		  }
-		else // branch
-		  {
-			 found = FALSE;
-			 for (branch = 0; branch < (StateM[CS].Type - 10); branch++)
+				else
 				{
-				  // check which branch to take
-				  if (CompStrNI((char *)StateM[CS].Name[branch],(char *)ParameterList[CP],3) == 0)
-					 {
-						*(int *)(StateM[CS].SP) = branch;
-						CS = StateM[CS].NextState[branch];
-						CP++;
-						found = TRUE;
+					// error - not CUBIC, MFILTER or LINEAR
+					ErrorM(E_INTERPOLATION_EXP, LineCount+1, 0, (char *)"");
+					Error = TRUE;
+					break;
+				}
+			}
+			if (Error) break;
+			if (CompStrNI((char *)ParameterList[CP],(char *)"FIL",3) == 0)
+			{
+				DF->Source = ID_FILE;
+				CP++;
+				strcpy( DF->FileName, ParameterList[CP]);
+				CS = StateM[CS].NextState[0];
+				CP++;
+				Error = LoadDataFile(DF->FileName,DF); // Load Data File
+			}
+			else if (CompStrNI((char *)ParameterList[CP],(char *)"INL",3) == 0)
+			{
+				DF->Source = ID_INLINE;
+				CP++;
+				for (j=0;j<DF->DataTypes;j++)
+				{
+					DF->NoP[j] = atoi(ParameterList[CP]);
+					if (DF->NoP[j] >= MAX_SAMPLES)
+					{
+						Error = TRUE;
+						ErrorM(E_TOO_MANY_POINTS, LineCount+1,MAX_SAMPLES, (char *)"");
 						break;
-					 }
+					}
+					CP++;
+					// free old data arrays
+					Free_DVector(DF->XAxis[j].DataArray,0);
+					Free_DVector(DF->YAxis[j].DataArray,0);
+					Free_DMatrix(DF->Coeff[j],0,0);
+					// make space for new data
+					DF->Coeff[j] = DMatrix(0,DF->NoP[j]-1,0,3);
+					DF->XAxis[j].DataArray = DVector(0,DF->NoP[j]-1);
+					DF->YAxis[j].DataArray = DVector(0,DF->NoP[j]-1);
+					for (i = 0; i<DF->NoP[j];i++)
+					{
+						DF->XAxis[j].DataArray[i] = atof(ParameterList[CP++]);
+						if (CP >= ParameterCount)
+						{
+							Error = TRUE;
+							ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
+							break;
+						}
+						DF->YAxis[j].DataArray[i] = atof(ParameterList[CP++]);
+						if ((CP >= ParameterCount) && (i != (DF->NoP[j]-1)))
+						{
+							Error = TRUE;
+							ErrorM(E_MORE_POINTS_EXP, LineCount+1,DF->NoP[j], (char *)"");
+							break;
+						}
+					}
+					if (Error) break;
+					// update interpolation coeffs
+					FindPolyCoeff(DF->XAxis[j].DataArray,DF->YAxis[j].DataArray,
+					DF->NoP[j], (DF->Coeff[j]));
 				}
-			 if (!found)
+				CS = StateM[CS].NextState[0];
+
+			}
+			else
+			{
+				// error - not in-line or file
+				ErrorM(E_NO_LINE_FILE, LineCount+1, 0, (char *)"");
+				Error = TRUE;
+			}
+	  }
+		else // branch
+	  {
+
+			found = FALSE;
+			for (branch = 0; branch < (StateM[CS].Type - 10); branch++)
+			{
+				// check which branch to take
+				if (CompStrNI((char *)StateM[CS].Name[branch],(char *)ParameterList[CP],3) == 0)
 				{
-				  ErrorM(E_ILLEGAL_BRANCH, LineCount+1, 0, ParameterList[CP]);
-				  Error = TRUE;
+					*(int *)(StateM[CS].SP) = branch;
+					CS = StateM[CS].NextState[branch];
+					CP++;
+					found = TRUE;
+					break;
 				}
-		  }
-	  } // end while
+			}
+			if (!found)
+			{
+				ErrorM(E_ILLEGAL_BRANCH, LineCount+1, 0, ParameterList[CP]);
+				Error = TRUE;
+			}
+		}
+	} // end while
 	while ((CS != -1) && (CP < ParameterCount) && (!Error));
 
 	if ((CS != -1) && (!Error))
-	 {
+	{
 		ErrorM(E_NOT_ENOUGH_PARA, LineCount+1, 0, (char *)"");
 		Error = TRUE;
-	 }
+	}
 
   return Error;
 }
@@ -1257,33 +1324,35 @@ int ExecuteCommand(int LastFunction,
 		  StateMR[18].SP = &(NR.PulsesPerFreq);
 		  StateMR[19].SP = &(NR.FreqDef);
 		  StateMR[20].SP = &(NR.PowerOutput);
-		  StateMR[21].SP = &(NR.Losses);
-		  StateMR[22].SP = &(NR.NoiseTemp);
-		  StateMR[23].SP = &(NR.AntennaGainTypeT);
-		  StateMR[24].SP = &(NR.ElevBeamWidthT);
-		  StateMR[25].SP = &(NR.AziBeamWidthT);
-		  StateMR[26].SP = &(NR.AntennaTDef);
-		  StateMR[27].SP = &(NR.AntennaGainTypeR);
-		  StateMR[28].SP = &(NR.ElevBeamWidthR);
-		  StateMR[29].SP = &(NR.AziBeamWidthR);
-		  StateMR[30].SP = &(NR.AntennaRDef);
-		  StateMR[31].SP = &(NR.BeamDirection);
-		  StateMR[32].SP = &(NR.ElevationAngleF);
-		  StateMR[33].SP = &(NR.AzimuthAngleF);
-		  StateMR[34].SP = &(NR.ElevationAngleR);
-		  StateMR[35].SP = &(NR.RotationRate);
-		  StateMR[36].SP = &(NR.Spot[0]);
-		  StateMR[37].SP = &(NR.Spot[1]);
-		  StateMR[38].SP = &(NR.Spot[2]);
-		  StateMR[39].SP = &(NR.MFDef);
-		  StateMR[40].SP = &(NR.MatchedFilterW);
-		  StateMR[41].SP = &(NR.HanningC);
-		  StateMR[42].SP = &(NR.MFDef);
-		  StateMR[43].SP = &(NR.ApplyAGC);
-		  StateMR[44].SP = &(NR.AGCType);
-		  StateMR[45].SP = &(NR.AGCDef);
-		  StateMR[46].SP = &(NR.BarkerCode);
-		  Error =  RunStateMachine(StateMR, ParameterList,ParameterCount,LineCount);
+		  StateMR[21].SP = &(NR.TxGain);
+		  StateMR[22].SP = &(NR.RxGain);
+		  StateMR[23].SP = &(NR.Losses);
+		  StateMR[24].SP = &(NR.NoiseTemp);
+		  StateMR[25].SP = &(NR.AntennaGainTypeT);
+		  StateMR[26].SP = &(NR.ElevBeamWidthT);
+		  StateMR[27].SP = &(NR.AziBeamWidthT);
+		  StateMR[28].SP = &(NR.AntennaTDef);
+		  StateMR[29].SP = &(NR.AntennaGainTypeR);
+		  StateMR[30].SP = &(NR.ElevBeamWidthR);
+		  StateMR[31].SP = &(NR.AziBeamWidthR);
+		  StateMR[32].SP = &(NR.AntennaRDef);
+		  StateMR[33].SP = &(NR.BeamDirection);
+		  StateMR[34].SP = &(NR.ElevationAngleF);
+		  StateMR[35].SP = &(NR.AzimuthAngleF);
+		  StateMR[36].SP = &(NR.ElevationAngleR);
+		  StateMR[37].SP = &(NR.RotationRate);
+		  StateMR[38].SP = &(NR.Spot[0]);
+		  StateMR[39].SP = &(NR.Spot[1]);
+		  StateMR[40].SP = &(NR.Spot[2]);
+		  StateMR[41].SP = &(NR.MFDef);
+		  StateMR[42].SP = &(NR.MatchedFilterW);
+		  StateMR[43].SP = &(NR.HanningC);
+		  StateMR[44].SP = &(NR.MFDef);
+		  StateMR[45].SP = &(NR.ApplyAGC);
+		  StateMR[46].SP = &(NR.AGCType);
+		  StateMR[47].SP = &(NR.AGCDef);
+		  StateMR[48].SP = &(NR.BarkerCode);
+		  Error =  RunStateMachine(StateMR, ParameterList, ParameterCount, LineCount);
 
       // check if platform exists
       if (!Error)
@@ -1297,6 +1366,8 @@ int ExecuteCommand(int LastFunction,
 
 		  if (!Error)
 			 {
+				NR.TxGain = dBToFac(NR.TxGain);
+				NR.RxGain = dBToFac(NR.RxGain);
 				NR.Losses = dBToFac(NR.Losses);
 				AddRadar(&NR, &(FirstObjectP->FirstRadar));
 			 }

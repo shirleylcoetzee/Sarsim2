@@ -4,6 +4,7 @@
 //---------------------------------------------------------------------------
 #include "objectstructdef.h"
 #include "general.h"
+#include "loadsavedata.h"
 #include <stdio.h>
 #include <vector>
 //---------------------------------------------------------------------------
@@ -74,7 +75,6 @@ double **RadarDir, long FirstPulse);
 
 void FindSurfaceNormal(SSurface *s, double *AziAng, double *EleAng);
 bool SendPulse(double time, double PulseWidth, double DelaySlope, double *Phase);
-int WriteHDF5File(int * pData, size_t nx, size_t ny, const char * pszHDF5File);
 //int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
 //  struct LinkedLists *FP, long PointsSlant);
 int SaveSimuData(double *MaxMagnitude, struct SSimulation *ThisSim,
