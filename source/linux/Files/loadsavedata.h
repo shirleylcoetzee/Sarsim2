@@ -1,7 +1,7 @@
-#include "hdf5.h"
 //---------------------------------------------------------------------------
 #ifndef loadsavedataH
 #define loadsavedataH
+#include "hdf5.h"
 #include "objectstructdef.h"
 //---------------------------------------------------------------------------
 bool LoadDataFile(char FileName[], struct SDataDefinition *DataDef);
@@ -18,9 +18,10 @@ int OpenScriptFile(char *FileName, struct LinkedLists *FirstObjectP);
 
 //void WriteDataDef(FILE *OutFilep, struct SDataDefinition *DataDef);
 
+bool WriteHDF5File(double * pData, int nx, int ny, const char * pszHDF5Filename);
+
 #endif
 
-bool WriteHDF5File(double * pData, int nx, int ny, const char * pszHDF5Filename);
 
 
 

@@ -1,0 +1,118 @@
+! Radar Simulator SARSIM II (version LINUX-060115)
+! (C)1997 UCT (Radar Remote Sensing Group)
+
+
+$PLATFORM  Earth
+STATIONARY						! Stationary
+0                    ! (m) X-Position
+0                    ! (m) Y-Position
+0                    ! (m) Z-Position
+CONST									! const (deg)
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)		
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV					! stddev (m)
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV					! stdev (deg)
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$PLATFORM  Test
+TRAJECTORY				! Trajectory
+LINEAR               ! Interpolation method for Position X (m) vs Time (s)
+LINEAR               ! Interpolation method for Position Y (m) vs Time (s)
+LINEAR               ! Interpolation method for Position Z (m) vs Time (s)
+INLINE					! Inline
+3                    ! Number of samples for Position X (m) vs Time (s)
+-1  						! Pos X sample 1 X
+300  						! Pos X sample 1 Y
+0							! Pos X sample 2 X
+300 						! Pos X sample 2 Y
+1							! Pos X sample 3 X
+350 						! Pos X sample 3 Y
+1                    ! Number of samples for Position Y (m) vs Time (s)
+0  						! Pos Y sample 1 X
+0  						! Pos Y sample 1 Y
+1                    ! Number of samples for Position Z (m) vs Time (s)
+0  						! Pos Z sample 1 X
+0  						! Pos Z sample 1 Y
+NOT_ALIGNED				! Not-aligned
+CONST						! const (deg)
+0                    ! (deg) X-axis Rotation (deg)
+0                    ! (deg) Y-axis Rotation (deg)
+0                    ! (deg) Z-axis Rotation (deg)
+0                    ! (deg) X-axis Rotation rate (deg/s)
+0                    ! (deg) Y-axis Rotation rate (deg/s)
+0                    ! (deg) Z-axis Rotation rate (deg/s)
+STDDEV					! stddev (m)
+0                    ! (m) X-Position standard deviation
+0                    ! (m) Y-Position standard deviation
+0                    ! (m) Z-Position standard deviation
+STDDEV					! stdev (deg)
+0                    ! (deg) X-axis Rotation standard deviation
+0                    ! (deg) Y-axis Rotation standard deviation
+0                    ! (deg) Z-axis Rotation standard deviation
+
+
+$TARGET Test 		! Platform
+0  						! Position X (m)
+0 							! Position Y (m)
+0  						! Position Z (m)
+0  						! Position standard deviation X (m)
+0  						! Position standard deviation Y (m)
+0 							! Position standard deviation Z (m)
+1 							! Radar cross section (m*m)
+0  						! RCS std. dev. (m*m)
+ISOTROPIC				! Isotropic
+
+
+
+$RADAR
+Radar1               ! Name of radar
+Earth                ! Platform name of radar
+CHIRP					       ! Chirp
+0.1                  ! (GHz) Chirp bandwidth
+2500                 ! (ns)  zero to zero Pulse width
+RECT                 ! Rectangular envelope
+CONSTANT             ! Constant PRI
+1000                 ! (Hz)  Pulse repetition frequency
+SINGLE               ! Constant frequency
+0.5                  ! (GHz) Center frequency
+1                    ! (kW)  Power output
+0		                 ! (dB)  Transmitter gain
+0                    ! (dB)  Receiver gain
+0                    ! (dB)  Total system losses
+0                    ! (K)   Noise temperature
+ISOTROPIC            ! Isotropic transmitter antenna
+SAME                 ! Same as transmitter antenna
+FIXED                ! Fixed antenna direction
+0                    ! (deg) Beam-direction - Elevation
+0                    ! (deg) Beam-direction - Azimuth
+RECT                 ! Rectangular MF window
+NO_STC               ! no STC
+
+
+
+$SIMULATION
+Radar1               ! Name of radar
+294.676              ! (m) Slant range start
+316.503              ! (m) Slant range end
+-0.000448048         ! (s) Azimuth range start
+0.0184389            ! (s) Azimuth range end
+8                    ! A/D bit accuracy
+1                    ! (GHz) Sample frequency
+2.43350484E-11       ! (mV) Least Significant Bit value
+HDF5                 ! Save file format (ASCII, BINARY, HDF5, AsciiwithBrackets)
+MATCHED_FILTER       ! Processing
+final.h5             ! File Name of output file
+                     ! Size : 19 (Azimuth) x 146 (Slant Range) points
+BEGIN                ! Point Target position relative to pulse
+1                    ! Oversample factor
+100                  ! (ns)  zero to zero Pulse width

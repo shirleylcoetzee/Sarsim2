@@ -892,7 +892,7 @@ void WriteDataDef(FILE *OutFilep, struct SDataDefinition *DataDef)
 //---------------------------------------------------------------------------
 bool WriteHDF5File(double * pData, int nx, int ny, const char * pszHDF5Filename)  
 {
-#define DATASETNAME "/Data/Azimuth_x_Range_I&Q"
+#define DATASETNAME "/Data/PulseNo_x_SampleNo_I&Q"
 #define RANK   2
 
 	hid_t       file_id, group_id, dataset_id;  /* file, group and dataset handles */
